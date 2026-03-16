@@ -3,415 +3,380 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Talas_master | Ultra AI Photo Engine</title>
+    <title>Talas_profi | Shield AI 12-Modules</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+
         :root {
-            --gold: #FBBF24;
-            --black: #000000;
-            --dark-zinc: #09090b;
+            --brand-yellow: #FBBF24;
+            --brand-black: #000000;
+            --brand-dark: #1a1a1a;
+            --module-width: 44px;
         }
 
         body {
-            background-color: var(--black);
-            color: white;
             font-family: 'Inter', sans-serif;
+            background-color: var(--brand-dark);
+            color: white;
             overflow-x: hidden;
         }
 
-        .industrial-card {
-            background: var(--dark-zinc);
-            border: 1px solid #27272a;
+        .din-rail-wrapper {
+            width: calc(var(--module-width) * 12 + 20px);
+            margin: 0 auto 50px auto;
         }
 
-        .btn-gold {
-            background: var(--gold);
+        .din-rail {
+            background: linear-gradient(to bottom, #d1d5db, #9ca3af, #d1d5db);
+            height: 35px;
+            width: 100%;
+            position: relative;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            border-radius: 2px;
+            background-image: linear-gradient(to right, rgba(0,0,0,0.1) 1px, transparent 1px);
+            background-size: var(--module-width) 100%;
+        }
+
+        .device {
+            height: 115px;
+            background: white;
+            border: 1px solid #999;
+            border-radius: 4px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 5px 2px;
+            transition: all 0.2s;
+            cursor: pointer;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+            user-select: none;
             color: black;
-            font-weight: 900;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            text-transform: uppercase;
-            clip-path: polygon(0 0, 100% 0, 95% 100%, 5% 100%);
+            flex-shrink: 0;
+            margin-top: -40px;
         }
 
-        .btn-gold:hover:not(:disabled) {
-            transform: scale(1.02);
-            box-shadow: 0 0 25px rgba(251, 191, 36, 0.5);
+        .device:hover {
+            transform: translateY(-2px);
+            border-color: var(--brand-yellow);
+            z-index: 10;
         }
 
-        .ai-terminal {
-            background: rgba(0, 0, 0, 0.8);
-            border-left: 2px solid var(--gold);
-            font-family: 'Courier New', Courier, monospace;
+        .mod-1 { width: var(--module-width); }
+        .mod-2 { width: calc(var(--module-width) * 2); }
+        .mod-3 { width: calc(var(--module-width) * 3); }
+
+        .device-label { font-size: 8px; font-weight: bold; text-align: center; text-transform: uppercase; width: 100%; height: 24px; overflow: hidden; line-height: 1.1; }
+        .device-toggle { width: 14px; height: 28px; background: #333; border-radius: 2px; margin: 4px 0; }
+        .device-spec { font-size: 7px; background: #f0f0f0; width: 90%; text-align: center; border-radius: 2px; font-weight: bold; }
+
+        .rele-v { border-top: 6px solid #ef4444; }
+        .uzo { border-top: 6px solid #3b82f6; }
+        .avtomat { border-top: 6px solid #10b981; }
+
+        #capture-area {
+            background-color: #f3f4f6;
+            padding: 50px;
+            min-height: 900px;
+            width: 780px;
+            margin: 0 auto;
         }
 
-        .status-pulse {
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.4; }
-            100% { opacity: 1; }
-        }
-
-        #image-canvas {
-            background-image: radial-gradient(#1a1a1a 1px, transparent 1px);
-            background-size: 20px 20px;
-        }
-
-        .loading-ring {
-            width: 80px;
-            height: 80px;
-            border: 4px solid #1a1a1a;
-            border-top: 4px solid var(--gold);
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.3);
             border-radius: 50%;
+            border-top: 3px solid var(--brand-yellow);
+            width: 18px;
+            height: 18px;
             animation: spin 1s linear infinite;
         }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .ai-badge {
-            background: linear-gradient(45deg, #FBBF24, #B45309);
-            color: black;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 8px;
-            font-weight: bold;
-            text-transform: uppercase;
+        select option {
+            background: #1a1a1a;
+            color: white;
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="flex flex-col md:flex-row h-screen">
 
-    <!-- Header -->
-    <header class="p-6 border-b border-zinc-800 flex justify-between items-center sticky top-0 bg-black/90 backdrop-blur z-50">
-        <div>
-            <h1 class="text-3xl font-black italic tracking-tighter">TALAS_MASTER <span class="text-[var(--gold)]">AI CORE v4.5</span></h1>
-            <div class="flex items-center gap-2 mt-1">
-                <span class="w-2 h-2 bg-green-500 rounded-full status-pulse"></span>
-                <span class="text-[9px] tracking-[0.3em] text-zinc-500 uppercase">Neural Intelligence Integrated</span>
-            </div>
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-full md:w-80 bg-black p-6 flex flex-col border-r-4 border-yellow-500 overflow-y-auto">
+        <div class="mb-6">
+            <h1 class="text-3xl font-black text-yellow-500 italic tracking-tighter">TALAS_PROFI</h1>
+            <p class="text-[9px] text-gray-400 uppercase tracking-widest mt-1">Shield Configurator | 12 Modules</p>
         </div>
-        <div class="hidden md:block text-right">
-            <p class="text-[var(--gold)] font-bold text-sm">+996 755 000 228</p>
-            <p class="text-zinc-600 text-[10px] uppercase">Smart Industrial AI</p>
-        </div>
-    </header>
 
-    <main class="flex-grow grid grid-cols-1 lg:grid-cols-12 gap-0">
-        
-        <!-- Left: Controls (4 cols) -->
-        <div class="lg:col-span-4 p-6 border-r border-zinc-800 space-y-6 overflow-y-auto max-h-[calc(100vh-100px)]">
-            
-            <div class="space-y-2">
-                <div class="flex justify-between items-end">
-                    <label class="text-[10px] font-black text-zinc-500 uppercase tracking-widest flex items-center gap-2">
-                        01. Интеллектуальный ввод <span class="ai-badge">Gemini Flash</span>
-                    </label>
-                    <button onclick="improvePrompt()" class="text-[9px] text-[var(--gold)] hover:underline flex items-center gap-1">✨ Оптимизировать</button>
-                </div>
-                <textarea id="ai-prompt" rows="5" class="w-full bg-zinc-900 border border-zinc-800 rounded p-4 text-sm focus:border-[var(--gold)] outline-none transition-all" placeholder="Опишите, что вы хотите создать или изменить..."></textarea>
-            </div>
-
-            <div class="grid grid-cols-2 gap-4">
-                <div class="space-y-2">
-                    <label class="text-[10px] font-black text-zinc-500 uppercase">Категория объекта</label>
-                    <select id="ai-category" class="w-full bg-zinc-900 border border-zinc-800 p-3 text-xs rounded outline-none focus:border-[var(--gold)]">
-                        <option value="электрика">Электрика</option>
-                        <option value="сантехника">Сантехника</option>
-                        <option value="сварка">Сварка</option>
-                        <option value="дизайн интерьера">Дизайн интерьера</option>
-                        <option value="инструменты">Инструменты</option>
-                    </select>
-                </div>
-                <div class="space-y-2">
-                    <label class="text-[10px] font-black text-zinc-500 uppercase">Стиль ИИ</label>
-                    <select id="ai-style" class="w-full bg-zinc-900 border border-zinc-800 p-3 text-xs rounded outline-none focus:border-[var(--gold)]">
-                        <option value="гиперреалистичное фото">Фотореализм</option>
-                        <option value="индустриальный рендер">Индустриальный</option>
-                        <option value="кинокадр 8k">Кинокадр</option>
-                        <option value="техническая иллюстрация">Тех. Иллюстрация</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- AI Vision Zone -->
-            <div class="industrial-card p-4 rounded border-dashed border-2 border-zinc-800 hover:border-[var(--gold)] transition-colors cursor-pointer group relative" id="upload-zone" onclick="document.getElementById('img-upload').click()">
-                <input type="file" id="img-upload" class="hidden" accept="image/*" onchange="handleUpload(event)">
-                <div id="upload-content" class="text-center py-4">
-                    <div id="upload-icon">
-                        <svg class="w-8 h-8 mx-auto mb-2 text-zinc-700 group-hover:text-[var(--gold)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                        <p class="text-[10px] text-zinc-500 uppercase font-bold">Анализировать фото ✨</p>
-                    </div>
-                </div>
-            </div>
-
-            <button id="gen-btn" onclick="runAiProcess()" class="w-full py-5 btn-gold text-xl shadow-lg border-t border-white/10 active:scale-95 flex items-center justify-center gap-3">
-                Создать шедевр <span class="text-lg">⚡</span>
+        <!-- AI Assistant -->
+        <section class="mb-6 p-4 bg-zinc-900 rounded-lg border border-yellow-500/20">
+            <h3 class="text-[10px] font-bold text-yellow-500 mb-2 uppercase flex items-center gap-2">✨ AI Проектировщик</h3>
+            <textarea id="ai-prompt" placeholder="Опишите объект..." 
+                      class="w-full bg-black border border-gray-700 rounded p-2 text-xs text-white outline-none focus:border-yellow-500 h-16 mb-2"></textarea>
+            <button id="ai-generate-btn" onclick="askGeminiToDesign()" class="w-full bg-yellow-600 hover:bg-yellow-500 text-black font-bold py-2 rounded text-[10px] uppercase flex items-center justify-center gap-2 transition">
+                <span>Сгенерировать щит</span>
+                <div id="ai-spinner" class="spinner hidden"></div>
             </button>
+        </section>
 
-            <!-- AI Terminal -->
-            <div class="ai-terminal p-4 h-48 overflow-y-auto text-[10px] space-y-2 text-zinc-400" id="terminal">
-                <div class="text-[var(--gold)] font-bold">[ENGINE_STATUS::OK]</div>
-                <div>> Подключение к Gemini Multimodal...</div>
-                <div>> Готов к анализу объектов и генерации.</div>
+        <div class="space-y-6 flex-grow">
+            <!-- Dropdown for adding devices -->
+            <div>
+                <h3 class="text-[10px] font-bold text-gray-500 mb-2 uppercase tracking-widest">Добавить устройство</h3>
+                <select id="device-selector" onchange="handleDeviceSelection(this)" class="w-full bg-zinc-900 border-2 border-yellow-500 text-white p-3 rounded text-[11px] font-bold uppercase outline-none cursor-pointer focus:ring-2 focus:ring-yellow-500 transition">
+                    <option value="" disabled selected>Выберите из списка...</option>
+                    <optgroup label="Автоматические выключатели">
+                        <option value="avtomat|Группа|C16|1">Автомат 1P (1 модуль)</option>
+                        <option value="avtomat|Ввод|C40|2">Автомат 2P (2 модуля)</option>
+                        <option value="avtomat|Группа|C32|3">Автомат 3P (3 модуля)</option>
+                    </optgroup>
+                    <optgroup label="Защита (УЗО/АВДТ)">
+                        <option value="uzo|УЗО|30mA|2">УЗО 2P (2 модуля)</option>
+                        <option value="uzo|УЗО|30mA|4">УЗО 4P (4 модуля)</option>
+                    </optgroup>
+                    <optgroup label="Устройства контроля">
+                        <option value="rele-v|РКН|230V|3">Реле напряжения (3 модуля)</option>
+                        <option value="rele-v|Вольтметр|230V|1">Вольтметр (1 модуль)</option>
+                    </optgroup>
+                </select>
+            </div>
+
+            <button onclick="addRail()" class="w-full border border-yellow-500/30 text-yellow-500 p-2 rounded hover:bg-yellow-500 hover:text-black transition text-[10px] font-bold uppercase tracking-widest">+ Добавить рейку</button>
+
+            <div class="pt-4 border-t border-zinc-800 space-y-2">
+                <button onclick="askGeminiToAudit()" class="w-full bg-blue-900/20 text-blue-400 border border-blue-500/30 p-2 rounded text-[10px] font-bold uppercase hover:bg-blue-500 hover:text-white transition">Проверить безопасность</button>
+                <button onclick="downloadImage()" class="w-full bg-yellow-500 text-black p-3 rounded font-black uppercase text-xs hover:bg-white transition flex items-center justify-center gap-2">
+                    <span>Скачать схему</span>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Canvas -->
+    <main class="flex-grow bg-zinc-950 overflow-auto p-8">
+        <div id="capture-area" class="shadow-2xl">
+            <div class="flex justify-between items-end mb-16 border-b-4 border-black pb-4">
+                <div>
+                    <h2 class="text-4xl font-black text-black italic leading-none">TALAS_PROFI</h2>
+                    <p class="text-black font-bold uppercase text-[10px] mt-2 tracking-widest">Электромонтаж в Таласе</p>
+                </div>
+                <div class="text-right text-black font-bold text-[10px] uppercase">
+                    <p>Объект: <span contenteditable="true" class="border-b border-black/30 px-2">г. Талас</span></p>
+                    <p class="mt-1">Дата: <span id="current-date">--.--.----</span></p>
+                </div>
+            </div>
+
+            <div id="rails-container" class="space-y-2">
+                <!-- Rails injected here -->
+            </div>
+
+            <div class="mt-20 border-t-2 border-black pt-4 flex justify-between items-center opacity-70">
+                <div class="text-[10px] text-black font-bold uppercase italic">WhatsApp: +996 755 000 228</div>
+                <div class="text-[10px] text-black font-bold uppercase tracking-widest">12 Модулей на рейку</div>
             </div>
         </div>
 
-        <!-- Right: Preview (8 cols) -->
-        <div class="lg:col-span-8 bg-[#030303] relative flex flex-col">
-            
-            <div id="image-canvas" class="flex-grow flex items-center justify-center p-8 relative">
-                
-                <!-- Loading Overlay -->
-                <div id="loading-overlay" class="hidden absolute inset-0 z-40 bg-black/95 flex flex-col items-center justify-center">
-                    <div class="loading-ring mb-6"></div>
-                    <div class="text-[var(--gold)] font-black text-xl italic tracking-widest animate-pulse" id="loading-msg">AI IS THINKING...</div>
-                    <div class="mt-4 text-zinc-600 text-[10px] font-mono max-w-md text-center" id="ai-thought-stream">
-                        > Вычисление освещения... <br>
-                        > Настройка текстур металла...
-                    </div>
-                </div>
-
-                <!-- Main Display Area -->
-                <div id="canvas-placeholder" class="text-center opacity-10 select-none">
-                    <h2 class="text-9xl font-black italic tracking-tighter">TALAS</h2>
-                    <p class="text-xl tracking-[1.5em] uppercase">Visual Intel</p>
-                </div>
-
-                <img id="main-result" class="hidden max-w-full max-h-full shadow-[0_0_100px_rgba(251,191,36,0.1)] border border-zinc-800" src="" alt="AI Generated content">
-            </div>
-
-            <!-- Advanced Result Actions -->
-            <div id="result-actions" class="hidden border-t border-zinc-800 bg-zinc-950 p-4 md:p-6 flex flex-col md:flex-row justify-between items-center gap-4">
-                <div class="flex gap-3">
-                    <button onclick="downloadImage()" class="px-5 py-2.5 bg-zinc-800 hover:bg-zinc-700 text-[10px] font-bold uppercase tracking-widest rounded transition-all">Скачать</button>
-                    <button onclick="generateCaption()" class="px-5 py-2.5 bg-amber-900/20 text-amber-400 border border-amber-900/50 hover:bg-amber-900/40 text-[10px] font-bold uppercase tracking-widest rounded transition-all flex items-center gap-2">
-                        ✨ Описание
-                    </button>
-                    <button onclick="sendToEdit()" class="px-5 py-2.5 border border-blue-900 text-blue-400 hover:bg-blue-900/20 text-[10px] font-bold uppercase tracking-widest rounded transition-all">Редактировать</button>
-                </div>
-                <div class="text-right">
-                    <div class="text-[9px] font-mono text-zinc-600 uppercase">Process ID: <span id="process-id" class="text-zinc-400">#---</span></div>
-                    <div class="text-[9px] font-mono text-zinc-600 uppercase">Model: <span class="text-[var(--gold)]">Imagen-4.0 + Gemini-2.5</span></div>
-                </div>
-            </div>
+        <!-- AI Output -->
+        <div id="ai-box" class="hidden mt-6 w-full max-w-[780px] mx-auto bg-black/80 border border-yellow-500 p-4 rounded shadow-xl">
+            <h4 id="ai-title" class="text-yellow-500 font-black uppercase text-xs mb-2 italic">✨ Сообщение от ИИ</h4>
+            <p id="ai-content" class="text-xs text-gray-200 leading-relaxed"></p>
         </div>
     </main>
 
-    <!-- Caption Modal -->
-    <div id="caption-modal" class="hidden fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="industrial-card max-w-lg w-full p-6 rounded shadow-2xl">
-            <h3 class="text-[var(--gold)] font-black uppercase text-xs mb-4 flex justify-between items-center">
-                AI Описание для работы
-                <button onclick="toggleModal('caption-modal')" class="text-zinc-500 hover:text-white">✕</button>
-            </h3>
-            <div id="caption-text" class="text-sm text-zinc-300 leading-relaxed font-light mb-6 min-h-[100px] italic">
-                Генерация текста...
+    <!-- Edit Modal -->
+    <div id="edit-modal" class="fixed inset-0 bg-black/90 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white p-6 rounded-lg w-full max-w-xs shadow-2xl">
+            <h4 class="font-black uppercase text-sm mb-4 border-b-2 border-black pb-1">Настройка модуля</h4>
+            <div class="space-y-4">
+                <input type="text" id="edit-label" class="w-full border-2 border-black p-2 text-sm font-bold uppercase" placeholder="Группа">
+                <input type="text" id="edit-spec" class="w-full border-2 border-black p-2 text-sm font-bold" placeholder="Номинал">
+                <div class="flex gap-2 pt-2">
+                    <button onclick="saveEdit()" class="flex-grow bg-black text-white p-2 font-black uppercase text-[10px]">Сохранить</button>
+                    <button onclick="deleteElement()" class="bg-red-600 text-white p-2 font-black uppercase text-[10px]">Удалить</button>
+                </div>
+                <button onclick="closeModal()" class="w-full text-gray-400 font-bold uppercase text-[10px]">Отмена</button>
             </div>
-            <button onclick="copyToClipboard('caption-text')" class="w-full py-3 bg-zinc-800 text-[10px] font-bold uppercase tracking-widest rounded hover:bg-zinc-700">Копировать в буфер</button>
         </div>
     </div>
 
     <script>
-        const apiKey = ""; // Managed by environment
-        let isEditing = false;
-        let uploadedImg = null;
+        const apiKey = "";
+        let currentEditingElement = null;
+        const MAX_MODULES = 12;
 
-        const ui = {
-            terminal: document.getElementById('terminal'),
-            prompt: document.getElementById('ai-prompt'),
-            loadingMsg: document.getElementById('loading-msg'),
-            overlay: document.getElementById('loading-overlay'),
-            result: document.getElementById('main-result'),
-            placeholder: document.getElementById('canvas-placeholder'),
-            actions: document.getElementById('result-actions'),
-            genBtn: document.getElementById('gen-btn'),
-            thoughtStream: document.getElementById('ai-thought-stream')
-        };
+        document.getElementById('current-date').innerText = new Date().toLocaleDateString();
 
-        const log = (msg, color = 'zinc-400') => {
-            const entry = document.createElement('div');
-            entry.className = `text-${color}`;
-            entry.innerHTML = `> [${new Date().toLocaleTimeString()}] ${msg}`;
-            ui.terminal.appendChild(entry);
-            ui.terminal.scrollTop = ui.terminal.scrollHeight;
-        };
-
-        const speak = async (text) => {
-            try {
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`, {
-                    method: "POST",
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: `Say with industrial authority: ${text}` }] }],
-                        generationConfig: {
-                            responseModalities: ["AUDIO"],
-                            speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: "Fenrir" } } }
-                        }
-                    })
-                });
-                const data = await response.json();
-                const audioBase64 = data.candidates[0].content.parts[0].inlineData.data;
-                const audio = new Audio("data:audio/wav;base64," + audioBase64); // Logic simplified for brevity
-                audio.play();
-            } catch (e) { console.warn("TTS fail"); }
-        };
-
-        async function improvePrompt() {
-            if(!ui.prompt.value) return;
-            log("GEMINI: Оптимизация промпта...", "gold");
-            try {
-                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
-                    method: "POST",
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: `Act as a professional photography director. Expand this industrial image prompt for better results: "${ui.prompt.value}". Keep it in English, focus on lighting, materials, and 8k detail. Response should be only the improved text.` }] }]
-                    })
-                });
-                const data = await res.json();
-                ui.prompt.value = data.candidates[0].content.parts[0].text.trim();
-                log("ПРОМПТ УЛУЧШЕН ✨", "green-500");
-            } catch(e) { log("Ошибка оптимизации", "red-500"); }
+        function addRail() {
+            const container = document.getElementById('rails-container');
+            const railCount = container.querySelectorAll('.din-rail').length + 1;
+            const railWrapper = document.createElement('div');
+            railWrapper.className = 'din-rail-wrapper';
+            railWrapper.innerHTML = `
+                <div class="flex justify-between items-center mb-2 px-1">
+                    <span class="text-[9px] font-black text-gray-400 uppercase tracking-widest">DIN Rail ${railCount} (12 Mod)</span>
+                    <button onclick="this.closest('.din-rail-wrapper').remove()" class="text-red-500 text-[8px] uppercase font-black hover:underline export-hide">Удалить</button>
+                </div>
+                <div class="din-rail" data-used="0"></div>
+            `;
+            container.appendChild(railWrapper);
+            return railWrapper.querySelector('.din-rail');
         }
 
-        async function handleUpload(event) {
-            const file = event.target.files[0];
-            if(!file) return;
-            const reader = new FileReader();
-            reader.onload = async (e) => {
-                uploadedImg = e.target.result;
-                isEditing = true;
-                document.getElementById('upload-content').innerHTML = `<img src="${uploadedImg}" class="h-16 mx-auto rounded border border-zinc-700 shadow-lg">`;
-                
-                log("GEMINI VISION: Анализ изображения...", "gold");
-                try {
-                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
-                        method: "POST",
-                        body: JSON.stringify({
-                            contents: [{
-                                parts: [
-                                    { text: "Describe what is in this industrial photo and suggest 3 ways to fix or improve it as an expert technician." },
-                                    { inlineData: { mimeType: "image/png", data: uploadedImg.split(',')[1] } }
-                                ]
-                            }]
-                        })
-                    });
-                    const data = await res.json();
-                    const analysis = data.candidates[0].content.parts[0].text;
-                    log("АНАЛИЗ ЗАВЕРШЕН: " + analysis.substring(0, 100) + "...", "blue-400");
-                    speak("Image analyzed. I found several points for improvement.");
-                } catch(e) { log("Ошибка анализа Vision", "red-500"); }
-            };
-            reader.readAsDataURL(file);
-        }
+        addRail();
 
-        async function runAiProcess() {
-            if(!ui.prompt.value) return;
+        function handleDeviceSelection(selectElement) {
+            const val = selectElement.value;
+            if (!val) return;
+
+            const [type, name, spec, modules] = val.split('|');
+            checkAndAdd(type, name, spec, parseInt(modules));
             
-            ui.overlay.classList.remove('hidden');
-            ui.placeholder.classList.add('hidden');
-            ui.result.classList.add('hidden');
-            ui.actions.classList.add('hidden');
-            ui.genBtn.disabled = true;
+            // Reset selection
+            selectElement.selectedIndex = 0;
+        }
 
-            const category = document.getElementById('ai-category').value;
-            log(`ИНИЦИАЦИЯ: Категория [${category}]`, "gold");
-            speak(`Processing ${category} visual data.`);
+        function checkAndAdd(type, name, spec, modules) {
+            const rails = document.querySelectorAll('.din-rail');
+            let placed = false;
 
-            try {
-                let finalImage;
-                if(isEditing && uploadedImg) {
-                    ui.loadingMsg.textContent = "GEMINI IMAGE EDITING...";
-                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent?key=${apiKey}`, {
-                        method: "POST",
-                        body: JSON.stringify({
-                            contents: [{
-                                parts: [
-                                    { text: `Modify this industrial photo: ${ui.prompt.value}. Maintain extreme realism.` },
-                                    { inlineData: { mimeType: "image/png", data: uploadedImg.split(',')[1] } }
-                                ]
-                            }],
-                            generationConfig: { responseModalities: ['TEXT', 'IMAGE'] }
-                        })
-                    });
-                    const data = await res.json();
-                    const base64 = data.candidates[0].content.parts.find(p => p.inlineData).inlineData.data;
-                    finalImage = `data:image/png;base64,${base64}`;
-                } else {
-                    ui.loadingMsg.textContent = "IMAGEN 4.0 RENDERING...";
-                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict?key=${apiKey}`, {
-                        method: "POST",
-                        body: JSON.stringify({
-                            instances: [{ prompt: `${ui.prompt.value}. Industrial masterwork, ${document.getElementById('ai-style').value}, precise details.` }],
-                            parameters: { sampleCount: 1 }
-                        })
-                    });
-                    const data = await res.json();
-                    finalImage = `data:image/png;base64,${data.predictions[0].bytesBase64Encoded}`;
+            for (let rail of rails) {
+                let used = parseInt(rail.getAttribute('data-used'));
+                if (used + modules <= MAX_MODULES) {
+                    addDeviceToRail(rail, type, name, spec, modules);
+                    rail.setAttribute('data-used', used + modules);
+                    placed = true;
+                    break;
                 }
+            }
 
-                ui.result.src = finalImage;
-                ui.result.classList.remove('hidden');
-                ui.overlay.classList.add('hidden');
-                ui.actions.classList.remove('hidden');
-                document.getElementById('process-id').textContent = '#' + Math.random().toString(16).slice(2, 8).toUpperCase();
-                log("ГОТОВО. ВИЗУАЛИЗАЦИЯ ЗАВЕРШЕНА.", "green-400");
-                speak("Output rendered successfully.");
-            } catch(e) {
-                log("ОШИБКА ГЕНЕРАЦИИ", "red-500");
-                ui.overlay.classList.add('hidden');
-            } finally {
-                ui.genBtn.disabled = false;
+            if (!placed) {
+                const newRail = addRail();
+                addDeviceToRail(newRail, type, name, spec, modules);
+                newRail.setAttribute('data-used', modules);
             }
         }
 
-        async function generateCaption() {
-            toggleModal('caption-modal');
-            const target = document.getElementById('caption-text');
-            target.textContent = "ИИ составляет описание...";
-            
+        function addDeviceToRail(rail, type, name, spec, modules) {
+            const device = document.createElement('div');
+            // Support widths up to 4 modules
+            const widthClass = `mod-${modules}`;
+            device.className = `device ${widthClass} ${type}`;
+            device.setAttribute('data-mod', modules);
+            device.innerHTML = `
+                <div class="device-label">${name}</div>
+                <div class="device-toggle"></div>
+                <div class="device-spec">${spec}</div>
+            `;
+            device.onclick = (e) => { e.stopPropagation(); openModal(device); };
+            rail.appendChild(device);
+        }
+
+        function openModal(el) {
+            currentEditingElement = el;
+            document.getElementById('edit-label').value = el.querySelector('.device-label').innerText;
+            document.getElementById('edit-spec').value = el.querySelector('.device-spec').innerText;
+            document.getElementById('edit-modal').style.display = 'flex';
+        }
+
+        function closeModal() { document.getElementById('edit-modal').style.display = 'none'; }
+
+        function saveEdit() {
+            if (currentEditingElement) {
+                currentEditingElement.querySelector('.device-label').innerText = document.getElementById('edit-label').value;
+                currentEditingElement.querySelector('.device-spec').innerText = document.getElementById('edit-spec').value;
+            }
+            closeModal();
+        }
+
+        function deleteElement() {
+            if (currentEditingElement) {
+                const rail = currentEditingElement.parentElement;
+                const mod = parseInt(currentEditingElement.getAttribute('data-mod'));
+                const used = parseInt(rail.getAttribute('data-used'));
+                rail.setAttribute('data-used', used - mod);
+                currentEditingElement.remove();
+            }
+            closeModal();
+        }
+
+        // AI Logic
+        async function fetchGemini(prompt, sys) {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    contents: [{parts: [{text: prompt}]}],
+                    systemInstruction: {parts: [{text: sys}]}
+                })
+            });
+            const data = await res.json();
+            return data.candidates[0].content.parts[0].text;
+        }
+
+        async function askGeminiToDesign() {
+            const prompt = document.getElementById('ai-prompt').value;
+            if (!prompt) return;
+            const btn = document.getElementById('ai-generate-btn');
+            const spinner = document.getElementById('ai-spinner');
+            btn.disabled = true; spinner.classList.remove('hidden');
+
+            const sys = `Ты электрик Talas_profi. Спроектируй щит. Учти: 12 модулей в рейке. 
+            Верни JSON: {"rails": [{"devices": [{"type": "avtomat|uzo|rele-v", "name": "...", "spec": "...", "modules": 1|2|3|4}]}]}.`;
+
             try {
-                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
-                    method: "POST",
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: `Create a professional Instagram/Portfolio caption in Russian for this image of ${document.getElementById('ai-category').value} based on prompt: ${ui.prompt.value}. Make it sound like an expert craftsman. Use emojis.` }] }]
-                    })
+                const text = await fetchGemini(`Объект: ${prompt}`, sys);
+                const config = JSON.parse(text.replace(/```json|```/g, '').trim());
+                document.getElementById('rails-container').innerHTML = '';
+                config.rails.forEach(rData => {
+                    const rail = addRail();
+                    let used = 0;
+                    rData.devices.forEach(d => {
+                        if (used + d.modules <= 12) {
+                            addDeviceToRail(rail, d.type, d.name, d.spec, d.modules);
+                            used += d.modules;
+                        }
+                    });
+                    rail.setAttribute('data-used', used);
                 });
-                const data = await res.json();
-                target.textContent = data.candidates[0].content.parts[0].text;
-            } catch(e) { target.textContent = "Ошибка генерации текста."; }
+            } catch (e) {
+                console.error(e);
+                alert("Ошибка ИИ. Попробуйте проще.");
+            } finally {
+                btn.disabled = false; spinner.classList.add('hidden');
+            }
         }
 
-        function toggleModal(id) {
-            document.getElementById(id).classList.toggle('hidden');
+        async function askGeminiToAudit() {
+            const devices = Array.from(document.querySelectorAll('.device')).map(d => d.querySelector('.device-label').innerText);
+            if (!devices.length) return;
+            const res = await fetchGemini(`Проверь щит: ${devices.join(', ')}`, "Найди ошибки безопасности (нет УЗО, нет РКН). Кратко.");
+            showAIBox("Аудит безопасности", res);
         }
 
-        function copyToClipboard(id) {
-            const text = document.getElementById(id).innerText;
-            const el = document.createElement('textarea');
-            el.value = text;
-            document.body.appendChild(el);
-            el.select();
-            document.execCommand('copy');
-            document.body.removeChild(el);
-            log("Текст скопирован в буфер.");
+        function showAIBox(title, text) {
+            const box = document.getElementById('ai-box');
+            document.getElementById('ai-title').innerText = title;
+            document.getElementById('ai-content').innerText = text;
+            box.classList.remove('hidden');
+            box.scrollIntoView({behavior: 'smooth'});
         }
 
         function downloadImage() {
-            const a = document.createElement('a');
-            a.href = ui.result.src;
-            a.download = `talas_master_ai.png`;
-            a.click();
-        }
-
-        function sendToEdit() {
-            uploadedImg = ui.result.src;
-            isEditing = true;
-            document.getElementById('upload-content').innerHTML = `<img src="${uploadedImg}" class="h-16 mx-auto rounded">`;
-            log("Изображение перенесено в блок редактирования.");
+            const toHide = document.querySelectorAll('.export-hide');
+            toHide.forEach(el => el.style.opacity = '0');
+            html2canvas(document.getElementById('capture-area'), { scale: 2 }).then(canvas => {
+                const a = document.createElement('a');
+                a.download = `TalasProfi_12mod_${Date.now()}.png`;
+                a.href = canvas.toDataURL();
+                a.click();
+                toHide.forEach(el => el.style.opacity = '1');
+            });
         }
     </script>
 </body>
