@@ -3,381 +3,577 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Talas_profi | Shield AI 12-Modules</title>
+    <title>Talas_profi | Профессиональная база мастеров</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
-
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
+        
         :root {
-            --brand-yellow: #FBBF24;
-            --brand-black: #000000;
-            --brand-dark: #1a1a1a;
-            --module-width: 44px;
+            --gold: #FBBF24;
+            --gold-dark: #D97706;
+            --black: #000000;
+            --card-bg: #0A0A0A;
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--brand-dark);
-            color: white;
-            overflow-x: hidden;
+            background-color: var(--black);
+            color: #FFFFFF;
+            scroll-behavior: smooth;
         }
 
-        .din-rail-wrapper {
-            width: calc(var(--module-width) * 12 + 20px);
-            margin: 0 auto 50px auto;
+        .gold-gradient {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
         }
 
-        .din-rail {
-            background: linear-gradient(to bottom, #d1d5db, #9ca3af, #d1d5db);
-            height: 35px;
-            width: 100%;
+        .gold-text {
+            color: var(--gold);
+        }
+
+        .border-gold-faint {
+            border-color: rgba(251, 191, 36, 0.1);
+        }
+
+        .btn-gold {
+            background-color: var(--gold);
+            color: var(--black);
+            font-weight: 800;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .btn-gold:hover {
+            background-color: var(--gold-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px -5px rgba(251, 191, 36, 0.4);
+        }
+
+        .input-dark {
+            background-color: #111111 !important;
+            border: 1px solid #222 !important;
+            color: white !important;
+            transition: all 0.3s ease;
+        }
+
+        .input-dark:focus {
+            border-color: var(--gold) !important;
+            background-color: #151515 !important;
+            box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.2);
+        }
+
+        .tab-btn {
             position: relative;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
-            display: flex;
-            align-items: center;
-            padding: 0 10px;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            color: var(--gold);
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 3px;
+            background: var(--gold);
             border-radius: 2px;
-            background-image: linear-gradient(to right, rgba(0,0,0,0.1) 1px, transparent 1px);
-            background-size: var(--module-width) 100%;
         }
 
-        .device {
-            height: 115px;
-            background: white;
-            border: 1px solid #999;
-            border-radius: 4px;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-            padding: 5px 2px;
-            transition: all 0.2s;
-            cursor: pointer;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
-            user-select: none;
-            color: black;
-            flex-shrink: 0;
-            margin-top: -40px;
+        .master-card {
+            transition: all 0.4s ease;
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
-        .device:hover {
-            transform: translateY(-2px);
-            border-color: var(--brand-yellow);
-            z-index: 10;
+        .master-card:hover {
+            border-color: rgba(251, 191, 36, 0.3);
+            background-color: #0F0F0F;
+            transform: translateY(-5px);
         }
 
-        .mod-1 { width: var(--module-width); }
-        .mod-2 { width: calc(var(--module-width) * 2); }
-        .mod-3 { width: calc(var(--module-width) * 3); }
-
-        .device-label { font-size: 8px; font-weight: bold; text-align: center; text-transform: uppercase; width: 100%; height: 24px; overflow: hidden; line-height: 1.1; }
-        .device-toggle { width: 14px; height: 28px; background: #333; border-radius: 2px; margin: 4px 0; }
-        .device-spec { font-size: 7px; background: #f0f0f0; width: 90%; text-align: center; border-radius: 2px; font-weight: bold; }
-
-        .rele-v { border-top: 6px solid #ef4444; }
-        .uzo { border-top: 6px solid #3b82f6; }
-        .avtomat { border-top: 6px solid #10b981; }
-
-        #capture-area {
-            background-color: #f3f4f6;
-            padding: 50px;
-            min-height: 900px;
-            width: 780px;
-            margin: 0 auto;
+        .modal-blur {
+            backdrop-filter: blur(12px);
+            background: rgba(0,0,0,0.85);
         }
 
-        .spinner {
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top: 3px solid var(--brand-yellow);
-            width: 18px;
-            height: 18px;
-            animation: spin 1s linear infinite;
+        @keyframes pulse-gold {
+            0% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(251, 191, 36, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); }
         }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        select option {
-            background: #1a1a1a;
-            color: white;
+        .admin-badge {
+            animation: pulse-gold 2s infinite;
         }
     </style>
 </head>
-<body class="flex flex-col md:flex-row h-screen">
+<body class="min-h-screen flex flex-col no-scrollbar">
 
-    <!-- Sidebar -->
-    <aside id="sidebar" class="w-full md:w-80 bg-black p-6 flex flex-col border-r-4 border-yellow-500 overflow-y-auto">
-        <div class="mb-6">
-            <h1 class="text-3xl font-black text-yellow-500 italic tracking-tighter">TALAS_PROFI</h1>
-            <p class="text-[9px] text-gray-400 uppercase tracking-widest mt-1">Shield Configurator | 12 Modules</p>
+    <!-- Header -->
+    <header class="py-6 px-6 border-b border-white/5 sticky top-0 bg-black/90 backdrop-blur-md z-50">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <div id="admin-trigger" onclick="handleLogoClick()" class="w-12 h-12 gold-gradient rounded-lg flex items-center justify-center font-black text-black text-2xl cursor-pointer select-none shadow-lg">T</div>
+                <div>
+                    <h1 class="text-2xl font-black tracking-tighter uppercase leading-none">TALAS<span class="gold-text">_PROFI</span></h1>
+                    <p class="text-[10px] text-gray-500 font-bold tracking-[0.3em] uppercase mt-1">Industrial Standard</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-6">
+                <div id="admin-status-indicator" class="hidden admin-badge bg-red-600 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest">Админ-доступ</div>
+                <div class="hidden lg:flex flex-col items-end">
+                    <span class="text-xs text-gray-500 font-bold uppercase tracking-wider">Поддержка</span>
+                    <a href="tel:+996755000228" class="text-sm font-black hover:text-gold transition">+996 755 000 228</a>
+                </div>
+            </div>
         </div>
+    </header>
 
-        <!-- AI Assistant -->
-        <section class="mb-6 p-4 bg-zinc-900 rounded-lg border border-yellow-500/20">
-            <h3 class="text-[10px] font-bold text-yellow-500 mb-2 uppercase flex items-center gap-2">✨ AI Проектировщик</h3>
-            <textarea id="ai-prompt" placeholder="Опишите объект..." 
-                      class="w-full bg-black border border-gray-700 rounded p-2 text-xs text-white outline-none focus:border-yellow-500 h-16 mb-2"></textarea>
-            <button id="ai-generate-btn" onclick="askGeminiToDesign()" class="w-full bg-yellow-600 hover:bg-yellow-500 text-black font-bold py-2 rounded text-[10px] uppercase flex items-center justify-center gap-2 transition">
-                <span>Сгенерировать щит</span>
-                <div id="ai-spinner" class="spinner hidden"></div>
-            </button>
+    <main class="flex-grow max-w-7xl mx-auto px-6 py-10 w-full">
+        
+        <!-- Navigation -->
+        <nav class="flex gap-2 border-b border-white/5 mb-12 overflow-x-auto no-scrollbar">
+            <button onclick="switchTab('register')" id="tab-register" class="tab-btn active px-8 py-5 font-black uppercase text-xs tracking-[0.2em]">Регистрация</button>
+            <button onclick="switchTab('list')" id="tab-list" class="tab-btn px-8 py-5 font-black text-gray-500 uppercase text-xs tracking-[0.2em]">База мастеров</button>
+            <button onclick="switchTab('admin')" id="tab-admin" class="hidden tab-btn px-8 py-5 font-black text-red-600 uppercase text-xs tracking-[0.2em] border-l border-white/5">Управление</button>
+        </nav>
+
+        <!-- Section: Registration -->
+        <section id="section-register" class="animate-in fade-in duration-500">
+            <div class="grid lg:grid-cols-2 gap-20 items-start">
+                <div class="lg:sticky lg:top-32">
+                    <span class="gold-text text-sm font-black uppercase tracking-[0.4em] mb-4 block">Присоединяйтесь</span>
+                    <h2 class="text-7xl font-black mb-8 italic tracking-tighter leading-[0.9] uppercase">Станьте <br>Частью <br><span class="gold-text">Элиты</span></h2>
+                    <ul class="space-y-4">
+                        <li class="flex items-center gap-3 text-gray-400 font-medium">
+                            <i class="fas fa-check-circle gold-text"></i> Прямые заказы без посредников
+                        </li>
+                        <li class="flex items-center gap-3 text-gray-400 font-medium">
+                            <i class="fas fa-check-circle gold-text"></i> Профессиональное портфолио
+                        </li>
+                        <li class="flex items-center gap-3 text-gray-400 font-medium">
+                            <i class="fas fa-check-circle gold-text"></i> Доверие клиентов г. Талас
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-dark-card p-10 rounded-[2.5rem] border border-white/5 shadow-2xl relative">
+                    <form id="master-form" onsubmit="handleRegistration(event)" class="space-y-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-black uppercase italic tracking-tighter">Анкета специалиста</h3>
+                            <i class="fas fa-file-signature text-gold opacity-20 text-2xl"></i>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-[10px] uppercase text-gray-500 mb-2 font-black tracking-widest">ФИО полностью</label>
+                            <input type="text" id="reg-name" required class="input-dark w-full p-4 rounded-2xl" placeholder="Иванов Иван Иванович">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-[10px] uppercase text-gray-500 mb-2 font-black tracking-widest">WhatsApp (0XXX...)</label>
+                                <input type="tel" id="reg-phone" required pattern="[0-9]{10}" class="input-dark w-full p-4 rounded-2xl" placeholder="0755000228">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] uppercase text-gray-500 mb-2 font-black tracking-widest">Специализация</label>
+                                <select id="reg-category" required class="input-dark w-full p-4 rounded-2xl text-sm appearance-none">
+                                    <option value="">Выбрать...</option>
+                                    <option value="Сантехника">Сантехника</option>
+                                    <option value="Электрика">Электрика</option>
+                                    <option value="Сварка">Сварка</option>
+                                    <option value="Кладка кирпича">Кладка кирпича</option>
+                                    <option value="Обои/Малярка">Обои / Малярка</option>
+                                    <option value="Клининг">Клининг</option>
+                                    <option value="Демонтаж">Демонтаж</option>
+                                    <option value="Фасадные работы">Фасадные работы</option>
+                                    <option value="Стяжка/Полы">Стяжка / Полы</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-[10px] uppercase text-gray-500 mb-2 font-black tracking-widest">Локация</label>
+                                <input type="text" id="reg-location" required class="input-dark w-full p-4 rounded-2xl" placeholder="г. Талас">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] uppercase text-gray-500 mb-2 font-black tracking-widest">Опыт (лет)</label>
+                                <input type="number" id="reg-experience" required min="0" class="input-dark w-full p-4 rounded-2xl" placeholder="5">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-gold w-full py-6 rounded-2xl font-black text-sm mt-4 shadow-lg">
+                            Подать заявку в базу
+                        </button>
+                    </form>
+                    
+                    <div id="success-message" class="hidden text-center py-12 animate-in zoom-in duration-300">
+                        <div class="w-24 h-24 gold-gradient rounded-full flex items-center justify-center mx-auto mb-8 text-black text-4xl shadow-[0_0_30px_rgba(251,191,36,0.3)]">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <h3 class="text-4xl font-black uppercase tracking-tighter mb-4 italic">Успешно!</h3>
+                        <p class="text-gray-500 mb-10 text-sm font-bold uppercase tracking-widest leading-loose">Ваши данные приняты. <br>Теперь вы в списке мастеров.</p>
+                        <div class="flex flex-col gap-3">
+                            <button onclick="switchTab('list')" class="btn-gold py-5 rounded-2xl text-xs">Открыть список мастеров</button>
+                            <button onclick="location.reload()" class="bg-white/5 py-5 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-white/10 transition">Добавить еще одного</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
 
-        <div class="space-y-6 flex-grow">
-            <!-- Dropdown for adding devices -->
-            <div>
-                <h3 class="text-[10px] font-bold text-gray-500 mb-2 uppercase tracking-widest">Добавить устройство</h3>
-                <select id="device-selector" onchange="handleDeviceSelection(this)" class="w-full bg-zinc-900 border-2 border-yellow-500 text-white p-3 rounded text-[11px] font-bold uppercase outline-none cursor-pointer focus:ring-2 focus:ring-yellow-500 transition">
-                    <option value="" disabled selected>Выберите из списка...</option>
-                    <optgroup label="Автоматические выключатели">
-                        <option value="avtomat|Группа|C16|1">Автомат 1P (1 модуль)</option>
-                        <option value="avtomat|Ввод|C40|2">Автомат 2P (2 модуля)</option>
-                        <option value="avtomat|Группа|C32|3">Автомат 3P (3 модуля)</option>
-                    </optgroup>
-                    <optgroup label="Защита (УЗО/АВДТ)">
-                        <option value="uzo|УЗО|30mA|2">УЗО 2P (2 модуля)</option>
-                        <option value="uzo|УЗО|30mA|4">УЗО 4P (4 модуля)</option>
-                    </optgroup>
-                    <optgroup label="Устройства контроля">
-                        <option value="rele-v|РКН|230V|3">Реле напряжения (3 модуля)</option>
-                        <option value="rele-v|Вольтметр|230V|1">Вольтметр (1 модуль)</option>
-                    </optgroup>
-                </select>
-            </div>
-
-            <button onclick="addRail()" class="w-full border border-yellow-500/30 text-yellow-500 p-2 rounded hover:bg-yellow-500 hover:text-black transition text-[10px] font-bold uppercase tracking-widest">+ Добавить рейку</button>
-
-            <div class="pt-4 border-t border-zinc-800 space-y-2">
-                <button onclick="askGeminiToAudit()" class="w-full bg-blue-900/20 text-blue-400 border border-blue-500/30 p-2 rounded text-[10px] font-bold uppercase hover:bg-blue-500 hover:text-white transition">Проверить безопасность</button>
-                <button onclick="downloadImage()" class="w-full bg-yellow-500 text-black p-3 rounded font-black uppercase text-xs hover:bg-white transition flex items-center justify-center gap-2">
-                    <span>Скачать схему</span>
-                </button>
-            </div>
-        </div>
-    </aside>
-
-    <!-- Canvas -->
-    <main class="flex-grow bg-zinc-950 overflow-auto p-8">
-        <div id="capture-area" class="shadow-2xl">
-            <div class="flex justify-between items-end mb-16 border-b-4 border-black pb-4">
+        <!-- Section: Public Directory -->
+        <section id="section-list" class="hidden">
+            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-12 gap-8">
                 <div>
-                    <h2 class="text-4xl font-black text-black italic leading-none">TALAS_PROFI</h2>
-                    <p class="text-black font-bold uppercase text-[10px] mt-2 tracking-widest">Электромонтаж в Таласе</p>
+                    <span class="gold-text text-xs font-black uppercase tracking-[0.4em] mb-2 block">Каталог</span>
+                    <h2 class="text-5xl font-black uppercase italic tracking-tighter leading-none">Проверенные <br><span class="gold-text text-6xl">Мастера</span></h2>
+                    <p class="text-gray-600 text-xs font-black uppercase tracking-widest mt-4">Найдено активных анкет: <span id="public-count" class="text-white">0</span></p>
                 </div>
-                <div class="text-right text-black font-bold text-[10px] uppercase">
-                    <p>Объект: <span contenteditable="true" class="border-b border-black/30 px-2">г. Талас</span></p>
-                    <p class="mt-1">Дата: <span id="current-date">--.--.----</span></p>
+                <div class="w-full lg:w-1/3 relative group">
+                    <i class="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-gray-600 group-focus-within:text-gold transition-colors"></i>
+                    <input type="text" id="public-search" onkeyup="filterDirectory()" placeholder="Поиск по имени, услуге или району..." class="input-dark w-full py-5 pl-14 pr-6 rounded-2xl text-sm font-medium">
                 </div>
             </div>
 
-            <div id="rails-container" class="space-y-2">
-                <!-- Rails injected here -->
+            <div id="public-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Data via JS -->
+            </div>
+        </section>
+
+        <!-- Section: Admin Panel -->
+        <section id="section-admin" class="hidden">
+            <div class="flex justify-between items-center mb-12">
+                <div>
+                    <h2 class="text-4xl font-black uppercase italic tracking-tighter">Control <span class="text-red-600">Panel</span></h2>
+                    <p class="text-gray-500 text-[10px] font-black uppercase tracking-[0.3em] mt-1">Управление данными базы Talas_profi</p>
+                </div>
+                <button onclick="logoutAdmin()" class="bg-red-600/10 text-red-600 px-8 py-4 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-red-600 hover:text-white transition-all shadow-lg shadow-red-600/5">Выйти из режима</button>
             </div>
 
-            <div class="mt-20 border-t-2 border-black pt-4 flex justify-between items-center opacity-70">
-                <div class="text-[10px] text-black font-bold uppercase italic">WhatsApp: +996 755 000 228</div>
-                <div class="text-[10px] text-black font-bold uppercase tracking-widest">12 Модулей на рейку</div>
+            <div class="bg-dark-card rounded-[2rem] border border-white/5 overflow-hidden shadow-2xl">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="bg-black/50 text-[10px] uppercase text-gray-500 font-black tracking-widest border-b border-white/5">
+                            <tr>
+                                <th class="p-8">Мастер</th>
+                                <th class="p-8">Специализация</th>
+                                <th class="p-8 text-center">Опыт</th>
+                                <th class="p-8">Локация</th>
+                                <th class="p-8">Статус</th>
+                                <th class="p-8 text-right">Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-table-body" class="divide-y divide-white/5">
+                            <!-- Data via JS -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
+        </section>
 
-        <!-- AI Output -->
-        <div id="ai-box" class="hidden mt-6 w-full max-w-[780px] mx-auto bg-black/80 border border-yellow-500 p-4 rounded shadow-xl">
-            <h4 id="ai-title" class="text-yellow-500 font-black uppercase text-xs mb-2 italic">✨ Сообщение от ИИ</h4>
-            <p id="ai-content" class="text-xs text-gray-200 leading-relaxed"></p>
-        </div>
     </main>
 
-    <!-- Edit Modal -->
-    <div id="edit-modal" class="fixed inset-0 bg-black/90 hidden items-center justify-center z-50 p-4">
-        <div class="bg-white p-6 rounded-lg w-full max-w-xs shadow-2xl">
-            <h4 class="font-black uppercase text-sm mb-4 border-b-2 border-black pb-1">Настройка модуля</h4>
-            <div class="space-y-4">
-                <input type="text" id="edit-label" class="w-full border-2 border-black p-2 text-sm font-bold uppercase" placeholder="Группа">
-                <input type="text" id="edit-spec" class="w-full border-2 border-black p-2 text-sm font-bold" placeholder="Номинал">
-                <div class="flex gap-2 pt-2">
-                    <button onclick="saveEdit()" class="flex-grow bg-black text-white p-2 font-black uppercase text-[10px]">Сохранить</button>
-                    <button onclick="deleteElement()" class="bg-red-600 text-white p-2 font-black uppercase text-[10px]">Удалить</button>
-                </div>
-                <button onclick="closeModal()" class="w-full text-gray-400 font-bold uppercase text-[10px]">Отмена</button>
+    <!-- Modals -->
+    <div id="password-modal" class="fixed inset-0 modal-blur z-[100] hidden flex items-center justify-center p-6">
+        <div class="bg-dark-card p-12 rounded-[3rem] border border-white/10 max-w-sm w-full shadow-[0_30px_100px_rgba(0,0,0,1)] text-center">
+            <div class="w-16 h-16 bg-red-600/10 text-red-600 rounded-full flex items-center justify-center mx-auto mb-8 text-2xl">
+                <i class="fas fa-lock"></i>
+            </div>
+            <h3 class="text-2xl font-black mb-8 uppercase italic tracking-tighter">Доступ Администратора</h3>
+            <input type="password" id="admin-password" class="input-dark w-full p-5 rounded-2xl mb-8 text-center tracking-[0.8em] font-black text-2xl" placeholder="••••">
+            <div class="grid grid-cols-2 gap-4">
+                <button onclick="closePasswordModal()" class="py-4 bg-white/5 rounded-2xl font-black text-[10px] uppercase tracking-widest">Отмена</button>
+                <button onclick="verifyPassword()" class="py-4 btn-gold rounded-2xl font-black text-[10px] uppercase tracking-widest">Вход</button>
             </div>
         </div>
     </div>
 
-    <script>
-        const apiKey = "";
-        let currentEditingElement = null;
-        const MAX_MODULES = 12;
-
-        document.getElementById('current-date').innerText = new Date().toLocaleDateString();
-
-        function addRail() {
-            const container = document.getElementById('rails-container');
-            const railCount = container.querySelectorAll('.din-rail').length + 1;
-            const railWrapper = document.createElement('div');
-            railWrapper.className = 'din-rail-wrapper';
-            railWrapper.innerHTML = `
-                <div class="flex justify-between items-center mb-2 px-1">
-                    <span class="text-[9px] font-black text-gray-400 uppercase tracking-widest">DIN Rail ${railCount} (12 Mod)</span>
-                    <button onclick="this.closest('.din-rail-wrapper').remove()" class="text-red-500 text-[8px] uppercase font-black hover:underline export-hide">Удалить</button>
+    <div id="edit-modal" class="fixed inset-0 modal-blur z-[100] hidden flex items-center justify-center p-6">
+        <div class="bg-dark-card p-10 rounded-[2.5rem] border border-gold/20 max-w-2xl w-full shadow-2xl">
+            <div class="flex justify-between items-center mb-10">
+                <h3 class="text-3xl font-black uppercase italic tracking-tighter">Редактировать <span class="gold-text">профиль</span></h3>
+                <button onclick="closeEditModal()" class="text-3xl text-gray-500 hover:text-white transition">&times;</button>
+            </div>
+            <form id="edit-form" onsubmit="saveMasterChanges(event)" class="space-y-6">
+                <input type="hidden" id="edit-id">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-[10px] uppercase text-gray-500 mb-2 font-black">ФИО</label>
+                            <input type="text" id="edit-name" required class="input-dark w-full p-4 rounded-xl">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase text-gray-500 mb-2 font-black">WhatsApp</label>
+                            <input type="tel" id="edit-phone" required class="input-dark w-full p-4 rounded-xl">
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-[10px] uppercase text-gray-500 mb-2 font-black">Категория</label>
+                            <select id="edit-category" class="input-dark w-full p-4 rounded-xl appearance-none">
+                                <option value="Сантехника">Сантехника</option>
+                                <option value="Электрика">Электрика</option>
+                                <option value="Сварка">Сварка</option>
+                                <option value="Кладка кирпича">Кладка кирпича</option>
+                                <option value="Обои/Малярка">Обои / Малярка</option>
+                                <option value="Клининг">Клининг</option>
+                                <option value="Демонтаж">Демонтаж</option>
+                                <option value="Фасадные работы">Фасадные работы</option>
+                                <option value="Стяжка/Полы">Стяжка / Полы</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase text-gray-500 mb-2 font-black">Статус</label>
+                            <select id="edit-status" class="input-dark w-full p-4 rounded-xl appearance-none">
+                                <option value="Свободен">Свободен</option>
+                                <option value="Занят">Занят</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
-                <div class="din-rail" data-used="0"></div>
-            `;
-            container.appendChild(railWrapper);
-            return railWrapper.querySelector('.din-rail');
+                <div class="grid grid-cols-2 gap-4 pt-6">
+                    <button type="button" onclick="closeEditModal()" class="py-5 bg-white/5 rounded-2xl font-black uppercase text-[10px] tracking-widest">Закрыть</button>
+                    <button type="submit" class="py-5 btn-gold rounded-2xl font-black uppercase text-[10px] tracking-widest">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="py-12 border-t border-white/5 bg-black mt-auto text-center">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col items-center">
+            <h2 class="text-xl font-black tracking-tighter uppercase mb-4">TALAS<span class="gold-text">_PROFI</span></h2>
+            <p class="text-[9px] text-gray-600 font-black uppercase tracking-[0.6em] mb-6">Master Directory Systems v4.0</p>
+            <div class="flex gap-8 opacity-40">
+                <i class="fab fa-whatsapp text-xl"></i>
+                <i class="fab fa-instagram text-xl"></i>
+                <i class="fab fa-telegram text-xl"></i>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- State Management ---
+        let masters = JSON.parse(localStorage.getItem('talas_profi_v4_db')) || [
+            { id: 1, date: "15.02.2024", name: "Алексей Иванов", category: "Сантехника", experience: "10", phone: "0755000228", location: "г. Талас", status: "Свободен" },
+            { id: 2, date: "18.02.2024", name: "Мирлан Абдыкадыров", category: "Электрика", experience: "15", phone: "0550123456", location: "с. Кызыл-Адыр", status: "Занят" }
+        ];
+
+        let logoClicks = 0;
+        let isAdmin = false;
+
+        // --- Core Functions ---
+        function save() {
+            localStorage.setItem('talas_profi_v4_db', JSON.stringify(masters));
         }
 
-        addRail();
+        function handleLogoClick() {
+            logoClicks++;
+            if (logoClicks >= 5) {
+                logoClicks = 0;
+                document.getElementById('password-modal').classList.remove('hidden');
+                document.getElementById('admin-password').focus();
+            }
+            setTimeout(() => { logoClicks = 0; }, 3000);
+        }
 
-        function handleDeviceSelection(selectElement) {
-            const val = selectElement.value;
-            if (!val) return;
+        function verifyPassword() {
+            const pass = document.getElementById('admin-password').value;
+            if (pass === '31082001') {
+                isAdmin = true;
+                document.getElementById('tab-admin').classList.remove('hidden');
+                document.getElementById('admin-status-indicator').classList.remove('hidden');
+                switchTab('admin');
+                closePasswordModal();
+            } else {
+                alert('Доступ запрещен. Неверный код.');
+            }
+        }
 
-            const [type, name, spec, modules] = val.split('|');
-            checkAndAdd(type, name, spec, parseInt(modules));
+        function logoutAdmin() {
+            isAdmin = false;
+            document.getElementById('tab-admin').classList.add('hidden');
+            document.getElementById('admin-status-indicator').classList.add('hidden');
+            switchTab('list');
+        }
+
+        function closePasswordModal() {
+            document.getElementById('password-modal').classList.add('hidden');
+            document.getElementById('admin-password').value = '';
+        }
+
+        function switchTab(tabId) {
+            if (tabId === 'admin' && !isAdmin) return;
+
+            // Update UI tabs
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active', 'text-white'));
+            document.getElementById('tab-' + tabId).classList.add('active', 'text-white');
+
+            // Toggle sections
+            document.querySelectorAll('section').forEach(sec => sec.classList.add('hidden'));
+            document.getElementById('section-' + tabId).classList.remove('hidden');
+
+            if (tabId === 'list') renderDirectory();
+            if (tabId === 'admin') renderAdmin();
+        }
+
+        // --- Logic: Registration ---
+        function handleRegistration(e) {
+            e.preventDefault();
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('ru-RU');
+
+            const master = {
+                id: Date.now(),
+                date: dateStr,
+                name: document.getElementById('reg-name').value,
+                phone: document.getElementById('reg-phone').value,
+                category: document.getElementById('reg-category').value,
+                experience: document.getElementById('reg-experience').value,
+                location: document.getElementById('reg-location').value,
+                status: 'Свободен'
+            };
+
+            masters.unshift(master);
+            save();
+            document.getElementById('master-form').classList.add('hidden');
+            document.getElementById('success-message').classList.remove('hidden');
+        }
+
+        // --- Logic: Public View ---
+        function renderDirectory(data = masters) {
+            const grid = document.getElementById('public-grid');
+            document.getElementById('public-count').innerText = data.length;
+
+            grid.innerHTML = data.map(m => `
+                <div class="master-card bg-dark-card p-8 rounded-3xl group">
+                    <div class="flex justify-between items-start mb-8">
+                        <div class="text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full border ${m.status === 'Свободен' ? 'border-green-500/30 text-green-500' : 'border-red-500/30 text-red-500'}">
+                            ${m.status}
+                        </div>
+                        <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <i class="fas fa-arrow-right text-[10px] text-gold"></i>
+                        </div>
+                    </div>
+                    
+                    <h4 class="text-2xl font-black mb-1 italic tracking-tighter leading-tight">${m.name}</h4>
+                    <span class="gold-text text-[10px] font-black uppercase tracking-[0.2em] block mb-6">${m.category}</span>
+                    
+                    <div class="grid grid-cols-2 gap-4 mb-8">
+                        <div class="bg-white/[0.02] p-3 rounded-xl">
+                            <span class="block text-[8px] text-gray-600 uppercase font-black mb-1">Стаж</span>
+                            <span class="text-xs font-bold">${m.experience} лет</span>
+                        </div>
+                        <div class="bg-white/[0.02] p-3 rounded-xl">
+                            <span class="block text-[8px] text-gray-600 uppercase font-black mb-1">Локация</span>
+                            <span class="text-xs font-bold truncate">${m.location}</span>
+                        </div>
+                    </div>
+
+                    <a href="https://wa.me/996${m.phone.replace(/^0/, '')}" target="_blank" class="flex items-center justify-center gap-3 w-full py-5 bg-white/5 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-green-600 hover:text-white transition-all">
+                        <i class="fab fa-whatsapp text-lg"></i> Написать мастеру
+                    </a>
+                </div>
+            `).join('');
+        }
+
+        function filterDirectory() {
+            const q = document.getElementById('public-search').value.toLowerCase();
+            const filtered = masters.filter(m => 
+                m.name.toLowerCase().includes(q) || 
+                m.category.toLowerCase().includes(q) || 
+                m.location.toLowerCase().includes(q)
+            );
+            renderDirectory(filtered);
+        }
+
+        // --- Logic: Admin Actions ---
+        function renderAdmin() {
+            const tbody = document.getElementById('admin-table-body');
+            tbody.innerHTML = masters.map(m => `
+                <tr class="hover:bg-white/[0.01] transition-colors">
+                    <td class="p-8">
+                        <div class="font-black text-sm text-white">${m.name}</div>
+                        <div class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mt-1">${m.phone}</div>
+                    </td>
+                    <td class="p-8">
+                        <span class="text-gold text-[10px] font-black uppercase tracking-widest">${m.category}</span>
+                    </td>
+                    <td class="p-8 text-center">
+                        <span class="text-xs font-bold text-gray-400">${m.experience} лет</span>
+                    </td>
+                    <td class="p-8">
+                        <span class="text-[10px] font-black uppercase text-gray-500">${m.location}</span>
+                    </td>
+                    <td class="p-8">
+                        <div class="flex items-center gap-2">
+                            <div class="w-2 h-2 rounded-full ${m.status === 'Свободен' ? 'bg-green-500' : 'bg-red-500'}"></div>
+                            <span class="text-[10px] font-black uppercase text-gray-300">${m.status}</span>
+                        </div>
+                    </td>
+                    <td class="p-8 text-right">
+                        <div class="flex justify-end gap-3">
+                            <button onclick="openEdit(${m.id})" class="w-12 h-12 rounded-xl bg-white/5 text-gold hover:bg-gold hover:text-black transition-all flex items-center justify-center">
+                                <i class="fas fa-edit text-sm"></i>
+                            </button>
+                            <button onclick="deleteMaster(${m.id})" class="w-12 h-12 rounded-xl bg-red-600/10 text-red-600 hover:bg-red-600 hover:text-white transition-all flex items-center justify-center">
+                                <i class="fas fa-trash text-sm"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function openEdit(id) {
+            const m = masters.find(item => item.id === id);
+            if (!m) return;
+            document.getElementById('edit-id').value = m.id;
+            document.getElementById('edit-name').value = m.name;
+            document.getElementById('edit-phone').value = m.phone;
+            document.getElementById('edit-category').value = m.category;
+            document.getElementById('edit-status').value = m.status;
+            document.getElementById('edit-modal').classList.remove('hidden');
+        }
+
+        function closeEditModal() {
+            document.getElementById('edit-modal').classList.add('hidden');
+        }
+
+        function saveMasterChanges(e) {
+            e.preventDefault();
+            const id = parseInt(document.getElementById('edit-id').value);
+            const idx = masters.findIndex(m => m.id === id);
             
-            // Reset selection
-            selectElement.selectedIndex = 0;
-        }
-
-        function checkAndAdd(type, name, spec, modules) {
-            const rails = document.querySelectorAll('.din-rail');
-            let placed = false;
-
-            for (let rail of rails) {
-                let used = parseInt(rail.getAttribute('data-used'));
-                if (used + modules <= MAX_MODULES) {
-                    addDeviceToRail(rail, type, name, spec, modules);
-                    rail.setAttribute('data-used', used + modules);
-                    placed = true;
-                    break;
-                }
-            }
-
-            if (!placed) {
-                const newRail = addRail();
-                addDeviceToRail(newRail, type, name, spec, modules);
-                newRail.setAttribute('data-used', modules);
+            if (idx !== -1) {
+                masters[idx].name = document.getElementById('edit-name').value;
+                masters[idx].phone = document.getElementById('edit-phone').value;
+                masters[idx].category = document.getElementById('edit-category').value;
+                masters[idx].status = document.getElementById('edit-status').value;
+                save();
+                renderAdmin();
+                closeEditModal();
             }
         }
 
-        function addDeviceToRail(rail, type, name, spec, modules) {
-            const device = document.createElement('div');
-            // Support widths up to 4 modules
-            const widthClass = `mod-${modules}`;
-            device.className = `device ${widthClass} ${type}`;
-            device.setAttribute('data-mod', modules);
-            device.innerHTML = `
-                <div class="device-label">${name}</div>
-                <div class="device-toggle"></div>
-                <div class="device-spec">${spec}</div>
-            `;
-            device.onclick = (e) => { e.stopPropagation(); openModal(device); };
-            rail.appendChild(device);
-        }
-
-        function openModal(el) {
-            currentEditingElement = el;
-            document.getElementById('edit-label').value = el.querySelector('.device-label').innerText;
-            document.getElementById('edit-spec').value = el.querySelector('.device-spec').innerText;
-            document.getElementById('edit-modal').style.display = 'flex';
-        }
-
-        function closeModal() { document.getElementById('edit-modal').style.display = 'none'; }
-
-        function saveEdit() {
-            if (currentEditingElement) {
-                currentEditingElement.querySelector('.device-label').innerText = document.getElementById('edit-label').value;
-                currentEditingElement.querySelector('.device-spec').innerText = document.getElementById('edit-spec').value;
-            }
-            closeModal();
-        }
-
-        function deleteElement() {
-            if (currentEditingElement) {
-                const rail = currentEditingElement.parentElement;
-                const mod = parseInt(currentEditingElement.getAttribute('data-mod'));
-                const used = parseInt(rail.getAttribute('data-used'));
-                rail.setAttribute('data-used', used - mod);
-                currentEditingElement.remove();
-            }
-            closeModal();
-        }
-
-        // AI Logic
-        async function fetchGemini(prompt, sys) {
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-            const res = await fetch(url, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({
-                    contents: [{parts: [{text: prompt}]}],
-                    systemInstruction: {parts: [{text: sys}]}
-                })
-            });
-            const data = await res.json();
-            return data.candidates[0].content.parts[0].text;
-        }
-
-        async function askGeminiToDesign() {
-            const prompt = document.getElementById('ai-prompt').value;
-            if (!prompt) return;
-            const btn = document.getElementById('ai-generate-btn');
-            const spinner = document.getElementById('ai-spinner');
-            btn.disabled = true; spinner.classList.remove('hidden');
-
-            const sys = `Ты электрик Talas_profi. Спроектируй щит. Учти: 12 модулей в рейке. 
-            Верни JSON: {"rails": [{"devices": [{"type": "avtomat|uzo|rele-v", "name": "...", "spec": "...", "modules": 1|2|3|4}]}]}.`;
-
-            try {
-                const text = await fetchGemini(`Объект: ${prompt}`, sys);
-                const config = JSON.parse(text.replace(/```json|```/g, '').trim());
-                document.getElementById('rails-container').innerHTML = '';
-                config.rails.forEach(rData => {
-                    const rail = addRail();
-                    let used = 0;
-                    rData.devices.forEach(d => {
-                        if (used + d.modules <= 12) {
-                            addDeviceToRail(rail, d.type, d.name, d.spec, d.modules);
-                            used += d.modules;
-                        }
-                    });
-                    rail.setAttribute('data-used', used);
-                });
-            } catch (e) {
-                console.error(e);
-                alert("Ошибка ИИ. Попробуйте проще.");
-            } finally {
-                btn.disabled = false; spinner.classList.add('hidden');
+        function deleteMaster(id) {
+            if (confirm('ВНИМАНИЕ: Данные мастера будут удалены навсегда. Продолжить?')) {
+                masters = masters.filter(m => m.id !== id);
+                save();
+                renderAdmin();
             }
         }
 
-        async function askGeminiToAudit() {
-            const devices = Array.from(document.querySelectorAll('.device')).map(d => d.querySelector('.device-label').innerText);
-            if (!devices.length) return;
-            const res = await fetchGemini(`Проверь щит: ${devices.join(', ')}`, "Найди ошибки безопасности (нет УЗО, нет РКН). Кратко.");
-            showAIBox("Аудит безопасности", res);
-        }
-
-        function showAIBox(title, text) {
-            const box = document.getElementById('ai-box');
-            document.getElementById('ai-title').innerText = title;
-            document.getElementById('ai-content').innerText = text;
-            box.classList.remove('hidden');
-            box.scrollIntoView({behavior: 'smooth'});
-        }
-
-        function downloadImage() {
-            const toHide = document.querySelectorAll('.export-hide');
-            toHide.forEach(el => el.style.opacity = '0');
-            html2canvas(document.getElementById('capture-area'), { scale: 2 }).then(canvas => {
-                const a = document.createElement('a');
-                a.download = `TalasProfi_12mod_${Date.now()}.png`;
-                a.href = canvas.toDataURL();
-                a.click();
-                toHide.forEach(el => el.style.opacity = '1');
-            });
-        }
+        // Init
+        window.onload = () => { renderDirectory(); };
+        document.getElementById('admin-password').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') verifyPassword();
+        });
     </script>
 </body>
 </html>
