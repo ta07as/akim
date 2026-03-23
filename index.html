@@ -245,6 +245,11 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+        .admin-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; background: #050505; }
+.admin-table th { text-align: left; padding: 1rem; border-bottom: 2px solid #FBBF24; color: #FBBF24; text-transform: uppercase; font-weight: 900; }
+.admin-table td { padding: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.03); color: #FFFFFF; }
+.admin-table tr:hover { background: rgba(251, 191, 36, 0.05); }
+.hidden { display: none !important; }
     </style>
 </head>
 <body class="hero-bg bg-black text-white flex flex-col min-h-screen">
@@ -292,7 +297,7 @@
             </nav>
 
             <!-- Actions -->
-            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-4 cursor-pointer select-none" onclick="handleLogoClick()">
                 <button onclick="app.router.navigate('register')" class="hidden md:flex bg-transparent border border-white/20 hover:border-gold hover:text-gold text-white px-6 py-2.5 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all">
                     Стать мастером
                 </button>
@@ -675,7 +680,26 @@
                 <button onclick="app.router.navigate('catalog')" class="btn-primary mt-6">Перейти в каталог</button>
             </div>
         </section>
-
+        <section id="view-admin" class="view-section hidden p-6">
+    <div class="flex justify-between items-center mb-8">
+        <h2 class="text-3xl font-black italic uppercase text-red-600">База данных</h2>
+        <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: #EF4444; padding: 0.25rem 0.75rem; border-radius: 0.5rem; font-size: 0.65rem; font-weight: 800; text-transform: uppercase;">Режим управления</div>
+    </div>
+    
+    <div style="background: #050505; border: 1px solid rgba(255,255,255,0.05); border-radius: 1rem; overflow: hidden;">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Мастер</th>
+                    <th>Телефон</th>
+                    <th>Действие</th>
+                </tr>
+            </thead>
+            <tbody id="admin-list-body"></tbody>
+        </table>
+    </div>
+</section>
     </main>
 
     <!-- FOOTER -->
@@ -1392,5 +1416,65 @@
         const app = new TalasProfiApp();
 
     </script>
+    // --- ЧЕТВЕРТЫЙ ЭТАП: ЛОГИКА АДМИНКИ ---
+let clicks = 0; 
+let lastT = 0;
+
+function handleLogoClick() {
+    let now = Date.now();
+    // Если пауза между кликами больше 2 секунд — сброс
+    if (now - lastT > 2000) clicks = 0;
+    clicks++; 
+    lastT = now;
+    
+    // После 5 быстрых кликов запрашиваем пароль
+    if (clicks === 5) {
+        clicks = 0;
+        let pass = prompt("Введите пароль администратора:");
+        if (pass === "31082001") {
+            // Скрываем все активные секции сайта
+            document.querySelectorAll('.view-section').forEach(s => s.classList.add('hidden'));
+            
+            // Показываем панель админа
+            const adminView = document.getElementById('view-admin');
+            if (adminView) {
+                adminView.classList.remove('hidden');
+                
+                // Отрисовываем таблицу мастеров из локальной базы
+                const body = document.getElementById('admin-list-body');
+                const db = JSON.parse(localStorage.getItem('tp_db')) || [];
+                
+                body.innerHTML = db.map(m => `
+                    <tr>
+                        <td>${m.id || '---'}</td>
+                        <td class="font-bold uppercase">${m.name || 'Без имени'}</td>
+                        <td style="color: #FBBF24; font-weight: bold;">${m.phone || '---'}</td>
+                        <td>
+                            <button onclick="deleteM(${m.id})" style="color: #EF4444; font-size: 1.2rem; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.3)'" onmouseout="this.style.transform='scale(1)'">
+                                <i class="fas fa-trash-alt"></i> &times;
+                            </button>
+                        </td>
+                    </tr>`).join('');
+                
+                // Прокручиваем страницу наверх, чтобы увидеть панель
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        } else {
+            alert("Неверный код доступа.");
+        }
+    }
+}
+
+// Функция удаления мастера
+function deleteM(id) {
+    if(confirm("ВНИМАНИЕ: Вы уверены, что хотите навсегда удалить этого мастера из базы?")) {
+        let db = JSON.parse(localStorage.getItem('tp_db')) || [];
+        db = db.filter(m => m.id !== id);
+        localStorage.setItem('tp_db', JSON.stringify(db));
+        
+        // Перезагрузка для обновления всех списков
+        location.reload(); 
+    }
+}
 </body>
 </html>
