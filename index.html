@@ -7,13 +7,14 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
         
         :root {
             --gold: #FBBF24;
             --gold-dark: #D97706;
             --black: #000000;
-            --card-bg: #0A0A0A;
+            --dark-gray: #0A0A0A;
+            --light-gray: #111111;
         }
 
         body {
@@ -23,557 +24,630 @@
             scroll-behavior: smooth;
         }
 
-        .gold-gradient {
-            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
-        }
-
-        .gold-text {
-            color: var(--gold);
-        }
-
-        .border-gold-faint {
-            border-color: rgba(251, 191, 36, 0.1);
-        }
-
+        .gold-text { color: var(--gold); }
+        .bg-gold { background-color: var(--gold); }
+        
         .btn-gold {
             background-color: var(--gold);
             color: var(--black);
             font-weight: 800;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
         }
 
         .btn-gold:hover {
             background-color: var(--gold-dark);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px -5px rgba(251, 191, 36, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(251, 191, 36, 0.3);
         }
 
         .input-dark {
-            background-color: #111111 !important;
-            border: 1px solid #222 !important;
+            background-color: var(--light-gray) !important;
+            border: 1px solid rgba(255,255,255,0.1) !important;
             color: white !important;
             transition: all 0.3s ease;
         }
 
         .input-dark:focus {
             border-color: var(--gold) !important;
-            background-color: #151515 !important;
-            box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.2);
+            box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.1);
+            outline: none;
         }
 
-        .tab-btn {
-            position: relative;
+        .filter-chip {
             transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.1);
+            cursor: pointer;
+            white-space: nowrap;
+            user-select: none;
         }
 
-        .tab-btn.active {
-            color: var(--gold);
+        .filter-chip:hover:not(.active) {
+            border-color: rgba(251, 191, 36, 0.5);
+            background: rgba(255,255,255,0.02);
         }
 
-        .tab-btn.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 40px;
-            height: 3px;
-            background: var(--gold);
-            border-radius: 2px;
+        .filter-chip.active {
+            background-color: var(--gold);
+            color: var(--black);
+            border-color: var(--gold);
+            font-weight: 800;
+            box-shadow: 0 4px 15px rgba(251, 191, 36, 0.2);
         }
 
         .master-card {
-            transition: all 0.4s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             border: 1px solid rgba(255,255,255,0.05);
+            background: var(--dark-gray);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .master-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
 
         .master-card:hover {
             border-color: rgba(251, 191, 36, 0.3);
-            background-color: #0F0F0F;
             transform: translateY(-5px);
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.8);
         }
 
-        .modal-blur {
+        .master-card:hover::before { opacity: 1; }
+
+        .modal-overlay {
             backdrop-filter: blur(12px);
             background: rgba(0,0,0,0.85);
+            animation: fadeIn 0.3s ease-out;
         }
 
-        @keyframes pulse-gold {
-            0% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(251, 191, 36, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
-        .admin-badge {
-            animation: pulse-gold 2s infinite;
+        @keyframes slideIn {
+            from { transform: translateY(-20px) scale(0.95); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
         }
+
+        .modal-content {
+            animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Toast Notifications */
+        #toast-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            min-w: 300px;
+            padding: 1rem 1.5rem;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        .toast.success { background: #064e3b; color: #34d399; border: 1px solid #059669; }
+        .toast.error { background: #7f1d1d; color: #f87171; border: 1px solid #dc2626; }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col no-scrollbar">
+<body class="min-h-screen flex flex-col">
 
     <!-- Header -->
-    <header class="py-6 px-6 border-b border-white/5 sticky top-0 bg-black/90 backdrop-blur-md z-50">
+    <header class="py-5 px-6 border-b border-white/5 sticky top-0 bg-black/80 backdrop-blur-xl z-50">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <div class="flex items-center gap-4">
-                <div id="admin-trigger" onclick="handleLogoClick()" class="w-12 h-12 gold-gradient rounded-lg flex items-center justify-center font-black text-black text-2xl cursor-pointer select-none shadow-lg">T</div>
+                <div class="w-12 h-12 bg-gold rounded-xl flex items-center justify-center font-black text-black text-2xl select-none shadow-[0_0_20px_rgba(251,191,36,0.2)] border border-gold/50">T</div>
                 <div>
                     <h1 class="text-2xl font-black tracking-tighter uppercase leading-none">TALAS<span class="gold-text">_PROFI</span></h1>
-                    <p class="text-[10px] text-gray-500 font-bold tracking-[0.3em] uppercase mt-1">Industrial Standard</p>
+                    <p class="text-[9px] text-gray-500 font-bold tracking-[0.3em] uppercase mt-1">Industrial Standard</p>
                 </div>
             </div>
-            
-            <div class="flex items-center gap-6">
-                <div id="admin-status-indicator" class="hidden admin-badge bg-red-600 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest">Админ-доступ</div>
-                <div class="hidden lg:flex flex-col items-end">
-                    <span class="text-xs text-gray-500 font-bold uppercase tracking-wider">Поддержка</span>
-                    <a href="tel:+996755000228" class="text-sm font-black hover:text-gold transition">+996 755 000 228</a>
-                </div>
+            <div class="flex gap-3">
+                <button onclick="openStatusModal()" class="border border-white/10 bg-white/5 text-white px-5 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-white/10 hover:border-white/20 transition-all flex items-center gap-2">
+                    <i class="fas fa-sliders-h"></i> <span class="hidden sm:inline">Статус</span>
+                </button>
+                <button onclick="switchTab('register')" class="bg-gold text-black px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-gold-dark hover:shadow-lg transition-all flex items-center gap-2">
+                    <i class="fas fa-user-plus"></i> <span class="hidden sm:inline">Стать мастером</span>
+                </button>
             </div>
         </div>
     </header>
 
-    <main class="flex-grow max-w-7xl mx-auto px-6 py-10 w-full">
+    <main class="flex-grow max-w-7xl mx-auto px-6 py-10 w-full flex flex-col">
         
         <!-- Navigation -->
-        <nav class="flex gap-2 border-b border-white/5 mb-12 overflow-x-auto no-scrollbar">
-            <button onclick="switchTab('register')" id="tab-register" class="tab-btn active px-8 py-5 font-black uppercase text-xs tracking-[0.2em]">Регистрация</button>
-            <button onclick="switchTab('list')" id="tab-list" class="tab-btn px-8 py-5 font-black text-gray-500 uppercase text-xs tracking-[0.2em]">База мастеров</button>
-            <button onclick="switchTab('admin')" id="tab-admin" class="hidden tab-btn px-8 py-5 font-black text-red-600 uppercase text-xs tracking-[0.2em] border-l border-white/5">Управление</button>
+        <nav class="flex gap-2 border-b border-white/5 mb-10 overflow-x-auto no-scrollbar">
+            <button onclick="switchTab('list')" id="tab-list" class="px-8 py-5 font-black uppercase text-xs tracking-[0.2em] border-b-2 border-gold text-gold transition-colors">База мастеров</button>
+            <button onclick="switchTab('register')" id="tab-register" class="px-8 py-5 font-black text-gray-500 hover:text-gray-300 uppercase text-xs tracking-[0.2em] transition-colors">Регистрация</button>
         </nav>
 
-        <!-- Section: Registration -->
-        <section id="section-register" class="animate-in fade-in duration-500">
-            <div class="grid lg:grid-cols-2 gap-20 items-start">
-                <div class="lg:sticky lg:top-32">
-                    <span class="gold-text text-sm font-black uppercase tracking-[0.4em] mb-4 block">Присоединяйтесь</span>
-                    <h2 class="text-7xl font-black mb-8 italic tracking-tighter leading-[0.9] uppercase">Станьте <br>Частью <br><span class="gold-text">Элиты</span></h2>
-                    <ul class="space-y-4">
-                        <li class="flex items-center gap-3 text-gray-400 font-medium">
-                            <i class="fas fa-check-circle gold-text"></i> Прямые заказы без посредников
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-400 font-medium">
-                            <i class="fas fa-check-circle gold-text"></i> Профессиональное портфолио
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-400 font-medium">
-                            <i class="fas fa-check-circle gold-text"></i> Доверие клиентов г. Талас
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="bg-dark-card p-10 rounded-[2.5rem] border border-white/5 shadow-2xl relative">
-                    <form id="master-form" onsubmit="handleRegistration(event)" class="space-y-6">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="text-xl font-black uppercase italic tracking-tighter">Анкета специалиста</h3>
-                            <i class="fas fa-file-signature text-gold opacity-20 text-2xl"></i>
-                        </div>
-                        
-                        <div>
-                            <label class="block text-[10px] uppercase text-gray-500 mb-2 font-black tracking-widest">ФИО полностью</label>
-                            <input type="text" id="reg-name" required class="input-dark w-full p-4 rounded-2xl" placeholder="Иванов Иван Иванович">
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-[10px] uppercase text-gray-500 mb-2 font-black tracking-widest">WhatsApp (0XXX...)</label>
-                                <input type="tel" id="reg-phone" required pattern="[0-9]{10}" class="input-dark w-full p-4 rounded-2xl" placeholder="0755000228">
-                            </div>
-                            <div>
-                                <label class="block text-[10px] uppercase text-gray-500 mb-2 font-black tracking-widest">Специализация</label>
-                                <select id="reg-category" required class="input-dark w-full p-4 rounded-2xl text-sm appearance-none">
-                                    <option value="">Выбрать...</option>
-                                    <option value="Сантехника">Сантехника</option>
-                                    <option value="Электрика">Электрика</option>
-                                    <option value="Сварка">Сварка</option>
-                                    <option value="Кладка кирпича">Кладка кирпича</option>
-                                    <option value="Обои/Малярка">Обои / Малярка</option>
-                                    <option value="Клининг">Клининг</option>
-                                    <option value="Демонтаж">Демонтаж</option>
-                                    <option value="Фасадные работы">Фасадные работы</option>
-                                    <option value="Стяжка/Полы">Стяжка / Полы</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-[10px] uppercase text-gray-500 mb-2 font-black tracking-widest">Локация</label>
-                                <input type="text" id="reg-location" required class="input-dark w-full p-4 rounded-2xl" placeholder="г. Талас">
-                            </div>
-                            <div>
-                                <label class="block text-[10px] uppercase text-gray-500 mb-2 font-black tracking-widest">Опыт (лет)</label>
-                                <input type="number" id="reg-experience" required min="0" class="input-dark w-full p-4 rounded-2xl" placeholder="5">
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn-gold w-full py-6 rounded-2xl font-black text-sm mt-4 shadow-lg">
-                            Подать заявку в базу
-                        </button>
-                    </form>
-                    
-                    <div id="success-message" class="hidden text-center py-12 animate-in zoom-in duration-300">
-                        <div class="w-24 h-24 gold-gradient rounded-full flex items-center justify-center mx-auto mb-8 text-black text-4xl shadow-[0_0_30px_rgba(251,191,36,0.3)]">
-                            <i class="fas fa-check"></i>
-                        </div>
-                        <h3 class="text-4xl font-black uppercase tracking-tighter mb-4 italic">Успешно!</h3>
-                        <p class="text-gray-500 mb-10 text-sm font-bold uppercase tracking-widest leading-loose">Ваши данные приняты. <br>Теперь вы в списке мастеров.</p>
-                        <div class="flex flex-col gap-3">
-                            <button onclick="switchTab('list')" class="btn-gold py-5 rounded-2xl text-xs">Открыть список мастеров</button>
-                            <button onclick="location.reload()" class="bg-white/5 py-5 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-white/10 transition">Добавить еще одного</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <!-- Section: Public Directory -->
-        <section id="section-list" class="hidden">
-            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-12 gap-8">
-                <div>
-                    <span class="gold-text text-xs font-black uppercase tracking-[0.4em] mb-2 block">Каталог</span>
-                    <h2 class="text-5xl font-black uppercase italic tracking-tighter leading-none">Проверенные <br><span class="gold-text text-6xl">Мастера</span></h2>
-                    <p class="text-gray-600 text-xs font-black uppercase tracking-widest mt-4">Найдено активных анкет: <span id="public-count" class="text-white">0</span></p>
+        <section id="section-list" class="flex-grow">
+            <div class="mb-12">
+                <h2 class="text-4xl md:text-5xl font-black uppercase italic tracking-tighter leading-none mb-4">Найти <span class="gold-text">Специалиста</span></h2>
+                <p class="text-gray-400 text-xs md:text-sm font-semibold uppercase tracking-widest">Профессионалы Таласа, готовые к работе</p>
+            </div>
+
+            <!-- Search & Filters -->
+            <div class="bg-[#0A0A0A] p-6 rounded-[2rem] border border-white/5 mb-10">
+                <div class="relative max-w-3xl mb-8">
+                    <i class="fas fa-search absolute left-6 top-1/2 -translate-y-1/2 text-gray-500 text-lg"></i>
+                    <input type="text" id="public-search" oninput="filterData()" placeholder="Поиск по имени, услуге или навыкам..." class="input-dark w-full py-5 pl-16 pr-6 rounded-2xl text-sm font-medium shadow-inner">
                 </div>
-                <div class="w-full lg:w-1/3 relative group">
-                    <i class="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-gray-600 group-focus-within:text-gold transition-colors"></i>
-                    <input type="text" id="public-search" onkeyup="filterDirectory()" placeholder="Поиск по имени, услуге или району..." class="input-dark w-full py-5 pl-14 pr-6 rounded-2xl text-sm font-medium">
+
+                <div class="flex flex-col gap-4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] uppercase text-gray-500 font-black tracking-widest flex items-center gap-2">
+                            <i class="fas fa-filter text-gold/70"></i> Категории
+                        </span>
+                        <span class="text-[10px] font-black uppercase tracking-widest text-gray-600 bg-black px-3 py-1 rounded-full border border-white/5">
+                            Найдено: <span id="public-count" class="text-gold">0</span>
+                        </span>
+                    </div>
+                    <div class="flex flex-wrap gap-2.5 no-scrollbar" id="category-filters">
+                        <div onclick="setCategory('All')" class="filter-chip active px-5 py-3 rounded-xl text-[10px] uppercase font-black tracking-widest" data-cat="All">Все</div>
+                        <div onclick="setCategory('Сантехника')" class="filter-chip px-5 py-3 rounded-xl text-[10px] uppercase font-black tracking-widest" data-cat="Сантехника">Сантехника</div>
+                        <div onclick="setCategory('Электрика')" class="filter-chip px-5 py-3 rounded-xl text-[10px] uppercase font-black tracking-widest" data-cat="Электрика">Электрика</div>
+                        <div onclick="setCategory('Сварка')" class="filter-chip px-5 py-3 rounded-xl text-[10px] uppercase font-black tracking-widest" data-cat="Сварка">Сварка</div>
+                        <div onclick="setCategory('Кладка кирпича')" class="filter-chip px-5 py-3 rounded-xl text-[10px] uppercase font-black tracking-widest" data-cat="Кладка кирпича">Кирпич</div>
+                        <div onclick="setCategory('Обои/Малярка')" class="filter-chip px-5 py-3 rounded-xl text-[10px] uppercase font-black tracking-widest" data-cat="Обои/Малярка">Малярка</div>
+                        <div onclick="setCategory('Клининг')" class="filter-chip px-5 py-3 rounded-xl text-[10px] uppercase font-black tracking-widest" data-cat="Клининг">Клининг</div>
+                        <div onclick="setCategory('Другое')" class="filter-chip px-5 py-3 rounded-xl text-[10px] uppercase font-black tracking-widest bg-white/5 border-dashed" data-cat="Другое">Другое</div>
+                    </div>
                 </div>
             </div>
 
-            <div id="public-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Data via JS -->
+            <div id="public-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Карточки мастеров рендерятся здесь -->
+            </div>
+            
+            <div id="no-results" class="hidden text-center py-24 border border-dashed border-white/10 rounded-[2.5rem] bg-[#0A0A0A]/50 mt-6">
+                <div class="w-20 h-20 bg-black rounded-full flex items-center justify-center mx-auto mb-6 border border-white/5">
+                    <i class="fas fa-search-minus text-3xl text-gray-700"></i>
+                </div>
+                <h3 class="text-2xl font-black text-white uppercase tracking-tighter">Специалист не найден</h3>
+                <p class="text-xs text-gray-500 mt-3 uppercase tracking-widest font-semibold">Попробуйте изменить категорию или поисковой запрос</p>
+                <button onclick="setCategory('All'); document.getElementById('public-search').value='';" class="mt-8 px-6 py-3 border border-gold/30 text-gold rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-gold hover:text-black transition-all">Сбросить фильтры</button>
             </div>
         </section>
 
-        <!-- Section: Admin Panel -->
-        <section id="section-admin" class="hidden">
-            <div class="flex justify-between items-center mb-12">
-                <div>
-                    <h2 class="text-4xl font-black uppercase italic tracking-tighter">Control <span class="text-red-600">Panel</span></h2>
-                    <p class="text-gray-500 text-[10px] font-black uppercase tracking-[0.3em] mt-1">Управление данными базы Talas_profi</p>
+        <!-- Section: Registration -->
+        <section id="section-register" class="hidden flex-grow">
+            <div class="max-w-3xl mx-auto bg-[#0A0A0A] p-8 md:p-12 rounded-[2.5rem] border border-white/10 shadow-2xl relative overflow-hidden">
+                <!-- Decorative element -->
+                <div class="absolute top-0 right-0 w-64 h-64 bg-gold opacity-[0.03] rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+
+                <div class="mb-12 text-center relative z-10">
+                    <div class="inline-flex items-center justify-center w-16 h-16 bg-gold/10 text-gold rounded-2xl mb-6 border border-gold/20">
+                        <i class="fas fa-id-badge text-2xl"></i>
+                    </div>
+                    <h3 class="text-4xl md:text-5xl font-black uppercase italic tracking-tighter mb-3">Станьте <span class="gold-text">Профи</span></h3>
+                    <p class="text-gray-400 text-[11px] uppercase font-bold tracking-[0.2em]">Создайте профиль для доступа к заказам Таласа</p>
                 </div>
-                <button onclick="logoutAdmin()" class="bg-red-600/10 text-red-600 px-8 py-4 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-red-600 hover:text-white transition-all shadow-lg shadow-red-600/5">Выйти из режима</button>
-            </div>
-
-            <div class="bg-dark-card rounded-[2rem] border border-white/5 overflow-hidden shadow-2xl">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
-                        <thead class="bg-black/50 text-[10px] uppercase text-gray-500 font-black tracking-widest border-b border-white/5">
-                            <tr>
-                                <th class="p-8">Мастер</th>
-                                <th class="p-8">Специализация</th>
-                                <th class="p-8 text-center">Опыт</th>
-                                <th class="p-8">Локация</th>
-                                <th class="p-8">Статус</th>
-                                <th class="p-8 text-right">Действия</th>
-                            </tr>
-                        </thead>
-                        <tbody id="admin-table-body" class="divide-y divide-white/5">
-                            <!-- Data via JS -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Modals -->
-    <div id="password-modal" class="fixed inset-0 modal-blur z-[100] hidden flex items-center justify-center p-6">
-        <div class="bg-dark-card p-12 rounded-[3rem] border border-white/10 max-w-sm w-full shadow-[0_30px_100px_rgba(0,0,0,1)] text-center">
-            <div class="w-16 h-16 bg-red-600/10 text-red-600 rounded-full flex items-center justify-center mx-auto mb-8 text-2xl">
-                <i class="fas fa-lock"></i>
-            </div>
-            <h3 class="text-2xl font-black mb-8 uppercase italic tracking-tighter">Доступ Администратора</h3>
-            <input type="password" id="admin-password" class="input-dark w-full p-5 rounded-2xl mb-8 text-center tracking-[0.8em] font-black text-2xl" placeholder="••••">
-            <div class="grid grid-cols-2 gap-4">
-                <button onclick="closePasswordModal()" class="py-4 bg-white/5 rounded-2xl font-black text-[10px] uppercase tracking-widest">Отмена</button>
-                <button onclick="verifyPassword()" class="py-4 btn-gold rounded-2xl font-black text-[10px] uppercase tracking-widest">Вход</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="edit-modal" class="fixed inset-0 modal-blur z-[100] hidden flex items-center justify-center p-6">
-        <div class="bg-dark-card p-10 rounded-[2.5rem] border border-gold/20 max-w-2xl w-full shadow-2xl">
-            <div class="flex justify-between items-center mb-10">
-                <h3 class="text-3xl font-black uppercase italic tracking-tighter">Редактировать <span class="gold-text">профиль</span></h3>
-                <button onclick="closeEditModal()" class="text-3xl text-gray-500 hover:text-white transition">&times;</button>
-            </div>
-            <form id="edit-form" onsubmit="saveMasterChanges(event)" class="space-y-6">
-                <input type="hidden" id="edit-id">
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-[10px] uppercase text-gray-500 mb-2 font-black">ФИО</label>
-                            <input type="text" id="edit-name" required class="input-dark w-full p-4 rounded-xl">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] uppercase text-gray-500 mb-2 font-black">WhatsApp</label>
-                            <input type="tel" id="edit-phone" required class="input-dark w-full p-4 rounded-xl">
+                
+                <form onsubmit="handleRegistration(event)" class="space-y-8 relative z-10">
+                    <!-- Block 1: Basic Info -->
+                    <div class="bg-black/50 p-6 rounded-3xl border border-white/5">
+                        <h4 class="text-[10px] text-gold uppercase font-black tracking-widest mb-6 flex items-center gap-2"><i class="fas fa-user text-xs"></i> Личные данные</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-[10px] uppercase text-gray-500 mb-2 font-bold">ФИО полностью</label>
+                                <input type="text" id="reg-name" required class="input-dark w-full p-4 rounded-xl text-sm font-semibold" placeholder="Например: Асан Асанов">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] uppercase text-gray-500 mb-2 font-bold">WhatsApp (Номер)</label>
+                                <input type="tel" id="reg-phone" required class="input-dark w-full p-4 rounded-xl text-sm font-semibold" placeholder="0755 000 228">
+                            </div>
                         </div>
                     </div>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-[10px] uppercase text-gray-500 mb-2 font-black">Категория</label>
-                            <select id="edit-category" class="input-dark w-full p-4 rounded-xl appearance-none">
+
+                    <!-- Block 2: Professional Info -->
+                    <div class="bg-black/50 p-6 rounded-3xl border border-white/5">
+                        <h4 class="text-[10px] text-gold uppercase font-black tracking-widest mb-6 flex items-center gap-2"><i class="fas fa-tools text-xs"></i> Профессиональная информация</h4>
+                        
+                        <div class="mb-6">
+                            <label class="block text-[10px] uppercase text-gray-500 mb-2 font-bold">Ваша Специальность</label>
+                            <select id="reg-category" onchange="toggleCustomCategory()" required class="input-dark w-full p-4 rounded-xl text-sm font-semibold cursor-pointer">
+                                <option value="" disabled selected>Выберите из списка...</option>
                                 <option value="Сантехника">Сантехника</option>
                                 <option value="Электрика">Электрика</option>
                                 <option value="Сварка">Сварка</option>
                                 <option value="Кладка кирпича">Кладка кирпича</option>
                                 <option value="Обои/Малярка">Обои / Малярка</option>
                                 <option value="Клининг">Клининг</option>
-                                <option value="Демонтаж">Демонтаж</option>
-                                <option value="Фасадные работы">Фасадные работы</option>
-                                <option value="Стяжка/Полы">Стяжка / Полы</option>
+                                <option value="Другое" class="font-bold text-gold">Другое (Указать вручную)</option>
                             </select>
                         </div>
-                        <div>
-                            <label class="block text-[10px] uppercase text-gray-500 mb-2 font-black">Статус</label>
-                            <select id="edit-status" class="input-dark w-full p-4 rounded-xl appearance-none">
-                                <option value="Свободен">Свободен</option>
-                                <option value="Занят">Занят</option>
-                            </select>
+
+                        <!-- Скрытое поле для "Другое" -->
+                        <div id="custom-cat-container" class="hidden mb-6 bg-gold/5 p-4 rounded-xl border border-gold/20">
+                            <label class="block text-[10px] uppercase text-gold mb-2 font-black">Укажите вашу специальность</label>
+                            <input type="text" id="reg-custom-category" class="input-dark w-full p-4 rounded-xl text-sm font-semibold border-gold/30" placeholder="Например: Сборка мебели, Грузоперевозки, Ремонт авто...">
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-[10px] uppercase text-gray-500 mb-2 font-bold">Стаж работы (лет)</label>
+                                <input type="number" id="reg-experience" required min="1" max="60" class="input-dark w-full p-4 rounded-xl text-sm font-semibold" placeholder="Например: 5">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] uppercase text-gray-500 mb-2 font-bold">Локация / Район</label>
+                                <input type="text" id="reg-location" required class="input-dark w-full p-4 rounded-xl text-sm font-semibold" placeholder="г. Талас, с. Бакай-Ата...">
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="grid grid-cols-2 gap-4 pt-6">
-                    <button type="button" onclick="closeEditModal()" class="py-5 bg-white/5 rounded-2xl font-black uppercase text-[10px] tracking-widest">Закрыть</button>
-                    <button type="submit" class="py-5 btn-gold rounded-2xl font-black uppercase text-[10px] tracking-widest">Сохранить</button>
-                </div>
-            </form>
-        </div>
-    </div>
 
-    <footer class="py-12 border-t border-white/5 bg-black mt-auto text-center">
-        <div class="max-w-7xl mx-auto px-6 flex flex-col items-center">
-            <h2 class="text-xl font-black tracking-tighter uppercase mb-4">TALAS<span class="gold-text">_PROFI</span></h2>
-            <p class="text-[9px] text-gray-600 font-black uppercase tracking-[0.6em] mb-6">Master Directory Systems v4.0</p>
-            <div class="flex gap-8 opacity-40">
-                <i class="fab fa-whatsapp text-xl"></i>
-                <i class="fab fa-instagram text-xl"></i>
-                <i class="fab fa-telegram text-xl"></i>
+                    <!-- Block 3: Security -->
+                    <div class="p-8 bg-gradient-to-br from-gold/10 to-transparent border border-gold/30 rounded-3xl text-center relative overflow-hidden">
+                        <i class="fas fa-lock absolute -right-4 -bottom-4 text-8xl text-gold opacity-5"></i>
+                        <p class="text-[11px] uppercase font-black text-gold tracking-widest mb-4">Ваш секретный PIN-код (4 цифры)</p>
+                        <p class="text-[10px] text-gray-400 mb-6 font-semibold max-w-sm mx-auto leading-relaxed">Придумайте код. Он понадобится вам, чтобы менять статус "Свободен" / "Занят", когда вы берете заказ.</p>
+                        
+                        <div class="flex justify-center">
+                            <input type="password" id="reg-passcode" maxlength="4" required class="bg-black text-center text-3xl font-black tracking-[0.5em] text-white w-40 py-4 rounded-2xl border-2 border-gold/50 focus:border-gold transition-colors shadow-[0_0_15px_rgba(251,191,36,0.15)]" placeholder="••••">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-gold w-full py-6 rounded-2xl text-[13px] tracking-widest shadow-xl shadow-gold/20 mt-4">
+                        <i class="fas fa-check-circle mr-2"></i> Опубликовать профиль
+                    </button>
+                </form>
             </div>
+        </section>
+
+    </main>
+
+    <!-- Footer Support -->
+    <footer class="border-t border-white/5 bg-black mt-auto py-8">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-[10px] text-gray-600 font-bold uppercase tracking-widest">
+                © 2026 Talas_Profi. Индустриальный стандарт.
+            </div>
+            <a href="https://wa.me/996755000228" target="_blank" class="flex items-center gap-3 px-5 py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full transition-colors group">
+                <i class="fab fa-whatsapp text-green-500 text-lg group-hover:scale-110 transition-transform"></i>
+                <div class="text-left">
+                    <p class="text-[8px] text-gray-500 uppercase font-black tracking-widest leading-none mb-1">Поддержка (Админ)</p>
+                    <p class="text-[11px] text-white font-black tracking-wider leading-none">+996 755 000 228</p>
+                </div>
+            </a>
         </div>
     </footer>
 
+    <!-- Modal: Status Change -->
+    <div id="status-modal" class="fixed inset-0 modal-overlay hidden z-[100] flex items-center justify-center p-6">
+        <div class="bg-[#0A0A0A] p-10 rounded-[2.5rem] border border-white/10 w-full max-w-md text-center shadow-2xl modal-content relative overflow-hidden">
+            <button onclick="closeStatusModal()" class="absolute top-6 right-6 text-gray-600 hover:text-white transition-colors">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+            
+            <div class="w-16 h-16 bg-white/5 rounded-2xl mx-auto mb-6 flex items-center justify-center border border-white/10">
+                <i class="fas fa-toggle-on text-2xl text-gray-400"></i>
+            </div>
+            
+            <h3 class="text-3xl font-black uppercase italic tracking-tighter mb-2">Изменить <span class="gold-text">Статус</span></h3>
+            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-8">Введите данные для управления профилем</p>
+            
+            <div class="space-y-5">
+                <div class="relative">
+                    <i class="fas fa-phone absolute left-5 top-1/2 -translate-y-1/2 text-gray-600"></i>
+                    <input type="tel" id="status-phone" class="input-dark w-full py-4 pl-14 pr-4 rounded-xl text-sm font-semibold" placeholder="Ваш WhatsApp (напр: 0755...)">
+                </div>
+                
+                <div class="relative">
+                    <i class="fas fa-lock absolute left-5 top-1/2 -translate-y-1/2 text-gray-600"></i>
+                    <input type="password" id="status-code" maxlength="4" class="input-dark w-full py-4 pl-14 pr-4 rounded-xl text-xl font-black tracking-[0.5em]" placeholder="••••">
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4 pt-4">
+                    <button onclick="updateMasterStatus('Свободен')" class="bg-emerald-950/40 text-emerald-400 border border-emerald-500/30 py-4 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-emerald-600 hover:text-white transition-all shadow-[0_0_15px_rgba(16,185,129,0.1)] hover:shadow-[0_0_20px_rgba(16,185,129,0.3)]">Свободен</button>
+                    <button onclick="updateMasterStatus('Занят')" class="bg-rose-950/40 text-rose-400 border border-rose-500/30 py-4 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-rose-600 hover:text-white transition-all shadow-[0_0_15px_rgba(225,29,72,0.1)] hover:shadow-[0_0_20px_rgba(225,29,72,0.3)]">Занят</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div id="toast-container"></div>
+
     <script>
-        // --- State Management ---
-        let masters = JSON.parse(localStorage.getItem('talas_profi_v4_db')) || [
-            { id: 1, date: "15.02.2024", name: "Алексей Иванов", category: "Сантехника", experience: "10", phone: "0755000228", location: "г. Талас", status: "Свободен" },
-            { id: 2, date: "18.02.2024", name: "Мирлан Абдыкадыров", category: "Электрика", experience: "15", phone: "0550123456", location: "с. Кызыл-Адыр", status: "Занят" }
+        // Иконки для категорий
+        const categoryIcons = {
+            "Сантехника": "fa-wrench",
+            "Электрика": "fa-bolt",
+            "Сварка": "fa-fire",
+            "Кладка кирпича": "fa-layer-group",
+            "Обои/Малярка": "fa-paint-roller",
+            "Клининг": "fa-broom",
+            "Другое": "fa-star"
+        };
+
+        // Инициализация базы данных (localStorage)
+        let masters = JSON.parse(localStorage.getItem('talas_profi_v5_db')) || [
+            { id: 1711223001, name: "Бакыт Асанов", category: "Электрика", experience: "8", phone: "0555123456", location: "с. Манас", status: "Свободен", passcode: "2222" },
+            { id: 1711223002, name: "Алексей Смирнов", category: "Сантехника", experience: "12", phone: "0755000111", location: "г. Талас", status: "Свободен", passcode: "1111" },
+            { id: 1711223003, name: "Тимур Жумабеков", category: "Другое", customCategory: "Сборка мебели", experience: "5", phone: "0700555444", location: "г. Талас", status: "Занят", passcode: "3333" }
         ];
 
-        let logoClicks = 0;
-        let isAdmin = false;
+        let activeCategory = 'All';
 
-        // --- Core Functions ---
-        function save() {
-            localStorage.setItem('talas_profi_v4_db', JSON.stringify(masters));
+        // Система Уведомлений (Toast)
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const icon = type === 'success' ? '<i class="fas fa-check-circle text-lg"></i>' : '<i class="fas fa-exclamation-circle text-lg"></i>';
+            
+            toast.innerHTML = `${icon} <span>${message}</span>`;
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'fadeOut 0.3s ease forwards';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
         }
 
-        function handleLogoClick() {
-            logoClicks++;
-            if (logoClicks >= 5) {
-                logoClicks = 0;
-                document.getElementById('password-modal').classList.remove('hidden');
-                document.getElementById('admin-password').focus();
+        // Переключение вкладок
+        function switchTab(tabId) {
+            document.querySelectorAll('section').forEach(s => {
+                s.classList.add('hidden');
+                s.classList.remove('animate-[fadeIn_0.4s_ease-out]');
+            });
+            
+            const activeSection = document.getElementById('section-' + tabId);
+            activeSection.classList.remove('hidden');
+            // Маленький трюк для рестарта анимации
+            void activeSection.offsetWidth; 
+            activeSection.classList.add('animate-[fadeIn_0.4s_ease-out]');
+            
+            document.querySelectorAll('nav button').forEach(b => {
+                b.classList.remove('text-gold', 'border-gold', 'border-b-2');
+                b.classList.add('text-gray-500');
+            });
+            const activeBtn = document.getElementById('tab-' + tabId);
+            if(activeBtn) {
+                activeBtn.classList.remove('text-gray-500');
+                activeBtn.classList.add('text-gold', 'border-b-2', 'border-gold');
             }
-            setTimeout(() => { logoClicks = 0; }, 3000);
+            
+            if(tabId === 'list') {
+                document.getElementById('public-search').value = '';
+                filterData();
+            }
         }
 
-        function verifyPassword() {
-            const pass = document.getElementById('admin-password').value;
-            if (pass === '31082001') {
-                isAdmin = true;
-                document.getElementById('tab-admin').classList.remove('hidden');
-                document.getElementById('admin-status-indicator').classList.remove('hidden');
-                switchTab('admin');
-                closePasswordModal();
+        // Выбор категории (Фильтр)
+        function setCategory(cat) {
+            activeCategory = cat;
+            document.querySelectorAll('.filter-chip').forEach(chip => {
+                chip.classList.remove('active', 'border-gold', 'bg-gold', 'text-black');
+                chip.classList.add('border-white/10', 'bg-transparent', 'text-white');
+                if(chip.getAttribute('data-cat') === cat) {
+                    chip.classList.remove('border-white/10', 'bg-transparent', 'text-white');
+                    chip.classList.add('active', 'border-gold', 'bg-gold', 'text-black');
+                }
+            });
+            filterData();
+        }
+
+        // Фильтрация данных
+        function filterData() {
+            const query = document.getElementById('public-search').value.toLowerCase().trim();
+            
+            const filtered = masters.filter(m => {
+                // Ищем по имени, категории, или кастомной категории
+                const displayCat = m.category === 'Другое' ? (m.customCategory || 'Другое') : m.category;
+                const matchesSearch = 
+                    m.name.toLowerCase().includes(query) || 
+                    displayCat.toLowerCase().includes(query) ||
+                    m.location.toLowerCase().includes(query);
+                
+                const matchesCategory = activeCategory === 'All' || m.category === activeCategory;
+                
+                return matchesSearch && matchesCategory;
+            });
+            renderGrid(filtered);
+        }
+
+        // Отрисовка карточек
+        function renderGrid(data) {
+            const grid = document.getElementById('public-grid');
+            const noResults = document.getElementById('no-results');
+            
+            // Анимация счетчика
+            const countEl = document.getElementById('public-count');
+            countEl.innerText = data.length;
+            countEl.classList.remove('text-gold');
+            void countEl.offsetWidth;
+            countEl.classList.add('text-gold');
+
+            if (data.length === 0) {
+                grid.innerHTML = '';
+                noResults.classList.remove('hidden');
             } else {
-                alert('Доступ запрещен. Неверный код.');
+                noResults.classList.add('hidden');
+                grid.innerHTML = data.map(m => {
+                    const statusClass = m.status === 'Свободен' 
+                        ? 'text-emerald-400 border-emerald-500/30 bg-emerald-950/20 shadow-[0_0_10px_rgba(16,185,129,0.1)]' 
+                        : 'text-rose-400 border-rose-500/30 bg-rose-950/20';
+                    
+                    const iconClass = categoryIcons[m.category] || categoryIcons["Другое"];
+                    const displayCategory = m.category === 'Другое' ? (m.customCategory || 'Специалист') : m.category;
+                    
+                    // Форматируем телефон для ссылки (убираем первый 0)
+                    const waPhone = m.phone.replace(/^0/, '996');
+
+                    return `
+                    <div class="master-card p-6 md:p-8 rounded-[2rem]">
+                        <div class="flex justify-between items-center mb-6 border-b border-white/5 pb-4">
+                            <span class="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg border ${statusClass} flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 rounded-full ${m.status === 'Свободен' ? 'bg-emerald-400' : 'bg-rose-400'} animate-pulse"></span>
+                                ${m.status}
+                            </span>
+                            <div class="text-[9px] text-gray-600 font-bold uppercase tracking-widest bg-white/5 px-2 py-1 rounded-md">ID: ${m.id.toString().slice(-4)}</div>
+                        </div>
+                        
+                        <div class="flex gap-4 items-start mb-6">
+                            <div class="w-12 h-12 rounded-xl bg-gold/10 border border-gold/20 flex items-center justify-center flex-shrink-0">
+                                <i class="fas ${iconClass} text-gold text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl md:text-2xl font-black italic tracking-tighter mb-1 uppercase leading-none">${m.name}</h4>
+                                <div class="text-gold text-[10px] font-black uppercase tracking-[0.1em] bg-gold/5 inline-block px-2 py-0.5 rounded text-wrap break-words border border-gold/10">
+                                    ${displayCategory}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-2 mb-8 bg-[#111111] p-4 rounded-2xl border border-white/5">
+                            <div class="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest pb-2 border-b border-white/5">
+                                <span class="text-gray-500 flex items-center gap-2"><i class="fas fa-clock text-gray-700"></i> Опыт</span>
+                                <span class="text-white">${m.experience} лет</span>
+                            </div>
+                            <div class="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest pt-2">
+                                <span class="text-gray-500 flex items-center gap-2"><i class="fas fa-map-marker-alt text-gray-700"></i> Район</span>
+                                <span class="text-white text-right break-words max-w-[60%]">${m.location}</span>
+                            </div>
+                        </div>
+
+                        <a href="https://wa.me/${waPhone}" target="_blank" class="flex items-center justify-center gap-3 w-full py-4 bg-white/5 border border-white/10 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-gold hover:text-black hover:border-gold transition-all group">
+                            <i class="fab fa-whatsapp text-lg text-green-500 group-hover:text-black transition-colors"></i> Написать в WhatsApp
+                        </a>
+                    </div>
+                `}).join('');
             }
         }
 
-        function logoutAdmin() {
-            isAdmin = false;
-            document.getElementById('tab-admin').classList.add('hidden');
-            document.getElementById('admin-status-indicator').classList.add('hidden');
+        // Логика "Другое" в регистрации
+        function toggleCustomCategory() {
+            const select = document.getElementById('reg-category');
+            const customContainer = document.getElementById('custom-cat-container');
+            const customInput = document.getElementById('reg-custom-category');
+            
+            if (select.value === 'Другое') {
+                customContainer.classList.remove('hidden');
+                customInput.required = true;
+                // Анимация появления
+                customContainer.style.opacity = 0;
+                setTimeout(() => { customContainer.style.transition = 'opacity 0.3s'; customContainer.style.opacity = 1; }, 10);
+            } else {
+                customContainer.classList.add('hidden');
+                customInput.required = false;
+                customInput.value = '';
+            }
+        }
+
+        // Обработка регистрации
+        function handleRegistration(e) {
+            e.preventDefault();
+            const phone = document.getElementById('reg-phone').value.replace(/\s/g, ''); // убираем пробелы
+            const categorySelect = document.getElementById('reg-category').value;
+            
+            if(masters.some(m => m.phone.replace(/\s/g, '') === phone)) {
+                showToast('Номер уже зарегистрирован!', 'error');
+                return;
+            }
+
+            const newMaster = {
+                id: Date.now(),
+                name: document.getElementById('reg-name').value.trim(),
+                phone: phone,
+                category: categorySelect,
+                customCategory: categorySelect === 'Другое' ? document.getElementById('reg-custom-category').value.trim() : null,
+                experience: document.getElementById('reg-experience').value,
+                location: document.getElementById('reg-location').value.trim(),
+                passcode: document.getElementById('reg-passcode').value,
+                status: "Свободен"
+            };
+
+            masters.unshift(newMaster);
+            localStorage.setItem('talas_profi_v5_db', JSON.stringify(masters));
+            
+            e.target.reset(); // очистка формы
+            toggleCustomCategory(); // скрываем поле "другое", если было открыто
+            
+            showToast('Профиль успешно создан!');
             switchTab('list');
         }
 
-        function closePasswordModal() {
-            document.getElementById('password-modal').classList.add('hidden');
-            document.getElementById('admin-password').value = '';
+        // Модальное окно статуса
+        function openStatusModal() {
+            const modal = document.getElementById('status-modal');
+            modal.classList.remove('hidden');
+            document.getElementById('status-phone').focus();
         }
 
-        function switchTab(tabId) {
-            if (tabId === 'admin' && !isAdmin) return;
-
-            // Update UI tabs
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active', 'text-white'));
-            document.getElementById('tab-' + tabId).classList.add('active', 'text-white');
-
-            // Toggle sections
-            document.querySelectorAll('section').forEach(sec => sec.classList.add('hidden'));
-            document.getElementById('section-' + tabId).classList.remove('hidden');
-
-            if (tabId === 'list') renderDirectory();
-            if (tabId === 'admin') renderAdmin();
+        function closeStatusModal() {
+            document.getElementById('status-modal').classList.add('hidden');
+            document.getElementById('status-phone').value = '';
+            document.getElementById('status-code').value = '';
         }
 
-        // --- Logic: Registration ---
-        function handleRegistration(e) {
-            e.preventDefault();
-            const now = new Date();
-            const dateStr = now.toLocaleDateString('ru-RU');
+        // Обновление статуса
+        function updateMasterStatus(newStatus) {
+            const phoneInput = document.getElementById('status-phone').value.replace(/\s/g, '');
+            const codeInput = document.getElementById('status-code').value;
 
-            const master = {
-                id: Date.now(),
-                date: dateStr,
-                name: document.getElementById('reg-name').value,
-                phone: document.getElementById('reg-phone').value,
-                category: document.getElementById('reg-category').value,
-                experience: document.getElementById('reg-experience').value,
-                location: document.getElementById('reg-location').value,
-                status: 'Свободен'
-            };
+            if(!phoneInput || !codeInput) {
+                showToast('Заполните телефон и код', 'error');
+                return;
+            }
 
-            masters.unshift(master);
-            save();
-            document.getElementById('master-form').classList.add('hidden');
-            document.getElementById('success-message').classList.remove('hidden');
-        }
+            const masterIdx = masters.findIndex(m => m.phone.replace(/\s/g, '') === phoneInput && m.passcode === codeInput);
 
-        // --- Logic: Public View ---
-        function renderDirectory(data = masters) {
-            const grid = document.getElementById('public-grid');
-            document.getElementById('public-count').innerText = data.length;
-
-            grid.innerHTML = data.map(m => `
-                <div class="master-card bg-dark-card p-8 rounded-3xl group">
-                    <div class="flex justify-between items-start mb-8">
-                        <div class="text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full border ${m.status === 'Свободен' ? 'border-green-500/30 text-green-500' : 'border-red-500/30 text-red-500'}">
-                            ${m.status}
-                        </div>
-                        <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                            <i class="fas fa-arrow-right text-[10px] text-gold"></i>
-                        </div>
-                    </div>
-                    
-                    <h4 class="text-2xl font-black mb-1 italic tracking-tighter leading-tight">${m.name}</h4>
-                    <span class="gold-text text-[10px] font-black uppercase tracking-[0.2em] block mb-6">${m.category}</span>
-                    
-                    <div class="grid grid-cols-2 gap-4 mb-8">
-                        <div class="bg-white/[0.02] p-3 rounded-xl">
-                            <span class="block text-[8px] text-gray-600 uppercase font-black mb-1">Стаж</span>
-                            <span class="text-xs font-bold">${m.experience} лет</span>
-                        </div>
-                        <div class="bg-white/[0.02] p-3 rounded-xl">
-                            <span class="block text-[8px] text-gray-600 uppercase font-black mb-1">Локация</span>
-                            <span class="text-xs font-bold truncate">${m.location}</span>
-                        </div>
-                    </div>
-
-                    <a href="https://wa.me/996${m.phone.replace(/^0/, '')}" target="_blank" class="flex items-center justify-center gap-3 w-full py-5 bg-white/5 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-green-600 hover:text-white transition-all">
-                        <i class="fab fa-whatsapp text-lg"></i> Написать мастеру
-                    </a>
-                </div>
-            `).join('');
-        }
-
-        function filterDirectory() {
-            const q = document.getElementById('public-search').value.toLowerCase();
-            const filtered = masters.filter(m => 
-                m.name.toLowerCase().includes(q) || 
-                m.category.toLowerCase().includes(q) || 
-                m.location.toLowerCase().includes(q)
-            );
-            renderDirectory(filtered);
-        }
-
-        // --- Logic: Admin Actions ---
-        function renderAdmin() {
-            const tbody = document.getElementById('admin-table-body');
-            tbody.innerHTML = masters.map(m => `
-                <tr class="hover:bg-white/[0.01] transition-colors">
-                    <td class="p-8">
-                        <div class="font-black text-sm text-white">${m.name}</div>
-                        <div class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mt-1">${m.phone}</div>
-                    </td>
-                    <td class="p-8">
-                        <span class="text-gold text-[10px] font-black uppercase tracking-widest">${m.category}</span>
-                    </td>
-                    <td class="p-8 text-center">
-                        <span class="text-xs font-bold text-gray-400">${m.experience} лет</span>
-                    </td>
-                    <td class="p-8">
-                        <span class="text-[10px] font-black uppercase text-gray-500">${m.location}</span>
-                    </td>
-                    <td class="p-8">
-                        <div class="flex items-center gap-2">
-                            <div class="w-2 h-2 rounded-full ${m.status === 'Свободен' ? 'bg-green-500' : 'bg-red-500'}"></div>
-                            <span class="text-[10px] font-black uppercase text-gray-300">${m.status}</span>
-                        </div>
-                    </td>
-                    <td class="p-8 text-right">
-                        <div class="flex justify-end gap-3">
-                            <button onclick="openEdit(${m.id})" class="w-12 h-12 rounded-xl bg-white/5 text-gold hover:bg-gold hover:text-black transition-all flex items-center justify-center">
-                                <i class="fas fa-edit text-sm"></i>
-                            </button>
-                            <button onclick="deleteMaster(${m.id})" class="w-12 h-12 rounded-xl bg-red-600/10 text-red-600 hover:bg-red-600 hover:text-white transition-all flex items-center justify-center">
-                                <i class="fas fa-trash text-sm"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        function openEdit(id) {
-            const m = masters.find(item => item.id === id);
-            if (!m) return;
-            document.getElementById('edit-id').value = m.id;
-            document.getElementById('edit-name').value = m.name;
-            document.getElementById('edit-phone').value = m.phone;
-            document.getElementById('edit-category').value = m.category;
-            document.getElementById('edit-status').value = m.status;
-            document.getElementById('edit-modal').classList.remove('hidden');
-        }
-
-        function closeEditModal() {
-            document.getElementById('edit-modal').classList.add('hidden');
-        }
-
-        function saveMasterChanges(e) {
-            e.preventDefault();
-            const id = parseInt(document.getElementById('edit-id').value);
-            const idx = masters.findIndex(m => m.id === id);
-            
-            if (idx !== -1) {
-                masters[idx].name = document.getElementById('edit-name').value;
-                masters[idx].phone = document.getElementById('edit-phone').value;
-                masters[idx].category = document.getElementById('edit-category').value;
-                masters[idx].status = document.getElementById('edit-status').value;
-                save();
-                renderAdmin();
-                closeEditModal();
+            if (masterIdx !== -1) {
+                masters[masterIdx].status = newStatus;
+                localStorage.setItem('talas_profi_v5_db', JSON.stringify(masters));
+                showToast(`Статус обновлен: ${newStatus}`, 'success');
+                closeStatusModal();
+                if(document.getElementById('section-list').classList.contains('hidden') === false) {
+                    filterData(); // обновляем сетку если мы на странице списка
+                }
+            } else {
+                showToast('Неверный телефон или PIN-код', 'error');
             }
         }
 
-        function deleteMaster(id) {
-            if (confirm('ВНИМАНИЕ: Данные мастера будут удалены навсегда. Продолжить?')) {
-                masters = masters.filter(m => m.id !== id);
-                save();
-                renderAdmin();
-            }
-        }
-
-        // Init
-        window.onload = () => { renderDirectory(); };
-        document.getElementById('admin-password').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') verifyPassword();
+        // Закрытие модального окна при клике вне его
+        document.getElementById('status-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeStatusModal();
         });
+
+        // Первичный рендер
+        window.onload = () => { renderGrid(masters); };
     </script>
 </body>
 </html>
