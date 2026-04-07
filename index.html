@@ -154,7 +154,157 @@
     <div class="tp-hero-media"></div>
 
 </section>
-  
+
+
+<section class="tp-services-section">
+    <style>
+        /* ИЗОЛИРОВАННЫЕ СТИЛИ БЛОКА УСЛУГ */
+        .tp-services-section {
+            background-color: #000000;
+            padding: 100px 20px; /* Отступы 100px сверху и снизу */
+            font-family: 'Arial', sans-serif;
+            border-bottom: 1px solid #111;
+        }
+
+        .tp-services-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;       /* В одну линию на ПК */
+            gap: 50px;           /* Промежуток между текстом и услугами */
+            align-items: center; /* Центрирование по высоте */
+        }
+
+        /* ЛЕВАЯ ЧАСТЬ: ТЕКСТ */
+        .tp-services-head {
+            flex: 0 0 350px;     /* Фиксированная ширина текста на ПК */
+        }
+
+        .tp-services-head h2 {
+            color: #FFFFFF;
+            font-size: 42px;
+            font-weight: 900;
+            text-transform: uppercase;
+            margin: 0 0 15px 0;
+            line-height: 1.1;
+        }
+
+        .tp-services-head h2 span {
+            color: #FBBF24;     /* Твое золото */
+        }
+
+        .tp-services-head p {
+            color: #555555;
+            font-size: 15px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* ПРАВАЯ ЧАСТЬ: СЕТКА 5 В РЯД */
+        .tp-services-grid {
+            flex: 1;            /* Занимает всё свободное место справа */
+            display: grid;
+            grid-template-columns: repeat(5, 1fr); /* Ровно 5 колонок */
+            gap: 12px;
+        }
+
+        /* КАРТОЧКА УСЛУГИ (СПЛЮЩЕННАЯ) */
+        .tp-service-card {
+            background-color: #080808;
+            border: 1px solid #1a1a1a;
+            min-height: 90px;    /* Высота прямоугольника (регулируй тут) */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 10px 5px;
+            text-decoration: none;
+            transition: 0.3s ease;
+        }
+
+        .tp-service-card:hover {
+            border-color: #FBBF24;
+            background-color: #0c0c0c;
+            transform: translateY(-3px);
+        }
+
+        .tp-service-card span {
+            color: #FFFFFF;
+            font-size: 11px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* АДАПТАЦИЯ ДЛЯ ТЕЛЕФОНА (📱) */
+        @media (max-width: 1024px) {
+            .tp-services-container {
+                flex-direction: column; /* Текст сверху, услуги снизу */
+                text-align: center;
+                gap: 40px;
+                padding: 60px 15px;
+            }
+
+            .tp-services-head {
+                flex: none;
+                width: 100%;
+            }
+
+            /* НА ТЕЛЕФОНЕ 5 В РЯД (КОМПАКТНО) */
+            .tp-services-grid {
+                width: 100%;
+                grid-template-columns: repeat(5, 1fr); 
+                gap: 6px;
+            }
+
+            .tp-service-card {
+                min-height: 65px; /* Еще более сплющенные на мобилке */
+            }
+
+            .tp-service-card span {
+                font-size: 8px;   /* Текст мельче, чтобы влезло */
+            }
+
+            .tp-services-head h2 {
+                font-size: 32px;
+            }
+        }
+    </style>
+
+    <div class="tp-services-container">
+        
+        <div class="tp-services-head">
+            <h2>Наши <br> <span>Услуги</span></h2>
+            <p>Профессиональный сервис для вашего дома и бизнеса в Таласе.</p>
+        </div>
+
+        <div class="tp-services-grid">
+            
+            <a href="https://wa.me/996755000228?text=Электрика" class="tp-service-card">
+                <span>Электрика</span>
+            </a>
+
+            <a href="https://wa.me/996755000228?text=Сантехника" class="tp-service-card">
+                <span>Сантехника</span>
+            </a>
+
+            <a href="https://wa.me/996755000228?text=Кирпич" class="tp-service-card">
+                <span>Кирпич</span>
+            </a>
+
+            <a href="https://wa.me/996755000228?text=Обои" class="tp-service-card">
+                <span>Обои</span>
+            </a>
+
+            <a href="https://wa.me/996755000228?text=Клининг" class="tp-service-card">
+                <span>Клининг</span>
+            </a>
+
+        </div>
+
+    </div>
+</section>
+    
+    
   
 </body>
 </html>
