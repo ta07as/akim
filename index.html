@@ -11,6 +11,9 @@
 </head>
 <body>
 
+
+    
+
    <section class="tp-hero-section">
     <style>
         /* Изолированные стили только для этого блока */
@@ -155,6 +158,14 @@
 
 </section>
 
+
+
+
+
+
+
+
+    
 
 <section class="tp-services-section">
     <style>
@@ -303,6 +314,252 @@
 
     </div>
 </section>
+
+
+
+
+
+
+
+
+
+    
+
+
+    <section class="tp-portfolio-section">
+    <style>
+        /* ИЗОЛИРОВАННЫЕ СТИЛИ ПОРТФОЛИО И КОМАНДЫ */
+        .tp-portfolio-section {
+            background-color: #000000;
+            padding: 100px 20px;
+            font-family: 'Arial', sans-serif;
+            border-bottom: 2px solid #111;
+        }
+
+        .tp-portfolio-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column; /* Все элементы друг под другом */
+            align-items: center;    /* Центрирование контента (вкл. кнопку) */
+        }
+
+        /* Заголовок блока */
+        .tp-port-head {
+            margin-bottom: 50px;
+            text-align: left;
+            width: 100%; /* Заголовок выравнивается по левому краю контейнера */
+        }
+
+        .tp-port-head h2 {
+            color: #FFFFFF;
+            font-size: 48px;
+            font-weight: 900;
+            text-transform: uppercase;
+            margin: 0;
+            line-height: 1;
+        }
+
+        .tp-port-head h2 span {
+            color: #FBBF24; /* Твое золото */
+        }
+
+        .tp-port-head p {
+            color: #555;
+            font-size: 15px;
+            margin-top: 15px;
+            letter-spacing: 1px;
+            max-width: 500px;
+        }
+
+        /* СЕТКА РАБОТ: 4 В РЯД */
+        .tp-port-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* Ровно 4 колонки на ПК */
+            gap: 15px;
+            width: 100%; /* Грид на всю ширину */
+            margin-bottom: 60px; /* Расстояние до кнопки */
+        }
+
+        /* КАРТОЧКА ОБЪЕКТА (КВАДРАТ) */
+        .tp-port-item {
+            position: relative;
+            aspect-ratio: 1 / 1; /* ДЕЛАЕТ БЛОК СТРОГО КВАДРАТНЫМ */
+            overflow: hidden;
+            background-color: #080808;
+            border: 1px solid #1a1a1a;
+            text-decoration: none;
+            display: block;
+        }
+
+        /* ФОТО ОБЪЕКТА */
+        .tp-port-img {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.5s ease;
+        }
+
+        /* ЭФФЕКТЫ ПРИ НАВЕДЕНИИ (ХОВЕР) */
+        .tp-port-item:hover .tp-port-img {
+            transform: scale(1.1);
+        }
+
+        .tp-port-item:hover .tp-port-overlay {
+            transform: translateY(0);
+            opacity: 1;
+            background: linear-gradient(to top, rgba(251, 191, 36, 0.4), transparent);
+        }
+
+        /* Темная плашка с подписью снизу */
+        .tp-port-overlay {
+            position: absolute;
+            bottom: 0; left: 0; width: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.95), transparent);
+            padding: 20px;
+            box-sizing: border-box;
+            transform: translateY(10px);
+            transition: 0.3s ease-out;
+            opacity: 0.8;
+        }
+
+        .tp-port-name {
+            color: #FFFFFF;
+            font-size: 14px;
+            font-weight: 900;
+            text-transform: uppercase;
+            display: block;
+        }
+
+        .tp-port-location {
+            color: #FBBF24;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 3px;
+            display: block;
+        }
+
+        /* ============================================================
+           КНОПКА "ДРУГИЕ ФОТО КОМАНДЫ"
+           ============================================================ */
+        .tp-team-btn {
+            display: inline-block;
+            border: 2px solid #FBBF24; /* Золотая рамка */
+            color: #FBBF24;            /* Золотой текст */
+            background-color: transparent;
+            padding: 20px 45px;
+            text-decoration: none;
+            font-weight: 900;
+            text-transform: uppercase;
+            font-size: 14px;
+            letter-spacing: 2px;
+            width: fit-content;        /* Ширина по тексту */
+            text-align: center;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            border-radius: 2px;
+        }
+
+        /* Эффект блика на кнопке */
+        .tp-team-btn::after {
+            content: ''; position: absolute; top: 0; height: 100%; width: 50px;
+            background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.3), transparent);
+            transform: skewX(-45deg); 
+            left: -100%;
+            transition: 0.6s ease;
+        }
+
+        /* Эффект при наведении на кнопку */
+        .tp-team-btn:hover {
+            background-color: #FBBF24;
+            color: #000000;
+            box-shadow: 0 0 15px rgba(251, 191, 36, 0.5);
+        }
+
+        .tp-team-btn:hover::after {
+            left: 100%; /* Блик пролетает при наведении */
+        }
+
+        /* ============================================================
+           АДАПТАЦИЯ ПОД ТЕЛЕФОН (📱)
+           ============================================================ */
+        @media (max-width: 1024px) {
+            .tp-port-grid { grid-template-columns: repeat(2, 1fr); } /* 2 в ряд на планшетах */
+        }
+
+        @media (max-width: 600px) {
+            .tp-portfolio-section { padding: 60px 10px; }
+            .tp-port-head h2 { font-size: 32px; text-align: center; }
+            .tp-port-head p { text-align: center; margin-left: auto; margin-right: auto; }
+
+            .tp-port-grid { 
+                grid-template-columns: repeat(2, 1fr); /* 2 в ряд на мобилке для стиля */
+                gap: 8px; 
+            } 
+            .tp-port-name { font-size: 12px; }
+            .tp-team-btn { width: 100%; box-sizing: border-box; } /* Кнопка на всю ширину */
+        }
+    </style>
+
+    <div class="tp-portfolio-container">
+        
+        <div class="tp-port-head">
+            <h2>Наши <br> <span>Работы</span></h2>
+            <p>Примеры реализованных проектов Talas_profi.</p>
+        </div>
+
+        <div class="tp-port-grid">
+            
+            <a href="https://wa.me/996755000228?text=Фото Электромонтажа" class="tp-port-item">
+                <div class="tp-port-img" style="background-image: url('https://images.unsplash.com/photo-1621905251918-48416bd8575a?auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="tp-port-overlay">
+                    <span class="tp-port-location">Талас</span>
+                    <span class="tp-port-name">Электромонтаж</span>
+                </div>
+            </a>
+
+            <a href="https://wa.me/996755000228?text=Фото Сантехники" class="tp-port-item">
+                <div class="tp-port-img" style="background-image: url('https://images.unsplash.com/photo-1558402529-d26c8a6f184e?auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="tp-port-overlay">
+                    <span class="tp-port-location">Бакай-Ата</span>
+                    <span class="tp-port-name">Сантехника</span>
+                </div>
+            </a>
+
+            <a href="https://wa.me/996755000228?text=Фото Кирпичной кладки" class="tp-port-item">
+                <div class="tp-port-img" style="background-image: url('https://images.unsplash.com/photo-1541888946425-d81bb19480c5?auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="tp-port-overlay">
+                    <span class="tp-port-location">Талас</span>
+                    <span class="tp-port-name">Кирпичная кладка</span>
+                </div>
+            </a>
+
+            <a href="https://wa.me/996755000228?text=Фото Ремонта стен" class="tp-port-item">
+                <div class="tp-port-img" style="background-image: url('https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="tp-port-overlay">
+                    <span class="tp-port-location">Талас</span>
+                    <span class="tp-port-name">Ремонт стен</span>
+                </div>
+            </a>
+
+        </div>
+
+        <a href="https://wa.me/996755000228?text=Хочу посмотреть фото вашей команды" class="tp-team-btn">
+            Фото команды Talas_profi
+        </a>
+
+    </div>
+</section>
+
+
+
+
+
+
+
     
     
   
