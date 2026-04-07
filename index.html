@@ -327,44 +327,6 @@
 
             <a href="https://wa.me/996755000228?text=Клининг" class="tp-service-card">
                 <span>Клининг</span>
-            </a><a href="https://wa.me/996755000228?text=Электрика" class="tp-service-card">
-                <span>Электрика</span>
-            </a>
-
-            <a href="https://wa.me/996755000228?text=Сантехника" class="tp-service-card">
-                <span>Сантехника</span>
-            </a>
-
-            <a href="https://wa.me/996755000228?text=Кирпич" class="tp-service-card">
-                <span>Кирпич</span>
-            </a>
-
-            <a href="https://wa.me/996755000228?text=Обои" class="tp-service-card">
-                <span>Обои</span>
-            </a>
-
-            <a href="https://wa.me/996755000228?text=Клининг" class="tp-service-card">
-                <span>Клининг</span>
-            </a><a href="https://wa.me/996755000228?text=Электрика" class="tp-service-card">
-                <span>Электрика</span>
-            </a>
-
-            <a href="https://wa.me/996755000228?text=Сантехника" class="tp-service-card">
-                <span>Сантехника</span>
-            </a>
-
-            <a href="https://wa.me/996755000228?text=Кирпич" class="tp-service-card">
-                <span>Кирпич</span>
-            </a>
-
-            <a href="https://wa.me/996755000228?text=Обои" class="tp-service-card">
-                <span>Обои</span>
-            </a>
-
-            <a href="https://wa.me/996755000228?text=Клининг" class="tp-service-card">
-                <span>Клининг</span>
-            </a>
-
         </div>
 
     </div>
@@ -378,10 +340,14 @@
 
 
 
+
+
+
+
     
 
 
-    <section class="tp-portfolio-section">
+<section class="tp-portfolio-section">
     <style>
         /* ИЗОЛИРОВАННЫЕ СТИЛИ ПОРТФОЛИО И КОМАНДЫ */
         .tp-portfolio-section {
@@ -395,15 +361,15 @@
             max-width: 1400px;
             margin: 0 auto;
             display: flex;
-            flex-direction: column; /* Все элементы друг под другом */
-            align-items: center;    /* Центрирование контента (вкл. кнопку) */
+            flex-direction: column;
+            align-items: center;    /* Центрирует всё содержимое контейнера */
         }
 
-        /* Заголовок блока */
+        /* ЗАГОЛОВОК БЛОКА - ТЕПЕРЬ ПО ЦЕНТРУ */
         .tp-port-head {
-            margin-bottom: 50px;
-            text-align: left;
-            width: 100%; /* Заголовок выравнивается по левому краю контейнера */
+            margin-bottom: 60px;
+            text-align: center;     /* ТЕКСТ ПО ЦЕНТРУ */
+            width: 100%; 
         }
 
         .tp-port-head h2 {
@@ -416,7 +382,7 @@
         }
 
         .tp-port-head h2 span {
-            color: #FBBF24; /* Твое золото */
+            color: #FBBF24;
         }
 
         .tp-port-head p {
@@ -424,22 +390,23 @@
             font-size: 15px;
             margin-top: 15px;
             letter-spacing: 1px;
+            margin-left: auto;      /* Центрирование текстового блока */
+            margin-right: auto;     /* Центрирование текстового блока */
             max-width: 500px;
         }
 
-        /* СЕТКА РАБОТ: 4 В РЯД */
+        /* СЕТКА РАБОТ */
         .tp-port-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr); /* Ровно 4 колонки на ПК */
+            grid-template-columns: repeat(4, 1fr);
             gap: 15px;
-            width: 100%; /* Грид на всю ширину */
-            margin-bottom: 60px; /* Расстояние до кнопки */
+            width: 100%;
+            margin-bottom: 60px;
         }
 
-        /* КАРТОЧКА ОБЪЕКТА (КВАДРАТ) */
         .tp-port-item {
             position: relative;
-            aspect-ratio: 1 / 1; /* ДЕЛАЕТ БЛОК СТРОГО КВАДРАТНЫМ */
+            aspect-ratio: 1 / 1;
             overflow: hidden;
             background-color: #080808;
             border: 1px solid #1a1a1a;
@@ -447,7 +414,6 @@
             display: block;
         }
 
-        /* ФОТО ОБЪЕКТА */
         .tp-port-img {
             width: 100%;
             height: 100%;
@@ -456,18 +422,10 @@
             transition: transform 0.5s ease;
         }
 
-        /* ЭФФЕКТЫ ПРИ НАВЕДЕНИИ (ХОВЕР) */
         .tp-port-item:hover .tp-port-img {
             transform: scale(1.1);
         }
 
-        .tp-port-item:hover .tp-port-overlay {
-            transform: translateY(0);
-            opacity: 1;
-            background: linear-gradient(to top, rgba(251, 191, 36, 0.4), transparent);
-        }
-
-        /* Темная плашка с подписью снизу */
         .tp-port-overlay {
             position: absolute;
             bottom: 0; left: 0; width: 100%;
@@ -477,6 +435,12 @@
             transform: translateY(10px);
             transition: 0.3s ease-out;
             opacity: 0.8;
+        }
+
+        .tp-port-item:hover .tp-port-overlay {
+            transform: translateY(0);
+            opacity: 1;
+            background: linear-gradient(to top, rgba(251, 191, 36, 0.4), transparent);
         }
 
         .tp-port-name {
@@ -496,13 +460,11 @@
             display: block;
         }
 
-        /* ============================================================
-           КНОПКА "ДРУГИЕ ФОТО КОМАНДЫ"
-           ============================================================ */
+        /* КНОПКА */
         .tp-team-btn {
             display: inline-block;
-            border: 2px solid #FBBF24; /* Золотая рамка */
-            color: #FBBF24;            /* Золотой текст */
+            border: 2px solid #FBBF24;
+            color: #FBBF24;
             background-color: transparent;
             padding: 20px 45px;
             text-decoration: none;
@@ -510,52 +472,28 @@
             text-transform: uppercase;
             font-size: 14px;
             letter-spacing: 2px;
-            width: fit-content;        /* Ширина по тексту */
-            text-align: center;
-            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: 0.3s;
             position: relative;
             overflow: hidden;
             border-radius: 2px;
         }
 
-        /* Эффект блика на кнопке */
-        .tp-team-btn::after {
-            content: ''; position: absolute; top: 0; height: 100%; width: 50px;
-            background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.3), transparent);
-            transform: skewX(-45deg); 
-            left: -100%;
-            transition: 0.6s ease;
-        }
-
-        /* Эффект при наведении на кнопку */
         .tp-team-btn:hover {
             background-color: #FBBF24;
             color: #000000;
             box-shadow: 0 0 15px rgba(251, 191, 36, 0.5);
         }
 
-        .tp-team-btn:hover::after {
-            left: 100%; /* Блик пролетает при наведении */
-        }
-
-        /* ============================================================
-           АДАПТАЦИЯ ПОД ТЕЛЕФОН (📱)
-           ============================================================ */
+        /* АДАПТАЦИЯ */
         @media (max-width: 1024px) {
-            .tp-port-grid { grid-template-columns: repeat(2, 1fr); } /* 2 в ряд на планшетах */
+            .tp-port-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
         @media (max-width: 600px) {
             .tp-portfolio-section { padding: 60px 10px; }
-            .tp-port-head h2 { font-size: 32px; text-align: center; }
-            .tp-port-head p { text-align: center; margin-left: auto; margin-right: auto; }
-
-            .tp-port-grid { 
-                grid-template-columns: repeat(2, 1fr); /* 2 в ряд на мобилке для стиля */
-                gap: 8px; 
-            } 
-            .tp-port-name { font-size: 12px; }
-            .tp-team-btn { width: 100%; box-sizing: border-box; } /* Кнопка на всю ширину */
+            .tp-port-head h2 { font-size: 32px; }
+            .tp-port-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+            .tp-team-btn { width: 100%; box-sizing: border-box; }
         }
     </style>
 
@@ -608,6 +546,7 @@
 
     </div>
 </section>
+
 
 
 
