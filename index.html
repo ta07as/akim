@@ -196,156 +196,145 @@
 
     
     <section class="tp-workshop-mini">
-    <style>
-        .tp-workshop-mini {
-            background-color: #000000;
-            background-image: radial-gradient(#111 1px, transparent 1px);
-            background-size: 20px 20px;
-            padding: 60px 10px;
-            font-family: 'Roboto Condensed', sans-serif;
-            color: #FFFFFF;
-            overflow: hidden;
-        }
+   <style>
+    .tp-workshop-mini {
+        background-color: #000000;
+        background-image: radial-gradient(#111 1px, transparent 1px);
+        background-size: 20px 20px;
+        padding: 100px 20px; /* Увеличили отступы сверху/снизу */
+        font-family: 'Roboto Condensed', sans-serif;
+        color: #FFFFFF;
+        overflow: hidden;
+    }
 
-        .tp-mini-container {
-            max-width: 1100px;
-            margin: 0 auto;
-        }
+    .tp-mini-container {
+        /* ГЛАВНОЕ ИЗМЕНЕНИЕ: расширяем контейнер для ПК */
+        max-width: 1440px; 
+        margin: 0 auto;
+    }
 
-        .tp-mini-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
+    .tp-mini-header {
+        text-align: center;
+        margin-bottom: 60px;
+    }
 
-        .tp-mini-header h2 {
-            font-size: 28px;
-            text-transform: uppercase;
-            font-weight: 900;
-            letter-spacing: 3px;
-            margin: 0;
-            color: #FFFFFF;
-        }
+    .tp-mini-header h2 {
+        font-size: clamp(24px, 4vw, 42px); /* Заголовок станет крупнее на ПК */
+        text-transform: uppercase;
+        font-weight: 900;
+        letter-spacing: 5px;
+        margin: 0;
+        color: #FFFFFF;
+    }
 
-        .tp-mini-header h2 span {
-            color: #FBBF24;
-        }
+    .tp-mini-header h2 span {
+        color: #FBBF24;
+    }
 
-        /* СЕТКА: 5 В РЯД НА ПК */
+    /* СЕТКА: На ПК карточки теперь будут солидного размера */
+    .tp-mini-shelves {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 25px; /* Увеличили зазоры между жетонами */
+        perspective: 1200px;
+    }
+
+    .tp-mini-shelf-item {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* ЦЕПИ */
+    .tp-mini-shelf-item::before,
+    .tp-mini-shelf-item::after {
+        content: '';
+        position: absolute;
+        top: -15px;
+        width: 3px;
+        height: 40px; /* Удлинили цепи для солидности */
+        background: linear-gradient(#444, #111);
+        border-radius: 2px;
+        z-index: 1;
+    }
+
+    .tp-mini-shelf-item::before { left: 20%; }
+    .tp-mini-shelf-item::after { right: 20%; }
+
+    /* ЖЕТОН (ПЛИТКА) */
+    .tp-mini-plate {
+        background: #0a0a0a;
+        border: 1px solid #1a1a1a;
+        width: 100%;
+        padding: 40px 15px; /* Сделали жетоны выше и просторнее */
+        margin-top: 25px;
+        text-align: center;
+        box-sizing: border-box;
+        position: relative;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+        transform-origin: top center;
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+
+    @keyframes miniSwing {
+        0% { transform: rotateX(0deg); }
+        25% { transform: rotateX(-15deg); }
+        50% { transform: rotateX(10deg); }
+        75% { transform: rotateX(-5deg); }
+        100% { transform: rotateX(0deg); }
+    }
+
+    .tp-mini-shelf-item:hover .tp-mini-plate {
+        animation: miniSwing 0.8s ease-out;
+        border-color: #FBBF24;
+        background: #0d0d0d;
+        box-shadow: 0 20px 50px rgba(251, 191, 36, 0.15);
+    }
+
+    .tp-mini-icon {
+        font-size: 45px; /* Иконки стали больше на ПК */
+        margin-bottom: 15px;
+        display: block;
+        filter: grayscale(1);
+        transition: 0.4s;
+    }
+
+    .tp-mini-shelf-item:hover .tp-mini-icon {
+        filter: grayscale(0) drop-shadow(0 0 10px #FBBF24);
+        transform: scale(1.2);
+    }
+
+    .tp-mini-plate h3 {
+        font-size: 14px; /* Текст стал читабельнее */
+        text-transform: uppercase;
+        font-weight: 800;
+        margin: 0;
+        color: #555;
+        letter-spacing: 1.5px;
+        transition: 0.3s;
+    }
+
+    .tp-mini-shelf-item:hover h3 {
+        color: #FBBF24;
+    }
+
+    /* АДАПТИВ ДЛЯ МОБИЛОК (оставляем твою логику, она хорошая) */
+    @media (max-width: 800px) {
         .tp-mini-shelves {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 12px;
-            perspective: 800px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
         }
+        .tp-mini-plate { padding: 25px 5px; }
+        .tp-mini-icon { font-size: 30px; }
+    }
 
-        .tp-mini-shelf-item {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+    @media (max-width: 500px) {
+        .tp-mini-shelves {
+            grid-template-columns: repeat(2, 1fr); /* На совсем маленьких лучше по 2 в ряд */
         }
-
-        /* ЦЕПИ */
-        .tp-mini-shelf-item::before,
-        .tp-mini-shelf-item::after {
-            content: '';
-            position: absolute;
-            top: -12px;
-            width: 3px;
-            height: 30px;
-            background: linear-gradient(#444, #111);
-            border-radius: 2px;
-            z-index: 1;
-        }
-
-        .tp-mini-shelf-item::before { left: 25%; }
-        .tp-mini-shelf-item::after { right: 25%; }
-
-        /* ЖЕТОН */
-        .tp-mini-plate {
-            background: #0a0a0a;
-            border: 1px solid #1a1a1a;
-            width: 100%;
-            padding: 20px 5px;
-            margin-top: 18px;
-            text-align: center;
-            box-sizing: border-box;
-            position: relative;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.5);
-            transform-origin: top center;
-            transition: all 0.3s ease;
-        }
-
-        /* АНИМАЦИЯ КАЧАНИЯ */
-        @keyframes miniSwing {
-            0% { transform: rotateX(0deg); }
-            25% { transform: rotateX(-12deg); }
-            50% { transform: rotateX(8deg); }
-            75% { transform: rotateX(-4deg); }
-            100% { transform: rotateX(0deg); }
-        }
-
-        .tp-mini-shelf-item:hover .tp-mini-plate {
-            animation: miniSwing 0.8s ease-out;
-            border-color: #FBBF24;
-            background: #111;
-        }
-
-        .tp-mini-icon {
-            font-size: 26px;
-            margin-bottom: 8px;
-            display: block;
-            filter: grayscale(1);
-            transition: 0.3s;
-        }
-
-        .tp-mini-shelf-item:hover .tp-mini-icon {
-            filter: grayscale(0);
-            transform: scale(1.1);
-        }
-
-        .tp-mini-plate h3 {
-            font-size: 11px;
-            text-transform: uppercase;
-            font-weight: 700;
-            margin: 0;
-            color: #777;
-            letter-spacing: 0.5px;
-            transition: 0.3s;
-        }
-
-        .tp-mini-shelf-item:hover h3 {
-            color: #FBBF24;
-        }
-
-        /* АДАПТИВ ДЛЯ ТЕЛЕФОНА: ПО 3 В РЯД */
-        @media (max-width: 600px) {
-            .tp-mini-shelves {
-                grid-template-columns: repeat(3, 1fr); /* 3 колонки */
-                gap: 8px;
-            }
-
-            .tp-mini-plate {
-                padding: 15px 5px;
-            }
-
-            .tp-mini-icon {
-                font-size: 22px;
-            }
-
-            .tp-mini-plate h3 {
-                font-size: 9px;
-                letter-spacing: 0;
-            }
-
-            /* Делаем цепи чуть тоньше для мобил */
-            .tp-mini-shelf-item::before,
-            .tp-mini-shelf-item::after {
-                height: 25px;
-                width: 2px;
-            }
-        }
-    </style>
+    }
+</style>
 
     <div class="tp-mini-container">
         <div class="tp-mini-header">
@@ -408,187 +397,150 @@
 
 
     <section class="tp-why-us-mini">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Exo+2:wght@400;800&display=swap');
+   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Exo+2:wght@400;800&display=swap');
 
-        .tp-why-us-mini {
-            background-color: #000;
-            padding: 80px 20px;
-            color: #fff;
-            font-family: 'Exo 2', sans-serif;
-            position: relative;
-            overflow: hidden;
-            background: 
-                radial-gradient(circle at 10% 10%, #0a0a0a 0%, #000 50%),
-                radial-gradient(circle at 90% 90%, #080808 0%, #000 50%);
-            perspective: 2000px;
-        }
+    .tp-why-us-mini {
+        background-color: #000;
+        padding: 120px 20px; /* Больше пространства */
+        color: #fff;
+        font-family: 'Exo 2', sans-serif;
+        position: relative;
+        overflow: hidden;
+        background: 
+            radial-gradient(circle at 10% 10%, #0a0a0a 0%, #000 50%),
+            radial-gradient(circle at 90% 90%, #080808 0%, #000 50%);
+        perspective: 2000px;
+    }
 
-        .tp-mini-container {
-            max-width: 800px;
-            margin: 0 auto;
-            position: relative;
-        }
+    .tp-mini-container {
+        /* ГЛАВНОЕ: Расширяем контейнер для ПК */
+        max-width: 1440px; 
+        margin: 0 auto;
+        position: relative;
+    }
 
-        .tp-mini-header {
-            text-align: left;
-            margin-bottom: 50px;
-            border-left: 4px solid #FBBF24;
-            padding-left: 15px;
-        }
+    .tp-mini-header {
+        text-align: center; /* Центрируем заголовок на ПК для баланса */
+        margin-bottom: 80px;
+        border-left: none;
+        padding-left: 0;
+    }
 
-        .tp-mini-header h2 {
-            font-family: 'Syncopate', sans-serif;
-            font-size: clamp(20px, 4vw, 32px);
-            text-transform: uppercase;
-            margin: 0;
-            letter-spacing: 2px;
-            color: #fff;
-        }
+    .tp-mini-header h2 {
+        font-family: 'Syncopate', sans-serif;
+        font-size: clamp(26px, 5vw, 48px); /* Крупный заголовок */
+        text-transform: uppercase;
+        margin: 0;
+        letter-spacing: 5px;
+        color: #fff;
+    }
 
-        /* ЦЕНТРАЛЬНЫЙ ЛУЧ */
-        .tp-timeline {
-            position: relative;
-            padding-left: 30px;
-        }
+    .tp-mini-header h2 span { color: #FBBF24; }
 
-        .tp-timeline::before {
-            content: '';
-            position: absolute;
-            left: 0; top: 0; width: 2px; height: 100%;
-            background: rgba(251, 191, 36, 0.1);
-        }
+    /* СЕТКА ДЛЯ ПК: 2 ПУНКТА В РЯД */
+    .tp-timeline-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px 100px;
+        position: relative;
+    }
 
-        /* БЕГУЩИЙ ИМПУЛЬС */
-        .tp-timeline::after {
-            content: '';
-            position: absolute;
-            left: -1px; top: 0; width: 4px; height: 100px;
-            background: linear-gradient(to bottom, transparent, #FBBF24, transparent);
-            box-shadow: 0 0 15px #FBBF24;
-            animation: moveEnergy 4s linear infinite;
-        }
+    /* БЛОК ШАГА */
+    .tp-step-mini {
+        position: relative;
+        padding: 40px;
+        background: rgba(15, 15, 15, 0.5);
+        border: 1px solid rgba(251, 191, 36, 0.05);
+        display: flex;
+        align-items: flex-start;
+        opacity: 0;
+        animation: introFlyIn 1.2s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+        transition: 0.4s;
+    }
 
-        @keyframes moveEnergy {
-            0% { top: -100px; }
-            100% { top: 100%; }
-        }
+    @keyframes introFlyIn {
+        0% { opacity: 0; transform: translateY(50px) scale(0.9); }
+        100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
 
-        /* БЛОК ШАГА */
-        .tp-step-mini {
-            position: relative;
-            margin-bottom: 40px;
-            padding: 20px 0;
-            display: flex;
-            align-items: center;
-        }
+    .tp-step-mini:nth-child(1) { animation-delay: 0.2s; }
+    .tp-step-mini:nth-child(2) { animation-delay: 0.4s; }
+    .tp-step-mini:nth-child(3) { animation-delay: 0.6s; }
+    .tp-step-mini:nth-child(4) { animation-delay: 0.8s; }
 
-        /* АНИМАЦИЯ ПОЯВЛЕНИЯ ИЗ БЕСКОНЕЧНОСТИ */
-        @keyframes introFlyIn {
-            0% { opacity: 0; transform: translateZ(1000px) scale(0.5); }
-            100% { opacity: 1; transform: translateZ(0) scale(1); }
-        }
+    /* НОМЕР-ДИСК (Увеличен для ПК) */
+    .tp-disk-wrapper {
+        width: 70px; height: 70px;
+        margin-right: 30px;
+        flex-shrink: 0;
+        transform-style: preserve-3d;
+        animation: spinNodes 12s linear infinite;
+    }
 
-        .tp-step-mini {
-            opacity: 0; /* Изначально скрыт */
-            animation: introFlyIn 1.2s cubic-bezier(0.19, 1, 0.22, 1) forwards;
-        }
+    @keyframes spinNodes {
+        from { transform: rotateY(0deg); }
+        to { transform: rotateY(360deg); }
+    }
 
-        /* РАЗНОЕ ВРЕМЯ ПОЯВЛЕНИЯ ДЛЯ КАЖДОГО ШАГА */
-        .tp-step-mini:nth-child(1) { animation-delay: 0.3s; }
-        .tp-step-mini:nth-child(2) { animation-delay: 0.6s; }
-        .tp-step-mini:nth-child(3) { animation-delay: 0.9s; }
-        .tp-step-mini:nth-child(4) { animation-delay: 1.2s; }
+    .tp-disk-num {
+        font-family: 'Syncopate', sans-serif;
+        font-size: 24px;
+        font-weight: 900;
+        color: #FBBF24;
+        text-align: center;
+        line-height: 66px;
+        background: #000;
+        border: 2px solid #FBBF24;
+        border-radius: 50%;
+        box-shadow: 0 0 20px rgba(251, 191, 36, 0.2);
+    }
 
-        /* ИКОНКА-ТОЧКА НА ЛИНИИ */
-        .tp-step-dot {
-            position: absolute;
-            left: -36px; top: 50%;
-            width: 12px; height: 12px;
-            background: #000;
-            border: 2px solid #FBBF24;
-            border-radius: 50%;
-            z-index: 10;
-            box-shadow: 0 0 10px #FBBF24;
-            transform: translateY(-50%);
-        }
+    /* КОНТЕНТ */
+    .tp-step-content {
+        flex: 1;
+    }
 
-        /* НОМЕР-ДИСК, КОТОРЫЙ ВРАЩАЕТСЯ */
-        @keyframes spinNodes {
-            from { transform: rotateY(0deg); }
-            to { transform: rotateY(360deg); }
-        }
+    .tp-step-mini h3 {
+        color: #FBBF24;
+        font-size: 18px;
+        text-transform: uppercase;
+        margin: 0 0 15px 0;
+        letter-spacing: 2px;
+        font-weight: 800;
+    }
 
-        .tp-disk-wrapper {
-            width: 50px; height: 50px;
-            position: absolute;
-            left: -55px; top: 50%;
-            transform: translateY(-50%);
-            transform-style: preserve-3d;
-            animation: spinNodes 10s linear infinite; /* Медленное вращение */
-            perspective: 500px;
-        }
+    .tp-step-mini p {
+        font-size: 15px;
+        color: #888;
+        line-height: 1.7;
+        margin: 0;
+    }
 
-        .tp-disk-num {
-            font-family: 'Syncopate', sans-serif;
-            font-size: 16px;
-            font-weight: 900;
-            color: #FBBF24;
-            text-align: center;
-            line-height: 50px;
-            background: #000;
-            border: 2px solid #FBBF24;
-            border-radius: 50%;
-            box-shadow: 0 0 10px rgba(251, 191, 36, 0.3);
-            backface-visibility: hidden; /* Скрываем обратную сторону */
-        }
+    /* ХОВЕР ЭФФЕКТ */
+    .tp-step-mini:hover {
+        border-color: #FBBF24;
+        background: rgba(20, 20, 20, 0.8);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        transform: translateY(-10px);
+    }
 
-        /* КОНТЕНТ ШАГА */
-        .tp-step-content {
-            flex: 1;
-            padding-left: 20px;
-            position: relative;
-        }
+    .tp-step-mini:hover p { color: #ccc; }
 
-        .tp-step-mini h3 {
-            color: #888; /* Тусклый в обычном состоянии */
-            font-size: 14px;
-            text-transform: uppercase;
-            margin: 0 0 8px 0;
-            letter-spacing: 1px;
-            font-weight: 700;
-            transition: 0.3s;
-        }
+    /* АДАПТИВ ДЛЯ ТЕЛЕФОНА */
+    @media (max-width: 1000px) {
+        .tp-timeline-grid { grid-template-columns: 1fr; gap: 30px; }
+        .tp-mini-header { text-align: left; border-left: 4px solid #FBBF24; padding-left: 15px; }
+    }
 
-        .tp-step-mini p {
-            font-size: 13px;
-            color: #555; /* Тусклый в обычном состоянии */
-            line-height: 1.5;
-            margin: 0;
-            transition: 0.3s;
-        }
-
-        /* ЭФФЕКТ СКАНИРОВАНИЯ: ЗАГОРАЕТСЯ ПРИ ХОВЕРЕ (ТАК ЖЕ, КАК НА ПРОЦЕССОРЕ) */
-        .tp-step-mini:hover h3 {
-            color: #fff;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-        }
-
-        .tp-step-mini:hover p {
-            color: #aaa;
-        }
-
-        /* МОБИЛКА */
-        @media (max-width: 600px) {
-            .tp-timeline { padding-left: 25px; }
-            .tp-step-mini { margin-bottom: 25px; padding: 15px 0; }
-            .tp-disk-wrapper { left: -45px; width: 40px; height: 40px; }
-            .tp-disk-num { font-size: 14px; line-height: 40px; }
-            .tp-step-dot { left: -31px; width: 10px; height: 10px; }
-            .tp-step-mini h3 { font-size: 13px; letter-spacing: 0.5px; }
-            .tp-step-mini p { font-size: 11px; }
-        }
-    </style>
+    @media (max-width: 600px) {
+        .tp-step-mini { padding: 25px; }
+        .tp-disk-wrapper { width: 50px; height: 50px; margin-right: 15px; }
+        .tp-disk-num { font-size: 18px; line-height: 46px; }
+        .tp-step-mini h3 { font-size: 15px; }
+        .tp-step-mini p { font-size: 13px; }
+    }
+</style>
 
     <div class="tp-mini-container">
         <div class="tp-mini-header">
@@ -654,133 +606,120 @@
 
     <section class="tp-team-order">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Exo+2:wght@400;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Exo+2:wght@400;800&display=swap');
 
-        .tp-team-order {
-            background-color: #000;
-            padding: 100px 20px;
-            color: #fff;
-            font-family: 'Exo 2', sans-serif;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-        }
+    .tp-team-order {
+        background-color: #000;
+        padding: 120px 20px;
+        color: #fff;
+        font-family: 'Exo 2', sans-serif;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-        /* ДЕКОРАТИВНАЯ СЕТКА */
-        .tp-team-order::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: radial-gradient(circle at 2px 2px, rgba(251, 191, 36, 0.05) 1px, transparent 0);
-            background-size: 24px 24px;
-        }
+    /* ДЕКОРАТИВНАЯ СЕТКА (Усилена для ПК) */
+    .tp-team-order::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: 
+            radial-gradient(circle at 2px 2px, rgba(251, 191, 36, 0.07) 1px, transparent 0),
+            linear-gradient(to right, rgba(251, 191, 36, 0.02) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(251, 191, 36, 0.02) 1px, transparent 1px);
+        background-size: 40px 40px, 200px 200px, 200px 200px;
+    }
 
-        .tp-order-box {
-            position: relative;
-            z-index: 10;
-            max-width: 700px;
-            width: 100%;
-            background: rgba(10, 10, 10, 0.9);
-            border: 1px solid #222;
-            padding: 60px 40px;
-            text-align: center;
-            border-top: 4px solid #FBBF24; /* Золотая полоса сверху */
-        }
+    .tp-order-box {
+        position: relative;
+        z-index: 10;
+        /* ГЛАВНОЕ: Увеличили ширину для ПК */
+        max-width: 1200px; 
+        width: 100%;
+        background: rgba(5, 5, 5, 0.95);
+        border: 1px solid #1a1a1a;
+        padding: 100px 60px; /* Больше воздуха внутри */
+        text-align: center;
+        border-top: 5px solid #FBBF24;
+        box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+    }
 
-        /* ТЕХНИЧЕСКИЕ УГЛЫ */
-        .tp-corner {
-            position: absolute;
-            width: 20px; height: 20px;
-            border: 2px solid #FBBF24;
-            opacity: 0.5;
-        }
-        .tp-tl { top: 15px; left: 15px; border-right: none; border-bottom: none; }
-        .tp-tr { top: 15px; right: 15px; border-left: none; border-bottom: none; }
-        .tp-bl { bottom: 15px; left: 15px; border-right: none; border-top: none; }
-        .tp-br { bottom: 15px; right: 15px; border-left: none; border-top: none; }
+    /* ТЕХНИЧЕСКИЕ УГЛЫ (Увеличены) */
+    .tp-corner {
+        position: absolute;
+        width: 40px; height: 40px;
+        border: 3px solid #FBBF24;
+        opacity: 0.6;
+    }
+    .tp-tl { top: 20px; left: 20px; border-right: none; border-bottom: none; }
+    .tp-tr { top: 20px; right: 20px; border-left: none; border-bottom: none; }
+    .tp-bl { bottom: 20px; left: 20px; border-right: none; border-top: none; }
+    .tp-br { bottom: 20px; right: 20px; border-left: none; border-top: none; }
 
-        .tp-order-box h2 {
-            font-family: 'Syncopate', sans-serif;
-            font-size: clamp(20px, 5vw, 32px);
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
+    .tp-order-box h2 {
+        font-family: 'Syncopate', sans-serif;
+        font-size: clamp(24px, 4vw, 52px); /* Масштабный заголовок */
+        margin-bottom: 25px;
+        text-transform: uppercase;
+        letter-spacing: 5px;
+        line-height: 1.1;
+    }
 
-        .tp-order-box h2 span {
-            color: #FBBF24;
-        }
+    .tp-order-box h2 span { color: #FBBF24; text-shadow: 0 0 20px rgba(251, 191, 36, 0.3); }
 
-        .tp-order-box p {
-            color: #888;
-            font-size: 16px;
-            margin-bottom: 45px;
-            line-height: 1.6;
-        }
+    .tp-order-box p {
+        color: #666;
+        font-size: 20px; /* Текст стал крупнее */
+        max-width: 800px;
+        margin: 0 auto 60px auto;
+        line-height: 1.8;
+    }
 
-        /* КНОПКА-КОМАНДА */
-        .tp-btn-group {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-        }
+    .tp-order-btn {
+        background: #FBBF24;
+        color: #000;
+        text-decoration: none;
+        padding: 30px 80px; /* Кнопка стала огромной и солидной */
+        font-family: 'Syncopate', sans-serif;
+        font-size: 18px;
+        font-weight: 800;
+        letter-spacing: 3px;
+        display: inline-block;
+        transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+        box-shadow: 0 10px 0 #b4891a; /* Эффект 3D кнопки */
+    }
 
-        .tp-order-btn {
-            background: #FBBF24;
-            color: #000;
-            text-decoration: none;
-            padding: 22px 50px;
-            font-family: 'Syncopate', sans-serif;
-            font-size: 16px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            position: relative;
-            transition: 0.3s;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 0 0 rgba(251, 191, 36, 0);
-        }
+    .tp-order-btn:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(251, 191, 36, 0.4), 0 5px 0 #b4891a;
+        background: #fff;
+        color: #000;
+    }
 
-        .tp-order-btn:hover {
-            transform: scale(1.02);
-            box-shadow: 0 0 40px rgba(251, 191, 36, 0.4);
-            letter-spacing: 4px;
-        }
+    .tp-team-tag {
+        font-size: 14px;
+        color: #333;
+        text-transform: uppercase;
+        letter-spacing: 8px;
+        margin-top: 50px;
+        display: block;
+    }
 
-        .tp-whatsapp-icon {
-            margin-right: 10px;
-            font-size: 20px;
-        }
+    /* АНИМАЦИЯ ПОЯВЛЕНИЯ */
+    @keyframes boxFadeIn {
+        from { opacity: 0; transform: scale(0.95) translateY(40px); }
+        to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .tp-order-box { animation: boxFadeIn 1.2s cubic-bezier(0.19, 1, 0.22, 1); }
 
-        .tp-team-tag {
-            font-size: 12px;
-            color: #444;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            margin-top: 30px;
-            display: block;
-        }
-
-        /* АНИМАЦИЯ ПОЯВЛЕНИЯ */
-        .tp-order-box {
-            animation: boxFadeIn 1s ease-out;
-        }
-
-        @keyframes boxFadeIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @media (max-width: 600px) {
-            .tp-order-box { padding: 40px 20px; }
-            .tp-order-btn { padding: 18px 20px; font-size: 13px; }
-            .tp-order-box h2 { font-size: 18px; }
-            .tp-order-box p { font-size: 14px; }
-        }
-    </style>
-
+    /* МОБИЛКА (Возвращаем компактность) */
+    @media (max-width: 900px) {
+        .tp-order-box { padding: 60px 30px; }
+        .tp-order-btn { padding: 22px 40px; font-size: 14px; width: 100%; box-sizing: border-box; }
+    }
+</style>
     <div class="tp-order-box">
         <div class="tp-corner tp-tl"></div>
         <div class="tp-corner tp-tr"></div>
@@ -1075,124 +1014,122 @@
 
     
     <section class="tp-trust-grid-8">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Exo+2:wght@400;800&display=swap');
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Exo+2:wght@400;800&display=swap');
 
-        .tp-trust-grid-8 {
-            background-color: #000;
-            padding: 100px 20px;
-            color: #fff;
-            font-family: 'Exo 2', sans-serif;
-            position: relative;
-            /* ДОБАВЬ ЭТИ ДВЕ СТРОЧКИ НИЖЕ */
-    max-width: 1440px; 
-    margin: 0 auto;
-        }
+    .tp-trust-grid-8 {
+        background-color: #000;
+        padding: 120px 20px; /* Увеличили отступы для масштаба */
+        color: #fff;
+        font-family: 'Exo 2', sans-serif;
+        position: relative;
+        /* Расширяем общую область фона */
+        max-width: 100%; 
+        margin: 0 auto;
+    }
 
-        .tp-trust-8-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+    .tp-trust-8-container {
+        /* ГЛАВНОЕ: Увеличиваем ширину сетки до 1440px */
+        max-width: 1440px; 
+        margin: 0 auto;
+    }
 
-        .tp-trust-8-header {
-            text-align: center;
-            margin-bottom: 60px;
-        }
+    .tp-trust-8-header {
+        text-align: center;
+        margin-bottom: 80px; /* Больше отступ до карточек */
+    }
 
-        .tp-trust-8-header h2 {
-            font-family: 'Syncopate', sans-serif;
-            font-size: clamp(22px, 5vw, 32px);
-            text-transform: uppercase;
-            letter-spacing: 4px;
-        }
+    .tp-trust-8-header h2 {
+        font-family: 'Syncopate', sans-serif;
+        /* Делаем заголовок мощнее на ПК */
+        font-size: clamp(26px, 5vw, 42px); 
+        text-transform: uppercase;
+        letter-spacing: 6px;
+    }
 
-        .tp-trust-8-header h2 span { color: #FBBF24; }
+    .tp-trust-8-header h2 span { color: #FBBF24; }
 
-        /* СЕТКА НА 8 ПУНКТОВ */
-        .tp-grid-8 {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            transition: 0.5s;
-        }
+    /* СЕТКА НА 8 ПУНКТОВ */
+    .tp-grid-8 {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 30px; /* Увеличили зазоры, чтобы карточки «дышали» */
+        transition: 0.5s;
+    }
 
-        /* КАРТОЧКА */
-        .tp-trust-node {
-            background: rgba(15, 15, 15, 0.8);
-            border: 1px solid rgba(251, 191, 36, 0.1);
-            padding: 30px 20px;
-            text-align: center;
-            position: relative;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
-            overflow: hidden;
-        }
+    /* КАРТОЧКА (Увеличена) */
+    .tp-trust-node {
+        background: rgba(10, 10, 10, 0.8);
+        border: 1px solid rgba(251, 191, 36, 0.1);
+        padding: 50px 30px; /* Сделали карточки выше и шире */
+        text-align: center;
+        position: relative;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        cursor: pointer;
+        overflow: hidden;
+    }
 
-        /* ЭФФЕКТ ПРИ НАВЕДЕНИИ */
-        .tp-grid-8:hover .tp-trust-node:not(:hover) {
-            opacity: 0.3; /* Приглушаем остальные */
-            filter: blur(2px) grayscale(1);
-            transform: scale(0.95);
-        }
+    /* ЭФФЕКТ ПРИ НАВЕДЕНИИ (оставляем твою крутую логику) */
+    .tp-grid-8:hover .tp-trust-node:not(:hover) {
+        opacity: 0.2; /* Сильнее приглушаем фон */
+        filter: blur(4px) grayscale(1);
+        transform: scale(0.92);
+    }
 
-        .tp-trust-node:hover {
-            border-color: #FBBF24;
-            background: #000;
-            transform: scale(1.1) translateY(-10px);
-            z-index: 10;
-            box-shadow: 0 20px 40px rgba(251, 191, 36, 0.2);
-        }
+    .tp-trust-node:hover {
+        border-color: #FBBF24;
+        background: #050505;
+        transform: scale(1.15) translateY(-15px);
+        z-index: 10;
+        box-shadow: 0 30px 60px rgba(251, 191, 36, 0.25);
+    }
 
-        /* ИКОНКА И НОМЕР */
-        .tp-node-num {
-            position: absolute;
-            top: 10px; right: 10px;
-            font-family: 'Syncopate', sans-serif;
-            font-size: 10px;
-            color: rgba(251, 191, 36, 0.3);
-        }
+    /* ИКОНКА И НОМЕР */
+    .tp-node-num {
+        position: absolute;
+        top: 15px; right: 15px;
+        font-family: 'Syncopate', sans-serif;
+        font-size: 12px;
+        color: rgba(251, 191, 36, 0.4);
+    }
 
-        .tp-node-icon {
-            font-size: 32px;
-            margin-bottom: 15px;
-            display: block;
-            transition: 0.3s;
-        }
+    .tp-node-icon {
+        font-size: 48px; /* Иконки стали крупнее */
+        margin-bottom: 20px;
+        display: block;
+        transition: 0.3s;
+    }
 
-        .tp-trust-node:hover .tp-node-icon {
-            transform: scale(1.2);
-            filter: drop-shadow(0 0 10px #FBBF24);
-        }
+    .tp-trust-node h3 {
+        font-size: 18px; /* Заголовки пунктов крупнее */
+        font-weight: 800;
+        text-transform: uppercase;
+        margin-bottom: 15px;
+        letter-spacing: 2px;
+        color: #fff;
+    }
 
-        .tp-trust-node h3 {
-            font-size: 14px;
-            font-weight: 800;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-            letter-spacing: 1px;
-            color: #fff;
-        }
+    .tp-trust-node p {
+        font-size: 14px; /* Текст читается лучше */
+        color: #777;
+        line-height: 1.6;
+        margin: 0;
+    }
 
-        .tp-trust-node p {
-            font-size: 12px;
-            color: #888;
-            line-height: 1.4;
-            margin: 0;
-            transition: 0.3s;
-        }
+    /* АДАПТИВ (оставляем для телефонов) */
+    @media (max-width: 1200px) {
+        .tp-grid-8 { grid-template-columns: repeat(3, 1fr); }
+    }
 
-        .tp-trust-node:hover p { color: #ccc; }
+    @media (max-width: 900px) {
+        .tp-grid-8 { grid-template-columns: repeat(2, 1fr); }
+    }
 
-        /* МОБИЛКА */
-        @media (max-width: 1024px) {
-            .tp-grid-8 { grid-template-columns: repeat(2, 1fr); }
-        }
-
-        @media (max-width: 600px) {
-            .tp-grid-8 { grid-template-columns: 1fr; }
-            .tp-trust-node:hover { transform: scale(1.05); }
-        }
-    </style>
+    @media (max-width: 600px) {
+        .tp-grid-8 { grid-template-columns: 1fr; }
+        .tp-trust-node { padding: 40px 20px; }
+    }
+</style>
 
     <div class="tp-trust-8-container">
         <div class="tp-trust-8-header">
