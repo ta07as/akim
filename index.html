@@ -19,114 +19,157 @@
 
 
 
-<nav class="tp-nav-fixed">
-    <div class="tp-nav-top">
-        <div class="tp-container">
-            <span>📍 ТАЛАС / БИШКЕК</span>
-            <div class="tp-nav-soc">
-                <a href="#">INSTAGRAM</a>
-                <a href="#">YOUTUBE</a>
-            </div>
+<nav class="tp-main-header">
+    <div class="tp-header-container">
+        <a href="#" class="tp-nav-logo">TALAS<span>_PROFI</span></a>
+
+        <div class="tp-nav-desktop">
+            <a href="#services">УСЛУГИ</a>
+            <a href="#portfolio">РАБОТЫ</a>
+            <a href="#contacts">КОНТАКТЫ</a>
+        </div>
+
+        <div class="tp-nav-right">
+            <a href="tel:+996755000228" class="tp-nav-tel">+996 755 000 228</a>
+            <a href="https://wa.me/996755000228" class="tp-nav-wa">WHATSAPP</a>
+        </div>
+
+        <div class="tp-nav-burger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
         </div>
     </div>
-    <div class="tp-nav-bottom">
-        <div class="tp-container">
-            <a href="#" class="tp-logo">TALAS<span>_PROFI</span></a>
-            <ul class="tp-nav-menu">
-                <li><a href="#services">УСЛУГИ</a></li>
-                <li><a href="#portfolio">РАБОТЫ</a></li>
-                <li><a href="#contacts">КОНТАКТЫ</a></li>
-            </ul>
-            <div class="tp-nav-right">
-                <a href="https://wa.me/996755000228" class="tp-wa-link">WA</a>
-                <a href="tel:+996755000228" class="tp-phone-link">+996 755 000 228</a>
-            </div>
-            <div class="tp-burger" onclick="document.querySelector('.tp-nav-menu').classList.toggle('active')">
-                <span></span><span></span>
-            </div>
-        </div>
+
+    <div class="tp-mobile-dropdown" id="mobileDropdown">
+        <a href="#services" onclick="toggleMenu()">УСЛУГИ</a>
+        <a href="#portfolio" onclick="toggleMenu()">РАБОТЫ</a>
+        <a href="#contacts" onclick="toggleMenu()">КОНТАКТЫ</a>
+        <div class="tp-mob-divider"></div>
+        <a href="tel:+996755000228" style="color:#FBBF24;">ПОЗВОНИТЬ</a>
+        <a href="https://wa.me/996755000228" style="color:#25D366;">WHATSAPP</a>
     </div>
 
     <style>
-        /* ГЛОБАЛЬНОЕ ИСПРАВЛЕНИЕ */
-        * { box-sizing: border-box; }
-        
+        /* 1. ГЛАВНОЕ: КОРРЕКТНЫЙ ОТСТУП */
         body { 
             margin: 0; 
-            padding-top: 100px !important; /* Этот отступ спасает от наезда текста на меню */
+            padding-top: 90px !important; /* Ровно столько, чтобы текст не заплывал */
         }
 
-        .tp-nav-fixed {
+        .tp-main-header {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            z-index: 10000;
+            height: 90px;
             background: #000;
-            border-bottom: 1px solid #FBBF24;
-            font-family: 'Arial', sans-serif;
+            border-bottom: 2px solid #FBBF24;
+            display: flex;
+            align-items: center;
+            z-index: 100000;
+            box-sizing: border-box;
         }
 
-        .tp-container {
-            max-width: 1200px;
+        .tp-header-container {
+            width: 100%;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        /* ВЕРХНЯЯ ПОЛОСКА */
-        .tp-nav-top {
-            background: #111;
-            padding: 5px 0;
-            font-size: 10px;
-            color: #666;
-            letter-spacing: 1px;
+        /* ЛОГОТИП */
+        .tp-nav-logo {
+            font-family: 'Arial Black', sans-serif;
+            font-size: 24px;
+            color: #fff;
+            text-decoration: none;
+            letter-spacing: 2px;
         }
-        .tp-nav-soc a { color: #666; text-decoration: none; margin-left: 15px; }
+        .tp-nav-logo span { color: #FBBF24; }
 
-        /* ОСНОВНОЕ МЕНЮ */
-        .tp-nav-bottom { height: 70px; display: flex; align-items: center; }
-        
-        .tp-logo { font-weight: 900; font-size: 20px; color: #fff; text-decoration: none; }
-        .tp-logo span { color: #FBBF24; }
+        /* МЕНЮ ЦЕНТР */
+        .tp-nav-desktop { display: flex; gap: 40px; }
+        .tp-nav-desktop a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+        .tp-nav-desktop a:hover { color: #FBBF24; }
 
-        .tp-nav-menu { display: flex; list-style: none; gap: 25px; margin: 0; padding: 0; }
-        .tp-nav-menu a { color: #fff; text-decoration: none; font-size: 12px; font-weight: bold; transition: 0.3s; }
-        .tp-nav-menu a:hover { color: #FBBF24; }
+        /* ПРАВАЯ ЧАСТЬ */
+        .tp-nav-right { display: flex; align-items: center; gap: 30px; }
+        .tp-nav-tel {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 900;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+        .tp-nav-tel:hover { color: #FBBF24; }
+        .tp-nav-wa {
+            background: #25D366;
+            color: #fff;
+            padding: 12px 25px;
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: 900;
+            border-radius: 4px;
+        }
 
-        .tp-nav-right { display: flex; align-items: center; gap: 20px; }
-        .tp-wa-link { color: #25D366; text-decoration: none; font-weight: 900; border: 1px solid #25D366; padding: 5px 10px; font-size: 10px; }
-        .tp-phone-link { color: #fff; text-decoration: none; font-weight: 900; font-size: 16px; }
+        /* БУРГЕР */
+        .tp-nav-burger { display: none; cursor: pointer; flex-direction: column; gap: 8px; }
+        .tp-nav-burger span { width: 35px; height: 3px; background: #FBBF24; }
 
-        .tp-burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
-        .tp-burger span { width: 25px; height: 2px; background: #FBBF24; }
+        /* МОБИЛЬНОЕ ВЫПАДАЮЩЕЕ МЕНЮ */
+        .tp-mobile-dropdown {
+            display: none;
+            position: absolute;
+            top: 90px;
+            left: 0;
+            width: 100%;
+            background: #000;
+            flex-direction: column;
+            padding: 30px;
+            text-align: center;
+            border-bottom: 3px solid #FBBF24;
+            box-sizing: border-box;
+        }
+        .tp-mobile-dropdown a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 20px;
+            padding: 15px 0;
+            font-weight: 900;
+            border-bottom: 1px solid #111;
+        }
+        .tp-mob-divider { height: 20px; }
 
-        /* АДАПТАЦИЯ ПОД ТЕЛЕФОН */
-        @media (max-width: 850px) {
+        /* АДАПТАЦИЯ (ТЕЛЕФОН) */
+        @media (max-width: 1024px) {
             body { padding-top: 80px !important; }
-            .tp-nav-top, .tp-nav-menu, .tp-phone-link { display: none; }
-            .tp-nav-bottom { height: 60px; }
-            .tp-burger { display: flex; }
-            
-            /* Выпадающее меню для мобилки */
-            .tp-nav-menu.active {
-                display: flex;
-                flex-direction: column;
-                position: absolute;
-                top: 60px;
-                left: 0;
-                width: 100%;
-                background: #111;
-                padding: 20px;
-                gap: 15px;
-                border-bottom: 2px solid #FBBF24;
-            }
+            .tp-main-header { height: 80px; }
+            .tp-nav-desktop, .tp-nav-right { display: none; }
+            .tp-nav-burger { display: flex; }
+            .tp-header-container { padding: 0 20px; }
+            .tp-mobile-dropdown.active { display: flex; }
         }
     </style>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('mobileDropdown').classList.toggle('active');
+        }
+    </script>
 </nav>
 
+
+    
 
 
 
