@@ -13,10 +13,9 @@
 
 
     
-
-   <section class="tp-hero-section">
+<section class="tp-hero-section">
     <style>
-        /* Изолированные стили только для этого блока */
+        /* ОСНОВНЫЕ СТИЛИ */
         .tp-hero-section {
             display: flex;
             flex-wrap: wrap;
@@ -26,9 +25,10 @@
             padding: 0;
             font-family: 'Arial', sans-serif;
             border-bottom: 2px solid #111;
+            overflow: hidden; /* Чтобы анимации не выходили за границы */
         }
 
-        /* ЛЕВАЯ СТОРОНА: КОНТЕНТ */
+        /* КОНТЕНТ */
         .tp-hero-content {
             flex: 1;
             min-width: 320px;
@@ -38,16 +38,24 @@
             justify-content: center;
             background-color: #050505;
             box-sizing: border-box;
+            z-index: 2;
+        }
+
+        /* АНИМАЦИЯ ПОЯВЛЕНИЯ ТЕКСТА */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .tp-hero-content .tp-badge {
-            color: #FBBF24; /* Твое золото */
+            color: #FBBF24;
             font-size: 59px;
             font-weight: 900;
             text-transform: uppercase;
-            letter-spacing: 6px;
+            letter-spacing: 10px;
             margin-bottom: 25px;
             display: block;
+            animation: fadeInUp 0.8s ease forwards;
         }
 
         .tp-hero-content h1 {
@@ -57,21 +65,33 @@
             text-transform: uppercase;
             line-height: 1;
             margin: 0 0 30px 0;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 0.3s forwards;
         }
 
         .tp-hero-content h1 span {
             color: #FBBF24;
+            position: relative;
+            display: inline-block;
+        }
+
+        /* ЭФФЕКТ БЛИКА НА ТЕКСТЕ */
+        @keyframes textShine {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
         }
 
         .tp-hero-content p {
             color: #777777;
-            font-size: 18px;
+            font-size: 22px;
             line-height: 1.6;
             max-width: 550px;
             margin-bottom: 40px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 0.6s forwards;
         }
 
-        /* КНОПКА СВЯЗИ */
+        /* КНОПКА С АНИМАЦИЕЙ */
         .tp-hero-btn {
             display: inline-block;
             background-color: #FBBF24;
@@ -83,69 +103,66 @@
             font-size: 14px;
             letter-spacing: 2px;
             width: fit-content;
-            transition: 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border-radius: 2px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 0.9s forwards, btnPulse 2s infinite 2s;
+        }
+
+        @keyframes btnPulse {
+            0% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.4); }
+            70% { box-shadow: 0 0 0 20px rgba(251, 191, 36, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); }
         }
 
         .tp-hero-btn:hover {
             background-color: #FFFFFF;
-            transform: scale(1.05);
+            transform: scale(1.05) translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
         }
 
-        /* ПРАВАЯ СТОРОНА: КАРТИНКА */
+        /* МЕДИА (КАРТИНКА) */
         .tp-hero-media {
             flex: 1.2;
             min-width: 320px;
             min-height: 450px;
-            /* Ссылка на качественное фото инструментов */
             background: url('https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
             position: relative;
+            overflow: hidden;
         }
 
-        /* Эффект затенения для перехода */
+        /* АНИМАЦИЯ ПЛАВНОГО ЗУМА КАРТИНКИ */
+        .tp-hero-media {
+            animation: imageZoom 20s linear infinite alternate;
+        }
+
+        @keyframes imageZoom {
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
+        }
+
         .tp-hero-media::after {
             content: '';
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(to right, #050505, transparent);
+            z-index: 1;
         }
 
-        /* АДАПТАЦИЯ ДЛЯ ТЕЛЕФОНА (📱) */
+        /* МОБИЛЬНАЯ АДАПТАЦИЯ */
         @media (max-width: 768px) {
-            .tp-hero-section {
-                flex-direction: column;
-            }
-
-            .tp-hero-content {
-                padding: 60px 25px;
-                text-align: center;
-                order: 1;
-            }
-
-            .tp-hero-media {
-                min-height: 350px;
-                order: 2;
-            }
-
-            .tp-hero-media::after {
-                background: linear-gradient(to bottom, #050505, transparent);
-            }
-
-            .tp-hero-btn {
-                width: 100%;
-                box-sizing: border-box;
-            }
-
-            .tp-hero-content p {
-                margin-left: auto;
-                margin-right: auto;
-            }
+            .tp-hero-section { flex-direction: column; }
+            .tp-hero-content { padding: 60px 25px; text-align: center; order: 1; }
+            .tp-hero-media { min-height: 350px; order: 2; }
+            .tp-hero-media::after { background: linear-gradient(to bottom, #050505, transparent); }
+            .tp-hero-btn { width: 100%; box-sizing: border-box; }
+            .tp-hero-content p { margin-left: auto; margin-right: auto; }
         }
     </style>
 
     <div class="tp-hero-content">
         <span class="tp-badge">Talas_profi</span>
-        <br></br>
+        <br>
         <h1>Инженерный <br> <span>Подход</span></h1>
         <p>
             Мы создаем надежные инженерные системы. 
@@ -155,7 +172,6 @@
     </div>
 
     <div class="tp-hero-media"></div>
-
 </section>
 
 
@@ -164,166 +180,182 @@
 
 
 
-
-    
-
-<section class="tp-services-section">
+    <section class="tp-workshop-mini">
     <style>
-        /* ИЗОЛИРОВАННЫЕ СТИЛИ БЛОКА УСЛУГ */
-        .tp-services-section {
+        .tp-workshop-mini {
             background-color: #000000;
-            padding: 100px 20px; /* Отступы 100px сверху и снизу */
-            font-family: 'Arial', sans-serif;
-            border-bottom: 1px solid #111;
+            background-image: radial-gradient(#111 1px, transparent 1px);
+            background-size: 20px 20px;
+            padding: 80px 20px;
+            font-family: 'Roboto Condensed', sans-serif;
+            color: #FFFFFF;
+            overflow: hidden;
         }
 
-        .tp-services-container {
-            max-width: 1400px;
+        .tp-mini-container {
+            max-width: 1100px;
             margin: 0 auto;
-            display: flex;       /* В одну линию на ПК */
-            gap: 50px;           /* Промежуток между текстом и услугами */
-            align-items: center; /* Центрирование по высоте */
         }
 
-        /* ЛЕВАЯ ЧАСТЬ: ТЕКСТ */
-        .tp-services-head {
-            flex: 0 0 350px;     /* Фиксированная ширина текста на ПК */
-        }
-
-        .tp-services-head h2 {
-            color: #FFFFFF;
-            font-size: 42px;
-            font-weight: 900;
-            text-transform: uppercase;
-            margin: 0 0 15px 0;
-            line-height: 1.1;
-        }
-
-        .tp-services-head h2 span {
-            color: #FBBF24;     /* Твое золото */
-        }
-
-        .tp-services-head p {
-            color: #555555;
-            font-size: 15px;
-            line-height: 1.6;
-            margin: 0;
-        }
-
-        /* ПРАВАЯ ЧАСТЬ: СЕТКА 5 В РЯД */
-        .tp-services-grid {
-            flex: 1;            /* Занимает всё свободное место справа */
-            display: grid;
-            grid-template-columns: repeat(5, 1fr); /* Ровно 5 колонок */
-            gap: 12px;
-        }
-
-        /* КАРТОЧКА УСЛУГИ (СПЛЮЩЕННАЯ) */
-        .tp-service-card {
-            background-color: #080808;
-            border: 1px solid #1a1a1a;
-            min-height: 90px;    /* Высота прямоугольника (регулируй тут) */
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .tp-mini-header {
             text-align: center;
-            padding: 10px 5px;
-            text-decoration: none;
-            transition: 0.3s ease;
+            margin-bottom: 60px;
         }
 
-        .tp-service-card:hover {
-            border-color: #FBBF24;
-            background-color: #0c0c0c;
-            transform: translateY(-3px);
-        }
-
-        .tp-service-card span {
-            color: #FFFFFF;
-            font-size: 11px;
-            font-weight: 900;
+        .tp-mini-header h2 {
+            font-size: 32px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            font-weight: 900;
+            letter-spacing: 4px;
+            margin: 0;
+            color: #FFFFFF;
         }
 
-        /* АДАПТАЦИЯ ДЛЯ ТЕЛЕФОНА (📱) */
-        @media (max-width: 1024px) {
-            .tp-services-container {
-                flex-direction: column; /* Текст сверху, услуги снизу */
-                text-align: center;
-                gap: 40px;
-                padding: 60px 15px;
-            }
+        .tp-mini-header h2 span {
+            color: #FBBF24;
+        }
 
-            .tp-services-head {
-                flex: none;
-                width: 100%;
-            }
+        /* СЕТКА С УМЕНЬШЕННЫМИ БЛОКАМИ */
+        .tp-mini-shelves {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            perspective: 800px;
+        }
 
-            /* НА ТЕЛЕФОНЕ 5 В РЯД (КОМПАКТНО) */
-            .tp-services-grid {
-                width: 100%;
-                grid-template-columns: repeat(5, 1fr); 
-                gap: 6px;
-            }
+        .tp-mini-shelf-item {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-            .tp-service-card {
-                min-height: 65px; /* Еще более сплющенные на мобилке */
-            }
+        /* КОМПАКТНЫЕ ЦЕПИ */
+        .tp-mini-shelf-item::before,
+        .tp-mini-shelf-item::after {
+            content: '';
+            position: absolute;
+            top: -15px;
+            width: 4px;
+            height: 35px;
+            background: linear-gradient(#333, #111);
+            border-radius: 2px;
+            z-index: 1;
+        }
 
-            .tp-service-card span {
-                font-size: 8px;   /* Текст мельче, чтобы влезло */
-            }
+        .tp-mini-shelf-item::before { left: 30%; }
+        .tp-mini-shelf-item::after { right: 30%; }
 
-            .tp-services-head h2 {
-                font-size: 32px;
-            }
+        /* КОМПАКТНЫЙ ЖЕТОН */
+        .tp-mini-plate {
+            background: #0a0a0a;
+            border: 2px solid #1a1a1a;
+            width: 100%;
+            padding: 25px 10px;
+            margin-top: 20px;
+            text-align: center;
+            box-sizing: border-box;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            transform-origin: top center;
+            transition: all 0.3s ease;
+        }
+
+        /* АНИМАЦИЯ КАЧАНИЯ */
+        @keyframes miniSwing {
+            0% { transform: rotateX(0deg); }
+            25% { transform: rotateX(-12deg); }
+            50% { transform: rotateX(8deg); }
+            75% { transform: rotateX(-4deg); }
+            100% { transform: rotateX(0deg); }
+        }
+
+        .tp-mini-shelf-item:hover .tp-mini-plate {
+            animation: miniSwing 0.8s ease-out;
+            border-color: #FBBF24;
+            background: #111;
+        }
+
+        .tp-mini-plate i {
+            font-size: 32px;
+            margin-bottom: 12px;
+            display: block;
+            filter: grayscale(1);
+            transition: 0.3s;
+        }
+
+        .tp-mini-shelf-item:hover i {
+            filter: grayscale(0);
+            transform: scale(1.1);
+        }
+
+        .tp-mini-plate h3 {
+            font-size: 14px;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin: 0;
+            color: #888;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+
+        .tp-mini-shelf-item:hover h3 {
+            color: #FBBF24;
+        }
+
+        /* АДАПТИВ */
+        @media (max-width: 900px) {
+            .tp-mini-shelves { grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        }
+        @media (max-width: 600px) {
+            .tp-mini-shelves { grid-template-columns: 1fr; gap: 40px; }
+            .tp-mini-container { padding: 0 40px; }
         }
     </style>
 
-    <div class="tp-services-container">
-        
-        <div class="tp-services-head">
-            <h2>Наши <br> <span>Услуги</span></h2>
-            <p>Профессиональный сервис для вашего дома и бизнеса в Таласе.</p>
+    <div class="tp-mini-container">
+        <div class="tp-mini-header">
+            <h2>НАШИ <span>УСЛУГИ</span></h2>
         </div>
 
-        <div class="tp-services-grid">
-            
-            <a href="https://wa.me/996755000228?text=Электрика" class="tp-service-card">
-                <span>Электрика</span>
-            </a>
+        <div class="tp-mini-shelves">
+            <div class="tp-mini-shelf-item">
+                <div class="tp-mini-plate">
+                    <i class="tp-mini-icon">⚡</i>
+                    <h3>Электрика</h3>
+                </div>
+            </div>
 
-            <a href="https://wa.me/996755000228?text=Сантехника" class="tp-service-card">
-                <span>Сантехника</span>
-            </a>
+            <div class="tp-mini-shelf-item">
+                <div class="tp-mini-plate">
+                    <i class="tp-mini-icon">🚿</i>
+                    <h3>Сантехника</h3>
+                </div>
+            </div>
 
-            <a href="https://wa.me/996755000228?text=Кирпич" class="tp-service-card">
-                <span>Кирпич</span>
-            </a>
+            <div class="tp-mini-shelf-item">
+                <div class="tp-mini-plate">
+                    <i class="tp-mini-icon">🧱</i>
+                    <h3>Кладка</h3>
+                </div>
+            </div>
 
-            <a href="https://wa.me/996755000228?text=Обои" class="tp-service-card">
-                <span>Обои</span>
-            </a>
+            <div class="tp-mini-shelf-item">
+                <div class="tp-mini-plate">
+                    <i class="tp-mini-icon">✨</i>
+                    <h3>Обои</h3>
+                </div>
+            </div>
 
-            <a href="https://wa.me/996755000228?text=Клининг" class="tp-service-card">
-                <span>Клининг</span>
-            </a>
-          
+            <div class="tp-mini-shelf-item">
+                <div class="tp-mini-plate">
+                    <i class="tp-mini-icon">🧹</i>
+                    <h3>Клининг</h3>
+                </div>
+            </div>
         </div>
-
     </div>
 </section>
-
-
-
-
-
-
-
-
-
-
 
 
 
