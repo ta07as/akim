@@ -158,21 +158,21 @@
    <section class="tp-hero-section">
     <style>
         /* ОСНОВНЫЕ СТИЛИ */
-        .tp-hero-section {
-            display: flex;
-            flex-wrap: wrap;
-            min-height: 100vh;
-            background-color: #000000;
-            margin: 0;
-            padding: 0;
-            font-family: 'Arial', sans-serif;
-            border-bottom: 2px solid #111;
-            overflow: hidden;
-        }
-        /* Добавь это сразу под ним для мобилок */
+      .tp-hero-section {
+    display: flex;
+    flex-wrap: wrap;
+    /* Вместо min-height: 100vh; */
+    min-height: calc(100vh - 100px); 
+    background-color: #000000;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+/* Специально для телефонов */
 @media (max-width: 1100px) {
     .tp-hero-section {
-        min-height: calc(100vh - 70px); /* Вычитаем высоту шапки мобилки */
+        min-height: calc(100vh - 70px);
     }
 }
 
