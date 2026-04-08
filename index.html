@@ -19,164 +19,155 @@
 
 
 
-<nav class="tp-elite-header">
-    <div class="tp-nav-upper">
-        <div class="tp-limit">
-            <div class="tp-status"><span>●</span> СИСТЕМА АКТИВНА // ТАЛАС - БИШКЕК</div>
-            <div class="tp-social-quick">
-                <a href="#">INSTAGRAM</a>
-                <a href="#">YOUTUBE</a>
+<nav class="tp-fusion-nav">
+    <div class="tp-nav-blur-bg"></div>
+    <div class="tp-nav-shell">
+        <div class="tp-nav-left">
+            <div class="tp-brand">
+                <a href="#" class="tp-l-main">TALAS<span>_PROFI</span></a>
+                <div class="tp-l-status">
+                    <span class="tp-dot"></span> 24/7 ONLINE
+                </div>
             </div>
         </div>
-    </div>
-    <div class="tp-nav-main">
-        <div class="tp-limit">
-            <a href="#" class="tp-main-logo">TALAS<span>_PROFI</span></a>
-            
-            <div class="tp-nav-center">
-                <a href="#services">УСЛУГИ</a>
-                <a href="#portfolio">РАБОТЫ</a>
-                <a href="#contacts">КОНТАКТЫ</a>
-            </div>
 
-            <div class="tp-nav-right-block">
-                <div class="tp-nav-tel-group">
-                    <small>ДИСПЕТЧЕР 24/7</small>
-                    <a href="tel:+996755000228">+996 755 000 228</a>
-                </div>
-                <a href="https://wa.me/996755000228" class="tp-wa-glow">WHATSAPP</a>
-            </div>
+        <div class="tp-nav-center">
+            <a href="#services" class="tp-link-item">УСЛУГИ</a>
+            <a href="#portfolio" class="tp-link-item">ПОРТФОЛИО</a>
+            <a href="#contacts" class="tp-link-item">КОНТАКТЫ</a>
+        </div>
 
-            <button class="tp-mob-toggle" onclick="toggleEliteMenu()">
-                <span></span><span></span>
+        <div class="tp-nav-right">
+            <a href="https://wa.me/996755000228" class="tp-wa-minimal">
+                <span class="tp-wa-icon">WA</span>
+                <span class="tp-wa-text">ОСТАВИТЬ ЗАЯВКУ</span>
+            </a>
+            <button class="tp-burger-fusion" onclick="toggleFusionMenu()">
+                <span></span>
+                <span></span>
             </button>
         </div>
     </div>
 
-    <div class="tp-elite-mobile" id="eliteMenu">
-        <a href="#services" onclick="toggleEliteMenu()">УСЛУГИ</a>
-        <a href="#portfolio" onclick="toggleEliteMenu()">РАБОТЫ</a>
-        <a href="#contacts" onclick="toggleEliteMenu()">КОНТАКТЫ</a>
-        <hr style="border:0; border-top:1px solid #222; width:50%; margin:20px auto;">
-        <a href="tel:+996755000228" style="color:#FBBF24;">ПОЗВОНИТЬ</a>
-        <a href="https://wa.me/996755000228" style="color:#25D366;">WHATSAPP</a>
+    <div class="tp-mobile-panel" id="mobileMenu">
+        <div class="tp-m-overlay" onclick="toggleFusionMenu()"></div>
+        <div class="tp-m-content">
+            <div class="tp-m-header">
+                <span class="tp-l-main">TALAS<span>_PROFI</span></span>
+                <button class="tp-m-close" onclick="toggleFusionMenu()">×</button>
+            </div>
+            <div class="tp-m-links">
+                <a href="#services" onclick="toggleFusionMenu()">УСЛУГИ</a>
+                <a href="#portfolio" onclick="toggleFusionMenu()">ПОРТФОЛИО</a>
+                <a href="#contacts" onclick="toggleFusionMenu()">КОНТАКТЫ</a>
+            </div>
+            <div class="tp-m-footer">
+                <a href="tel:+996755000228" class="tp-m-tel">+996 755 000 228</a>
+                <p>РАБОТАЕМ ПО ВСЕЙ ОБЛАСТИ</p>
+            </div>
+        </div>
     </div>
 </nav>
 
 <style>
-    /* ИСПРАВЛЕНИЕ ГЛОБАЛЬНОЙ ВЕРСТКИ */
-    :root { --h-pc: 120px; --h-mob: 80px; }
-    
-    * { box-sizing: border-box; }
+    /* ФИКСИРУЕМ ОТСТУП, ЧТОБЫ КОНТЕНТ НЕ ЗАПЛЫВАЛ */
+    :root { --nav-h: 90px; }
+    body { padding-top: var(--nav-h) !important; margin: 0; }
 
-    body { 
-        margin: 0; 
-        padding-top: var(--h-pc) !important; /* Авто-отступ для контента */
-    }
-
-    .tp-elite-header {
+    .tp-fusion-nav {
         position: fixed;
-        top: 0; left: 0; width: 100%;
+        top: 0; left: 0; width: 100%; height: var(--nav-h);
         z-index: 999999;
-        background: #000;
-        font-family: 'Arial', sans-serif;
+        display: flex;
+        align-items: center;
+        transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .tp-limit {
+    /* ЭФФЕКТ СТЕКЛА */
+    .tp-nav-blur-bg {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border-bottom: 1px solid rgba(251, 191, 36, 0.15);
+        z-index: -1;
+    }
+
+    .tp-nav-shell {
+        width: 100%;
         max-width: 1400px;
         margin: 0 auto;
-        padding: 0 30px;
+        padding: 0 40px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        height: 100%;
     }
 
-    /* ВЕРХНЯЯ ПОЛОСКА */
-    .tp-nav-upper {
-        height: 35px;
-        background: #0a0a0a;
-        border-bottom: 1px solid #1a1a1a;
-        font-size: 15px;
-        color: #444;
-        font-weight: bold;
-        letter-spacing: 1px;
-    }
-    .tp-status span { color: #FBBF24; margin-right: 5px; animation: blink 2s infinite; }
-    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-    .tp-social-quick a { color: #444; text-decoration: none; margin-left: 20px; transition: 0.3s; }
-    .tp-social-quick a:hover { color: #fff; }
+    /* ЛОГО */
+    .tp-brand { display: flex; flex-direction: column; }
+    .tp-l-main { font-family: 'Arial Black', sans-serif; font-size: 24px; color: #fff; text-decoration: none; line-height: 1; }
+    .tp-l-main span { color: #FBBF24; }
+    .tp-l-status { font-size: 9px; color: #555; font-weight: bold; letter-spacing: 2px; margin-top: 5px; display: flex; align-items: center; }
+    .tp-dot { width: 6px; height: 6px; background: #25D366; border-radius: 50%; margin-right: 6px; animation: pulse 2s infinite; }
 
-    /* ОСНОВНАЯ ШАПКА */
-    .tp-nav-main {
-        height: 85px;
-        border-bottom: 2px solid #FBBF24;
-    }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); } 70% { box-shadow: 0 0 0 8px rgba(37, 211, 102, 0); } 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); } }
 
-    .tp-main-logo {
-        font-size: 36px;
-        font-weight: 900;
-        color: #fff;
-        text-decoration: none;
-        letter-spacing: -1px;
-    }
-    .tp-main-logo span { color: #FBBF24; }
+    /* ССЫЛКИ ЦЕНТР */
+    .tp-nav-center { display: flex; gap: 40px; }
+    .tp-link-item { color: #fff; text-decoration: none; font-size: 11px; font-weight: 900; letter-spacing: 2px; position: relative; padding: 5px 0; }
+    .tp-link-item::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: #FBBF24; transition: 0.3s; }
+    .tp-link-item:hover::after { width: 100%; }
 
-    .tp-nav-center { display: flex; gap: 35px; }
-    .tp-nav-center a {
-        color: #fff;
-        text-decoration: none;
-        font-size: 19px;
-        font-weight: 900;
-        letter-spacing: 1px;
-        transition: 0.3s;
-    }
-    .tp-nav-center a:hover { color: #FBBF24; }
+    /* ПРАВАЯ ЧАСТЬ */
+    .tp-nav-right { display: flex; align-items: center; gap: 25px; }
+    .tp-wa-minimal { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .tp-wa-icon { background: #25D366; color: #fff; font-size: 10px; font-weight: 900; padding: 5px 8px; border-radius: 2px; }
+    .tp-wa-text { color: #fff; font-size: 11px; font-weight: 900; }
 
-    .tp-nav-right-block { display: flex; align-items: center; gap: 30px; }
+    .tp-burger-fusion { display: none; background: none; border: none; flex-direction: column; gap: 6px; cursor: pointer; }
+    .tp-burger-fusion span { width: 30px; height: 2px; background: #FBBF24; transition: 0.3s; }
 
-    .tp-nav-tel-group { text-align: right; }
-    .tp-nav-tel-group small { display: block; font-size: 9px; color: #FBBF24; font-weight: bold; margin-bottom: 2px; }
-    .tp-nav-tel-group a { color: #fff; text-decoration: none; font-size: 18px; font-weight: 900; }
+    /* МОБИЛЬНАЯ ПАНЕЛЬ */
+    .tp-mobile-panel { position: fixed; inset: 0; z-index: 1000000; visibility: hidden; pointer-events: none; }
+    .tp-mobile-panel.active { visibility: visible; pointer-events: auto; }
+    .tp-m-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.9); opacity: 0; transition: 0.4s; }
+    .tp-mobile-panel.active .tp-m-overlay { opacity: 1; }
+    .tp-m-content { position: absolute; right: -100%; top: 0; width: 80%; height: 100%; background: #050505; padding: 40px; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; }
+    .tp-mobile-panel.active .tp-m-content { right: 0; }
+    
+    .tp-m-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 50px; }
+    .tp-m-close { background: none; border: none; color: #FBBF24; font-size: 40px; cursor: pointer; }
+    .tp-m-links { display: flex; flex-direction: column; gap: 30px; }
+    .tp-m-links a { color: #fff; font-size: 24px; font-weight: 900; text-decoration: none; }
+    .tp-m-footer { margin-top: auto; border-top: 1px solid #111; padding-top: 30px; }
+    .tp-m-tel { color: #FBBF24; font-size: 20px; font-weight: 900; text-decoration: none; }
+    .tp-m-footer p { font-size: 10px; color: #444; margin-top: 10px; letter-spacing: 2px; }
 
-    .tp-wa-glow {
-        background: #25D366;
-        color: #fff;
-        text-decoration: none;
-        padding: 12px 20px;
-        font-size: 11px;
-        font-weight: 900;
-        box-shadow: 0 0 15px rgba(37, 211, 102, 0.2);
-    }
-
-    /* МОБИЛЬНЫЙ ВИД */
-    .tp-mob-toggle { display: none; background: none; border: none; flex-direction: column; gap: 7px; cursor: pointer; }
-    .tp-mob-toggle span { width: 30px; height: 3px; background: #FBBF24; }
-
-    .tp-elite-mobile {
-        position: fixed; top: -100%; left: 0; width: 100%;
-        background: #000; padding: 40px 20px;
-        display: flex; flex-direction: column; align-items: center;
-        transition: 0.5s; border-bottom: 3px solid #FBBF24; z-index: -1;
-    }
-    .tp-elite-mobile.active { top: var(--h-mob); }
-    .tp-elite-mobile a { color: #fff; text-decoration: none; font-size: 22px; font-weight: 900; padding: 15px; width: 100%; text-align: center; }
-
+    /* АДАПТИВ */
     @media (max-width: 1024px) {
-        body { padding-top: var(--h-mob) !important; }
-        .tp-nav-upper, .tp-nav-center, .tp-nav-right-block { display: none; }
-        .tp-nav-main { height: var(--h-mob); }
-        .tp-mob-toggle { display: flex; }
-        .tp-main-logo { font-size: 20px; }
+        :root { --nav-h: 80px; }
+        .tp-nav-center, .tp-wa-text { display: none; }
+        .tp-burger-fusion { display: flex; }
+        .tp-nav-shell { padding: 0 20px; }
     }
 </style>
 
 <script>
-    function toggleEliteMenu() {
-        document.getElementById('eliteMenu').classList.toggle('active');
+    function toggleFusionMenu() {
+        document.getElementById('mobileMenu').classList.toggle('active');
     }
+    
+    // Эффект уменьшения навигации при скролле
+    window.addEventListener('scroll', () => {
+        const nav = document.querySelector('.tp-fusion-nav');
+        if (window.scrollY > 50) {
+            nav.style.height = '70px';
+        } else {
+            nav.style.height = 'var(--nav-h)';
+        }
+    });
 </script>
-
     
 
 
