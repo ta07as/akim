@@ -13,148 +13,159 @@
 
 
 
+    
 
 
 
 
-<nav class="tp-nav-glass">
-    <div class="tp-nav-container">
-        <a href="#" class="tp-logo">
-            TALAS<span>_PROFI</span>
-        </a>
 
-        <ul class="tp-menu">
-            <li><a href="#hero">ГЛАВНАЯ</a></li>
-            <li><a href="#services">УСЛУГИ</a></li>
-            <li><a href="#trust">О НАС</a></li>
-            <li><a href="#contacts">КОНТАКТЫ</a></li>
-        </ul>
-
-        <div class="tp-nav-right">
-            <a href="https://wa.me/996755000228" class="tp-wa-icon">WA</a>
-            <a href="tel:+996755000228" class="tp-nav-phone">+996 755 000 228</a>
+<nav class="tp-command-nav">
+    <div class="tp-nav-top-bar">
+        <div class="tp-nav-container">
+            <div class="tp-top-info">
+                <span>📍 ТАЛАС / БИШКЕК</span>
+                <span>⏱ 08:00 - 20:00</span>
+            </div>
+            <div class="tp-top-socials">
+                <a href="#">INSTAGRAM</a>
+                <a href="#">YOUTUBE</a>
+                <a href="#">TELEGRAM</a>
+            </div>
         </div>
+    </div>
 
-        <div class="tp-burger" id="tp-burger">
-            <span></span>
-            <span></span>
+    <div class="tp-nav-main">
+        <div class="tp-nav-container">
+            <a href="#" class="tp-logo">TALAS<span>_PROFI</span></a>
+
+            <ul class="tp-nav-menu">
+                <li><a href="#hero">ГЛАВНАЯ</a></li>
+                <li><a href="#services">УСЛУГИ</a></li>
+                <li><a href="#trust">ОТЗЫВЫ</a></li>
+                <li><a href="#portfolio">РАБОТЫ</a></li>
+                <li><a href="#contacts">КОНТАКТЫ</a></li>
+            </ul>
+
+            <div class="tp-nav-actions">
+                <a href="https://wa.me/996755000228" class="tp-btn-wa">WHATSAPP</a>
+                <a href="tel:+996755000228" class="tp-btn-call">+996 755 000 228</a>
+            </div>
+
+            <div class="tp-nav-burger" onclick="toggleMobileMenu()">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="tp-mobile-overlay" id="mobileMenu">
+        <div class="tp-mobile-content">
+            <div class="tp-close-menu" onclick="toggleMobileMenu()">×</div>
+            <a href="#hero">ГЛАВНАЯ</a>
+            <a href="#services">УСЛУГИ</a>
+            <a href="#trust">ПРЕИМУЩЕСТВА</a>
+            <a href="#portfolio">ПОРТФОЛИО</a>
+            <a href="#contacts">КОНТАКТЫ</a>
+            <hr>
+            <a href="tel:+996755000228" class="tp-mob-phone">+996 755 000 228</a>
+            <div class="tp-mob-soc">
+                <a href="#">IG</a> <a href="#">YT</a> <a href="#">TG</a>
+            </div>
         </div>
     </div>
 
     <style>
-        .tp-nav-glass {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 80px;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            /* Убираем фон совсем или оставляем микро-градиент сверху */
-            background: transparent; 
-            transition: 0.3s;
-        }
+        /* ГЛОБАЛЬНЫЕ НАСТРОЙКИ */
+        :root { --gold: #FBBF24; --black: #000000; --dark: #0a0a0a; }
+        
+        body { padding-top: 110px; } /* ВАЖНО: компенсация высоты навигации */
 
-        /* Добавляем легкую линию при скролле (через JS ниже) */
-        .tp-nav-glass.scrolled {
-            background: rgba(0, 0, 0, 0.9);
-            height: 60px;
-            border-bottom: 1px solid #FBBF24;
+        .tp-command-nav {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            z-index: 10000;
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(15px);
+            font-family: 'Exo 2', sans-serif;
+            border-bottom: 1px solid #1a1a1a;
         }
 
         .tp-nav-container {
-            width: 100%;
-            max-width: 1300px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 30px;
+            padding: 0 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .tp-logo {
-            font-family: 'Syncopate', sans-serif;
-            font-size: 18px;
-            font-weight: 700;
-            color: #fff;
-            text-decoration: none;
-            letter-spacing: 2px;
-        }
-
-        .tp-logo span { color: #FBBF24; }
-
-        .tp-menu {
-            display: flex;
-            list-style: none;
-            gap: 40px;
-            margin: 0;
-            padding: 0;
-        }
-
-        .tp-menu a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 11px;
-            font-family: 'Syncopate', sans-serif;
-            letter-spacing: 1px;
-            opacity: 0.7;
-            transition: 0.3s;
-        }
-
-        .tp-menu a:hover { opacity: 1; color: #FBBF24; }
-
-        .tp-nav-right {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .tp-nav-phone {
-            color: #fff;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 14px;
-        }
-
-        .tp-wa-icon {
-            color: #25D366;
-            text-decoration: none;
-            font-weight: 900;
-            border: 1px solid #25D366;
-            padding: 5px 10px;
+        /* ВЕРХНЯЯ ПАНЕЛЬ */
+        .tp-nav-top-bar {
+            background: var(--dark);
+            padding: 8px 0;
+            border-bottom: 1px solid #111;
             font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: #444;
         }
+        .tp-top-socials a { color: #666; text-decoration: none; margin-left: 20px; transition: 0.3s; }
+        .tp-top-socials a:hover { color: var(--gold); }
 
-        /* МОБИЛЬНАЯ ВЕРСИЯ */
-        .tp-burger {
-            display: none;
-            flex-direction: column;
-            gap: 6px;
-            cursor: pointer;
+        /* ГЛАВНАЯ ПАНЕЛЬ */
+        .tp-nav-main { height: 75px; display: flex; align-items: center; }
+
+        .tp-logo { font-family: 'Syncopate', sans-serif; font-size: 20px; color: #fff; text-decoration: none; font-weight: 700; }
+        .tp-logo span { color: var(--gold); }
+
+        .tp-nav-menu { display: flex; list-style: none; gap: 25px; margin: 0; padding: 0; }
+        .tp-nav-menu a { color: #fff; text-decoration: none; font-size: 11px; font-weight: 900; letter-spacing: 1px; transition: 0.3s; }
+        .tp-nav-menu a:hover { color: var(--gold); }
+
+        .tp-nav-actions { display: flex; align-items: center; gap: 20px; }
+        
+        .tp-btn-wa { 
+            color: #25D366; border: 1px solid #25D366; 
+            padding: 8px 15px; font-size: 10px; font-weight: 900; 
+            text-decoration: none; transition: 0.3s;
         }
+        .tp-btn-wa:hover { background: #25D366; color: #fff; }
 
-        .tp-burger span {
-            width: 30px;
-            height: 1px;
-            background: #fff;
+        .tp-btn-call { color: #fff; text-decoration: none; font-weight: 900; font-size: 15px; }
+
+        /* МОБИЛЬНЫЙ БУРГЕР */
+        .tp-nav-burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+        .tp-nav-burger span { width: 28px; height: 2px; background: var(--gold); }
+
+        /* МОБИЛЬНОЕ МЕНЮ (OVERLAY) */
+        .tp-mobile-overlay {
+            position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
+            background: rgba(0,0,0,0.98); transition: 0.5s; z-index: 10001;
+            display: flex; justify-content: center; align-items: center;
         }
+        .tp-mobile-overlay.active { right: 0; }
+        .tp-mobile-content { text-align: center; width: 100%; }
+        .tp-mobile-content a { display: block; color: #fff; text-decoration: none; font-size: 24px; font-family: 'Syncopate', sans-serif; padding: 15px; }
+        .tp-close-menu { font-size: 50px; color: var(--gold); cursor: pointer; margin-bottom: 20px; }
+        .tp-mob-phone { color: var(--gold) !important; font-size: 20px !important; }
 
-        @media (max-width: 900px) {
-            .tp-menu, .tp-nav-right { display: none; }
-            .tp-burger { display: flex; }
+        /* АДАПТИВНОСТЬ */
+        @media (max-width: 1050px) {
+            .tp-nav-menu, .tp-nav-top-bar { display: none; }
+            .tp-nav-burger { display: flex; }
+            .tp-btn-call { display: none; }
+            body { padding-top: 75px; }
         }
     </style>
 
     <script>
-        // Скрипт для появления фона только при скролле
-        window.addEventListener('scroll', function() {
-            const nav = document.querySelector('.tp-nav-glass');
-            if (window.scrollY > 50) {
-                nav.classList.add('scrolled');
-            } else {
-                nav.classList.remove('scrolled');
-            }
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('active');
+        }
+        // Закрывать при клике на ссылку
+        document.querySelectorAll('.tp-mobile-content a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('mobileMenu').classList.remove('active');
+            });
         });
     </script>
 </nav>
@@ -163,11 +174,14 @@
 
 
 
+    
+
+
+
 
 
 
     
-
    <section class="tp-hero-section">
     <style>
         /* ОСНОВНЫЕ СТИЛИ */
