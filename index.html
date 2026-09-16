@@ -1279,9 +1279,8 @@ Object.assign(window.siteTranslations.ru, {
 
 
 
-
 <!-- ================================================================= -->
-<!-- БЛОК "ВСЕ УСЛУГИ" — МАКСИМАЛЬНЫЙ ВОЗДУХ ПЕРЕД ДИСПЕТЧЕРОМ (TALAS) -->
+<!-- БЛОК "ВСЕ УСЛУГИ" — КОМПАКТНАЯ СЕТКА 12 КАРТОЧЕК (TALAS_PROFI) -->
 <!-- ================================================================= -->
 <section id="services" class="services-air-section">
 
@@ -1296,7 +1295,7 @@ Object.assign(window.siteTranslations.ru, {
         .services-air-section {
             background-color: #000000;
             color: #FFFFFF;
-            padding: 120px 24px;
+            padding: 80px 20px;
             width: 100%;
             display: flex;
             justify-content: center;
@@ -1305,127 +1304,104 @@ Object.assign(window.siteTranslations.ru, {
         }
 
         .sa-container {
-            max-width: 820px;
+            max-width: 1100px;
             width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        /* Заголовок */
+        /* Заголовок без описания */
         .sa-header {
             text-align: center;
-            margin-bottom: 60px;
+            margin-bottom: 40px;
         }
 
         .sa-title {
-            font-size: clamp(32px, 5vw, 52px);
+            font-size: clamp(28px, 4vw, 42px);
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 1px;
             color: #FFFFFF;
-            margin-bottom: 28px;
-            line-height: 1.3;
+            line-height: 1.2;
         }
 
         .sa-title span {
             color: #FBBF24;
         }
 
-        .sa-subtitle {
-            font-size: clamp(16px, 2vw, 20px);
-            color: #A1A1AA;
-            max-width: 720px;
-            line-height: 1.8;
-            letter-spacing: 0.5px;
-            font-weight: 400;
-        }
-
-        /* Список услуг */
-        .sa-list {
+        /* Компактная сетка: 4 карточки в ряд */
+        .sa-grid {
             width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
         }
 
-        .sa-item {
+        .sa-card {
             background: #09090B;
             border: 1px solid #27272A;
-            border-radius: 16px;
-            padding: 28px 32px;
+            border-radius: 14px;
+            padding: 16px 18px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 24px;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            gap: 12px;
+            min-height: 72px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             cursor: pointer;
             text-decoration: none;
             color: #FFFFFF;
         }
 
-        .sa-item:hover {
+        .sa-card:hover {
             border-color: #FBBF24;
             background: #121215;
-            transform: translateY(-4px);
-            box-shadow: 0 16px 35px rgba(251, 191, 36, 0.12);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(251, 191, 36, 0.15);
         }
 
-        .sa-item-left {
+        .sa-card-left {
             display: flex;
             align-items: center;
-            gap: 24px;
+            gap: 14px;
         }
 
         .sa-icon {
-            font-size: 28px;
-            width: 52px;
-            height: 52px;
+            font-size: 20px;
+            width: 40px;
+            height: 40px;
             background: #18181B;
-            border-radius: 12px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            transition: all 0.4s ease;
+            transition: all 0.3s ease;
         }
 
-        .sa-item:hover .sa-icon {
+        .sa-card:hover .sa-icon {
             background: #FBBF24;
             color: #000000;
-            transform: scale(1.08);
         }
 
         .sa-name {
-            font-size: 19px;
+            font-size: 15px;
             font-weight: 700;
-            line-height: 1.5;
-            letter-spacing: 0.5px;
-        }
-
-        .sa-arrow-box {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: #71717A;
-            font-size: 14px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.4s ease;
+            line-height: 1.3;
+            letter-spacing: 0.2px;
         }
 
         .sa-arrow {
-            font-size: 20px;
-            transition: transform 0.4s ease;
+            font-size: 16px;
+            color: #71717A;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
         }
 
-        .sa-item:hover .sa-arrow-box {
+        .sa-card:hover .sa-arrow {
             color: #FBBF24;
-        }
-
-        .sa-item:hover .sa-arrow {
-            transform: translateX(8px);
+            transform: translateX(4px);
         }
 
         /* БЛОК ДИСПЕТЧЕРА */
@@ -1433,61 +1409,95 @@ Object.assign(window.siteTranslations.ru, {
             text-align: center;
             width: 100%;
             background: rgba(251, 191, 36, 0.03);
-            border: 1px dashed rgba(251, 191, 36, 0.25);
-            border-radius: 24px;
-            padding: 80px 40px;
-            margin-top: 50px !important;
+            border: 1px dashed rgba(251, 191, 36, 0.3);
+            border-radius: 16px;
+            padding: 40px 20px;
+            margin-top: 40px;
             transition: border-color 0.3s ease;
         }
 
         .sa-action-box:hover {
-            border-color: rgba(251, 191, 36, 0.5);
+            border-color: rgba(251, 191, 36, 0.6);
         }
 
         .sa-action-text {
-            font-size: 19px;
+            font-size: 17px;
             color: #FFFFFF;
-            margin-bottom: 40px;
+            margin-bottom: 24px;
             font-weight: 600;
-            line-height: 1.8;
-            letter-spacing: 0.3px;
+            line-height: 1.5;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .sa-btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 14px;
+            gap: 10px;
             background: #FBBF24;
             color: #000000;
             font-weight: 900;
-            font-size: 16px;
+            font-size: 14px;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            padding: 22px 52px;
-            border-radius: 14px;
+            letter-spacing: 1px;
+            padding: 16px 36px;
+            border-radius: 10px;
             text-decoration: none;
-            transition: all 0.4s ease;
-            box-shadow: 0 6px 25px rgba(251, 191, 36, 0.25);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 18px rgba(251, 191, 36, 0.2);
         }
 
         .sa-btn:hover {
             background: #FFFFFF;
             color: #000000;
-            transform: translateY(-4px);
-            box-shadow: 0 12px 35px rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 255, 255, 0.25);
+        }
+
+        /* АДАПТИВНОСТЬ */
+        @media (max-width: 1024px) {
+            .sa-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
         }
 
         @media (max-width: 768px) {
-            .services-air-section { padding: 80px 16px; }
-            .sa-header { margin-bottom: 40px; }
-            .sa-item { padding: 22px 18px; }
-            .sa-arrow-text { display: none; }
-            .sa-action-box { 
-                margin-top: 90px !important; 
-                padding: 50px 20px; 
+            .services-air-section { padding: 50px 16px; }
+            .sa-header { margin-bottom: 28px; }
+            .sa-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
             }
-            .sa-action-text { margin-bottom: 30px; }
+            .sa-card {
+                padding: 12px 14px;
+                min-height: 64px;
+            }
+            .sa-icon {
+                width: 34px;
+                height: 34px;
+                font-size: 17px;
+            }
+            .sa-name { font-size: 13px; }
+            .sa-action-box {
+                padding: 28px 16px;
+                margin-top: 28px;
+            }
+            .sa-action-text {
+                font-size: 15px;
+                margin-bottom: 20px;
+            }
+            .sa-btn {
+                width: 100%;
+                padding: 14px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sa-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 
@@ -1498,106 +1508,113 @@ Object.assign(window.siteTranslations.ru, {
             <h2 class="sa-title">
                 <span data-i18n="sa_title_1">Все услуги в</span> <span><span data-i18n="sa_title_2">Talas_profi</span></span>
             </h2>
-            <p class="sa-subtitle" data-i18n="sa_subtitle">У нас вы можете найти мастеров под любую задачу. Выберите необходимый сервис и оформите вызов прямо сейчас.</p>
         </div>
 
-        <!-- СПИСОК УСЛУГ -->
-        <div class="sa-list">
+        <!-- КОМПАКТНАЯ СЕТКА ИЗ 12 КАРТОЧЕК -->
+        <div class="sa-grid">
 
-            <a href="https://wa.me/996755000228?text=Заказ%20электрика" target="_blank" class="sa-item">
-                <div class="sa-item-left">
+            <a href="https://wa.me/996755000228?text=Заказ%20электрика" target="_blank" class="sa-card">
+                <div class="sa-card-left">
                     <div class="sa-icon">⚡</div>
                     <span class="sa-name" data-i18n="sa_1">Электромонтажные работы</span>
                 </div>
-                <div class="sa-arrow-box">
-                    <span class="sa-arrow-text" data-i18n="sa_call">Вызвать</span>
-                    <span class="sa-arrow">➔</span>
-                </div>
+                <span class="sa-arrow">➔</span>
             </a>
 
-            <a href="https://wa.me/996755000228?text=Заказ%20кондиционера" target="_blank" class="sa-item">
-                <div class="sa-item-left">
-                    <div class="sa-icon">❄️</div>
-                    <span class="sa-name" data-i18n="sa_2">Кондиционирование и Климат</span>
-                </div>
-                <div class="sa-arrow-box">
-                    <span class="sa-arrow-text" data-i18n="sa_call">Вызвать</span>
-                    <span class="sa-arrow">➔</span>
-                </div>
-            </a>
-
-            <a href="https://wa.me/996755000228?text=Заказ%20видеонаблюдения" target="_blank" class="sa-item">
-                <div class="sa-item-left">
-                    <div class="sa-icon">📹</div>
-                    <span class="sa-name" data-i18n="sa_3">Видеонаблюдение и Домофоны</span>
-                </div>
-                <div class="sa-arrow-box">
-                    <span class="sa-arrow-text" data-i18n="sa_call">Вызвать</span>
-                    <span class="sa-arrow">➔</span>
-                </div>
-            </a>
-
-            <a href="https://wa.me/996755000228?text=Заказ%20сантехника" target="_blank" class="sa-item">
-                <div class="sa-item-left">
+            <a href="https://wa.me/996755000228?text=Заказ%20сантехника" target="_blank" class="sa-card">
+                <div class="sa-card-left">
                     <div class="sa-icon">🔧</div>
-                    <span class="sa-name" data-i18n="sa_4">Сантехнические услуги</span>
+                    <span class="sa-name" data-i18n="sa_2">Сантехнические услуги</span>
                 </div>
-                <div class="sa-arrow-box">
-                    <span class="sa-arrow-text" data-i18n="sa_call">Вызвать</span>
-                    <span class="sa-arrow">➔</span>
-                </div>
+                <span class="sa-arrow">➔</span>
             </a>
 
-            <a href="https://wa.me/996755000228?text=Заказ%20клининга" target="_blank" class="sa-item">
-                <div class="sa-item-left">
+            <a href="https://wa.me/996755000228?text=Заказ%20клининга" target="_blank" class="sa-card">
+                <div class="sa-card-left">
                     <div class="sa-icon">🧹</div>
-                    <span class="sa-name" data-i18n="sa_5">Профессиональный Клининг</span>
+                    <span class="sa-name" data-i18n="sa_3">Профессиональный Клининг</span>
                 </div>
-                <div class="sa-arrow-box">
-                    <span class="sa-arrow-text" data-i18n="sa_call">Вызвать</span>
-                    <span class="sa-arrow">➔</span>
-                </div>
+                <span class="sa-arrow">➔</span>
             </a>
 
-            <a href="https://wa.me/996755000228?text=Заказ%20кирпичной%20кладки" target="_blank" class="sa-item">
-                <div class="sa-item-left">
+            <a href="https://wa.me/996755000228?text=Заказ%20кирпичной%20кладки" target="_blank" class="sa-card">
+                <div class="sa-card-left">
                     <div class="sa-icon">🧱</div>
-                    <span class="sa-name" data-i18n="sa_6">Укладка кирпича и Кладка</span>
+                    <span class="sa-name" data-i18n="sa_4">Укладка кирпича и Кладка</span>
                 </div>
-                <div class="sa-arrow-box">
-                    <span class="sa-arrow-text" data-i18n="sa_call">Вызвать</span>
-                    <span class="sa-arrow">➔</span>
-                </div>
+                <span class="sa-arrow">➔</span>
             </a>
 
-            <a href="https://wa.me/996755000228?text=Заказ%20поклейки%20обоев" target="_blank" class="sa-item">
-                <div class="sa-item-left">
+            <a href="https://wa.me/996755000228?text=Заказ%20поклейки%20обоев" target="_blank" class="sa-card">
+                <div class="sa-card-left">
                     <div class="sa-icon">🎨</div>
-                    <span class="sa-name" data-i18n="sa_7">Поклейка обоев и Отделка</span>
+                    <span class="sa-name" data-i18n="sa_5">Поклейка обоев и Отделка</span>
                 </div>
-                <div class="sa-arrow-box">
-                    <span class="sa-arrow-text" data-i18n="sa_call">Вызвать</span>
-                    <span class="sa-arrow">➔</span>
-                </div>
+                <span class="sa-arrow">➔</span>
             </a>
 
-            <a href="https://wa.me/996755000228?text=Заказ%20другой%20услуги" target="_blank" class="sa-item">
-                <div class="sa-item-left">
+            <a href="https://wa.me/996755000228?text=Заказ%20кондиционера" target="_blank" class="sa-card">
+                <div class="sa-card-left">
+                    <div class="sa-icon">❄️</div>
+                    <span class="sa-name" data-i18n="sa_6">Кондиционирование и Климат</span>
+                </div>
+                <span class="sa-arrow">➔</span>
+            </a>
+
+            <a href="https://wa.me/996755000228?text=Заказ%20видеонаблюдения" target="_blank" class="sa-card">
+                <div class="sa-card-left">
+                    <div class="sa-icon">📹</div>
+                    <span class="sa-name" data-i18n="sa_7">Видеонаблюдение и Домофоны</span>
+                </div>
+                <span class="sa-arrow">➔</span>
+            </a>
+
+            <a href="https://wa.me/996755000228?text=Заказ%20маляра%20штукатура" target="_blank" class="sa-card">
+                <div class="sa-card-left">
+                    <div class="sa-icon">🖌️</div>
+                    <span class="sa-name" data-i18n="sa_8">Штукатурка и Малярные работы</span>
+                </div>
+                <span class="sa-arrow">➔</span>
+            </a>
+
+            <a href="https://wa.me/996755000228?text=Заказ%20укладки%20плитки" target="_blank" class="sa-card">
+                <div class="sa-card-left">
+                    <div class="sa-icon">📐</div>
+                    <span class="sa-name" data-i18n="sa_9">Укладка плитки и Кафель</span>
+                </div>
+                <span class="sa-arrow">➔</span>
+            </a>
+
+            <a href="https://wa.me/996755000228?text=Заказ%20гипсокартона" target="_blank" class="sa-card">
+                <div class="sa-card-left">
+                    <div class="sa-icon">🏗️</div>
+                    <span class="sa-name" data-i18n="sa_10">Монтаж гипсокартона</span>
+                </div>
+                <span class="sa-arrow">➔</span>
+            </a>
+
+            <a href="https://wa.me/996755000228?text=Заказ%20мебельщика" target="_blank" class="sa-card">
+                <div class="sa-card-left">
+                    <div class="sa-icon">🪑</div>
+                    <span class="sa-name" data-i18n="sa_11">Сборка и Ремонт мебели</span>
+                </div>
+                <span class="sa-arrow">➔</span>
+            </a>
+
+            <a href="https://wa.me/996755000228?text=Заказ%20комплексного%20ремонта" target="_blank" class="sa-card">
+                <div class="sa-card-left">
                     <div class="sa-icon">🛠️</div>
-                    <span class="sa-name" data-i18n="sa_8">Другие строительные работы</span>
+                    <span class="sa-name" data-i18n="sa_12">Другие строительные работы</span>
                 </div>
-                <div class="sa-arrow-box">
-                    <span class="sa-arrow-text" data-i18n="sa_call">Вызвать</span>
-                    <span class="sa-arrow">➔</span>
-                </div>
+                <span class="sa-arrow">➔</span>
             </a>
 
         </div>
 
         <!-- БЛОК ДИСПЕТЧЕРА -->
         <div class="sa-action-box">
-            <p class="sa-action-text" data-i18n="sa_action">Нужно решение индивидуальной задачи? Напишите нам — мы подберем специалиста под любой запрос.</p>
-            <a href="https://wa.me/996755000228" target="_blank" class="sa-btn" data-i18n="sa_btn">Написать диспетчеру</a>
+            <p class="sa-action-text" data-i18n="sa_action">Не нашли нужную услугу в списке? Напишите нам — мы обязательно подберем проверенного мастера под вашу индивидуальную задачу!</p>
+            <a href="https://wa.me/996755000228?text=Здравствуйте,%20нужна%20помощь%20с%20подбором%20мастера" target="_blank" class="sa-btn" data-i18n="sa_btn">Написать диспетчеру</a>
         </div>
 
     </div>
@@ -1611,40 +1628,42 @@ Object.assign(window.siteTranslations.ru, {
         Object.assign(window.siteTranslations.ky, {
             sa_title_1: "Бардык кызматтар",
             sa_title_2: "Talas_profi де",
-            sa_subtitle: "Бизден каалаган тапшырмага адистерди таба аласыз. Керектүү кызматты тандап, азыр чакырыңыз.",
             sa_1: "Электромонтаж иштери",
-            sa_2: "Кондиционерлер жана Климат",
-            sa_3: "Видеокөзөмөл жана Домофондор",
-            sa_4: "Сантехникалык кызматтар",
-            sa_5: "Профессионалдуу Клининг",
-            sa_6: "Кирпич тизүү иштери",
-            sa_7: "Обои чаптоо жана Жасалгалоо",
-            sa_8: "Башка курулуш жумуштары",
-            sa_call: "Чакыруу",
-            sa_action: "Жекече тапшырмага чечим керекпи? Бизге жазыңыз — каалаган суроо боюнча адис таап беребиз.",
+            sa_2: "Сантехникалык кызматтар",
+            sa_3: "Профессионалдуу Клининг",
+            sa_4: "Кирпич тизүү иштери",
+            sa_5: "Обои чаптоо жана Жасалгалоо",
+            sa_6: "Кондиционерлер жана Климат",
+            sa_7: "Видеокөзөмөл жана Домофондор",
+            sa_8: "Штукатурка жана Малярдык жумуштар",
+            sa_9: "Кафель жана Плитка тизүү",
+            sa_10: "Гипсокартон монтаждоо",
+            sa_11: "Эмерек чогултуу жана Оңдоо",
+            sa_12: "Башка курулуш жумуштары",
+            sa_action: "Тизмеден керектүү кызматты таппадыңызбы? Бизге жазыңыз — жеке тапшырмаңызга ылайык тажрыйбалуу адис таап беребиз!",
             sa_btn: "Диспетчерге жазуу"
         });
 
         Object.assign(window.siteTranslations.ru, {
             sa_title_1: "Все услуги в",
             sa_title_2: "Talas_profi",
-            sa_subtitle: "У нас вы можете найти мастеров под любую задачу. Выберите необходимый сервис и оформите вызов прямо сейчас.",
             sa_1: "Электромонтажные работы",
-            sa_2: "Кондиционирование и Климат",
-            sa_3: "Видеонаблюдение и Домофоны",
-            sa_4: "Сантехнические услуги",
-            sa_5: "Профессиональный Клининг",
-            sa_6: "Укладка кирпича и Кладка",
-            sa_7: "Поклейка обоев и Отделка",
-            sa_8: "Другие строительные работы",
-            sa_call: "Вызвать",
-            sa_action: "Нужно решение индивидуальной задачи? Напишите нам — мы подберем специалиста под любой запрос.",
+            sa_2: "Сантехнические услуги",
+            sa_3: "Профессиональный Клининг",
+            sa_4: "Укладка кирпича и Кладка",
+            sa_5: "Поклейка обоев и Отделка",
+            sa_6: "Кондиционирование и Климат",
+            sa_7: "Видеонаблюдение и Домофоны",
+            sa_8: "Штукатурка и Малярные работы",
+            sa_9: "Укладка плитки и Кафель",
+            sa_10: "Монтаж гипсокартона",
+            sa_11: "Сборка и Ремонт мебели",
+            sa_12: "Другие строительные работы",
+            sa_action: "Не нашли нужную услугу в списке? Напишите нам — мы обязательно подберем проверенного мастера под вашу индивидуальную задачу!",
             sa_btn: "Написать диспетчеру"
         });
     </script>
 </section>
-
-
 
 
 
