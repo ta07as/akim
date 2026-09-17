@@ -2775,30 +2775,42 @@ Object.assign(window.siteTranslations.ru, {
         });
     }
 
-    // Перехват системного события установки
+    // Проверяем, запущен ли сайт уже как отдельное установленное приложение (PWA)
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+
+    // Если сайт открыт в обычном браузере (не как приложение), показываем баннер при КАЖДОМ заходе
+    if (!isStandalone) {
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                if (pwaBanner) {
+                    pwaBanner.classList.add('show');
+                }
+            }, 1000); // Появляется через 1 секунду после загрузки страницы
+        });
+    }
+
+    // Перехватываем системное событие установки (если браузер его поддерживает)
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
-        
-        // Показываем наш баннер через 1.5 секунды после входа на сайт
-        setTimeout(() => {
-            if (pwaBanner) pwaBanner.classList.add('show');
-        }, 1500);
     });
 
     // Нажатие на кнопку «Скачать»
     if (installBtn) {
         installBtn.addEventListener('click', async () => {
-            if (!deferredPrompt) return;
-            
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            
-            if (outcome === 'accepted') {
-                console.log('Пользователь установил приложение');
+            if (deferredPrompt) {
+                // Если браузер поддерживает системную установку в один клик
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    console.log('Пользователь установил приложение');
+                    closePwaBanner();
+                }
+                deferredPrompt = null;
+            } else {
+                // Подсказка для iOS (Safari) и браузеров, где системный промпт не вызван
+                alert('Чтобы установить приложение:\n1. Нажмите кнопку "Поделиться" или меню браузера (⋮).\n2. Выберите "На экран «Домой»" или "Установить приложение".');
             }
-            deferredPrompt = null;
-            closePwaBanner();
         });
     }
 
@@ -2806,10 +2818,9 @@ Object.assign(window.siteTranslations.ru, {
         if (pwaBanner) pwaBanner.classList.remove('show');
     }
 
-    // Скрываем баннер, если приложение уже установлено
+    // Скрываем баннер при успешной установке
     window.addEventListener('appinstalled', () => {
         closePwaBanner();
-        console.log('PWA установлено!');
     });
 </script>
 
