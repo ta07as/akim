@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>Talas_profi — Услуги в Таласе</title>
 
-
     <!-- Подключение манифеста PWA -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#000000">
@@ -303,41 +302,40 @@
 
 
 
-
-
-
 <!-- ========================================== -->
 <!-- 1. ВЕРХНЯЯ ШАПКА ДЛЯ ПК (СКРЫТА НА ТЕЛЕФОНАХ) -->
 <!-- ========================================== -->
 <header class="pc-header">
     <div class="pc-header-container">
         <a href="#hero" class="pc-logo">Talas<span>_profi</span></a>
-      <nav class="pc-nav-links" id="pcNavLinks">
-    <a href="pages.html#about" data-i18n="sidebar_about" onclick="setActiveNav(this)">
-        <span>🏛️</span> О компании
-    </a>
-    <a href="pages.html#services" data-i18n="nav_services" onclick="setActiveNav(this)">
-        <span>⚡</span> Услуги
-    </a>
-    <a href="pages.html#prices" data-i18n="sidebar_prices" onclick="setActiveNav(this)">
-        <span>💎</span> Прайс-лист
-    </a>
-    <a href="pages.html#portfolio" data-i18n="sidebar_portfolio" onclick="setActiveNav(this)">
-        <span>🛠️</span> Наши работы
-    </a>
-    <a href="pages.html#reviews" data-i18n="sidebar_reviews" onclick="setActiveNav(this)">
-        <span>⭐</span> Отзывы
-    </a>
-    <a href="pages.html#faq" data-i18n="sidebar_faq" onclick="setActiveNav(this)">
-        <span>❓</span> FAQ
-    </a>
-    <a href="pages.html#contacts" data-i18n="sidebar_contacts" class="nav-cta-btn" onclick="setActiveNav(this)">
-        <span>📞</span> Контакты
-    </a>
-</nav>
+        
+        <nav class="pc-nav-links" id="pcNavLinks">
+            <a href="pages.html#about" onclick="setActiveNav(this)">
+                <span>🏛️</span> <span data-i18n="sidebar_about">О компании</span>
+            </a>
+            <a href="pages.html#services" onclick="setActiveNav(this)">
+                <span>⚡</span> <span data-i18n="nav_services">Услуги</span>
+            </a>
+            <a href="pages.html#prices" onclick="setActiveNav(this)">
+                <span>💎</span> <span data-i18n="sidebar_prices">Прайс-лист</span>
+            </a>
+            <a href="pages.html#portfolio" onclick="setActiveNav(this)">
+                <span>🛠️</span> <span data-i18n="sidebar_portfolio">Наши работы</span>
+            </a>
+            <a href="pages.html#reviews" onclick="setActiveNav(this)">
+                <span>⭐</span> <span data-i18n="sidebar_reviews">Отзывы</span>
+            </a>
+            <a href="pages.html#faq" onclick="setActiveNav(this)">
+                <span>❓</span> <span data-i18n="sidebar_faq">FAQ</span>
+            </a>
+            <a href="pages.html#contacts" class="nav-cta-btn" onclick="setActiveNav(this)">
+                <span>📞</span> <span data-i18n="sidebar_contacts">Контакты</span>
+            </a>
+        </nav>
+
         <div class="pc-actions">
             <!-- Переключатель языка для ПК -->
-            <button type="button" class="lang-btn-toggle" onclick="toggleLanguage()">
+            <button type="button" class="lang-btn-toggle" onclick="toggleLanguage()" aria-label="Переключить язык">
                 <span class="lang-badge" id="current-lang-badge">KY</span>
                 <span id="next-lang-text">Русский</span>
             </button>
@@ -378,16 +376,22 @@
     .pc-logo span { color: #FBBF24; }
     .pc-nav-links {
         display: flex;
-        gap: 25px;
+        gap: 20px;
     }
     .pc-nav-links a {
         color: #FFFFFF;
         text-decoration: none;
         font-size: 14px;
         font-weight: 600;
-        transition: color 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: color 0.2s ease, transform 0.1s ease;
     }
-    .pc-nav-links a:hover { color: #FBBF24; }
+    .pc-nav-links a:hover,
+    .pc-nav-links a.active { 
+        color: #FBBF24; 
+    }
     .pc-actions {
         display: flex;
         align-items: center;
@@ -536,6 +540,7 @@ Object.assign(window.siteTranslations.ru, {
 
 /* Переключение языков одной кнопкой */
 function toggleLanguage() {
+    if (navigator.vibrate) navigator.vibrate(20);
     const currentLang = document.documentElement.lang === "ru" ? "ru" : "ky";
     const nextLang = currentLang === "ky" ? "ru" : "ky";
     setLanguage(nextLang);
@@ -544,7 +549,7 @@ function toggleLanguage() {
 function setLanguage(language) {
     if (!window.siteTranslations[language]) return;
 
-    /* Обновляем текст всех блоков с атрибутом data-i18n */
+    /* Обновляем текст всех элементов с атрибутом data-i18n */
     document.querySelectorAll("[data-i18n]").forEach(function(el) {
         const key = el.getAttribute("data-i18n");
         const translation = window.siteTranslations[language][key];
@@ -553,7 +558,7 @@ function setLanguage(language) {
         }
     });
 
-    /* Обновляем вид кнопки переключения языка */
+    /* Обновляем вид кнопок переключения языка */
     const mobileBadge = document.getElementById("mobile-lang-badge");
     const pcBadge = document.getElementById("current-lang-badge");
     const pcNextText = document.getElementById("next-lang-text");
@@ -569,14 +574,16 @@ function setLanguage(language) {
     } catch (e) {}
 }
 
-/* Активная кнопка в нижнем меню */
+/* Активная кнопка навигации */
 function setActiveNav(element) {
-    document.querySelectorAll('.bottom-nav .nav-item').forEach(item => item.classList.remove('active'));
-    element.classList.add('active');
+    if (navigator.vibrate) navigator.vibrate(15);
+    document.querySelectorAll('.bottom-nav .nav-item, .pc-nav-links a').forEach(item => item.classList.remove('active'));
+    if (element) element.classList.add('active');
 }
 
-/* Открытие и закрытие меню */
+/* Открытие и закрытие мобильного меню */
 function openMenu() {
+    if (navigator.vibrate) navigator.vibrate(25);
     document.getElementById("sidebarMenu").classList.add("active");
     document.getElementById("menuOverlay").classList.add("active");
     document.body.style.overflow = "hidden";
@@ -588,6 +595,7 @@ function closeMenu() {
     document.body.style.overflow = "";
 }
 
+/* Обработчики событий */
 document.addEventListener("keydown", function(e) {
     if (e.key === "Escape") closeMenu();
 });
@@ -595,17 +603,13 @@ document.addEventListener("keydown", function(e) {
 document.addEventListener("DOMContentLoaded", function() {
     let savedLanguage = "ky";
     try {
-        savedLanguage = localStorage.setItem("siteLanguage") || "ky";
+        savedLanguage = localStorage.getItem("siteLanguage") || "ky";
     } catch (e) {
         savedLanguage = "ky";
     }
     setLanguage(savedLanguage);
 });
 </script>
-
-                
-
-
 
 
 
@@ -628,8 +632,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     
-
-
 
 <!-- ========================================== -->
 <!-- 3. ГЛАВНЫЙ БАННЕР (HERO SECTION)           -->
@@ -872,13 +874,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
         <!-- Заголовок -->
         <h1 class="hero-v4-title">
-            <span data-i18n="hero_title_1">Профессиональные услуги</span><br>
+            <span data-i18n="hero_title_1">Профессиональный электромонтаж</span><br>
             <span data-i18n="hero_title_2">в</span> <strong><span data-i18n="hero_title_3">один звонок</span></strong>
         </h1>
 
         <!-- Описание -->
         <p class="hero-v4-desc" data-i18n="hero_desc">
-            Электромонтаж, кондиционеры, сантехника и клининг. Направляём проверенных мастеров с профильным инструментом и гарантией качества.
+            Полный комплекс электромонтажных работ любой сложности. Профессиональный инструмент, соблюдение стандартов безопасности и гарантия качества.
         </p>
 
         <!-- Кнопки -->
@@ -918,10 +920,10 @@ window.siteTranslations.ky = window.siteTranslations.ky || {};
 window.siteTranslations.ru = window.siteTranslations.ru || {};
 
 Object.assign(window.siteTranslations.ky, {
-    hero_title_1: " Кесипкөй кызматтар",
+    hero_title_1: "Кесипкөй электр монтаждоо",
     hero_title_2: "",
-    hero_title_3: "бир чыкылдатууда",
-    hero_desc: "Электр монтаждоо, кондиционерлер, сантехника жана клининг. Профессионалдуу шаймандары бар ишенимдүү чеберлерди кепилдиги менен жөнөтөбүз.",
+    hero_title_3: "бир чалуу менен",
+    hero_desc: "Каалаган татаалдыктагы электр монтаждоо жумуштары. Профессионалдуу шаймандар, коопсуздук стандарттары жана сапат кепилдиги.",
     hero_btn_wa: "WhatsApp аркылуу жазуу",
     hero_stat_quality: "Сапат",
     hero_stat_own: "Өзүбүздүн",
@@ -930,10 +932,10 @@ Object.assign(window.siteTranslations.ky, {
 });
 
 Object.assign(window.siteTranslations.ru, {
-    hero_title_1: "Профессиональные услуги",
+    hero_title_1: "Профессиональный электромонтаж",
     hero_title_2: "в",
-    hero_title_3: "один клик",
-    hero_desc: "Электромонтаж, кондиционеры, сантехника и клининг. Направляем проверенных мастеров с профильным инструментом и гарантией качества.",
+    hero_title_3: "один звонок",
+    hero_desc: "Полный комплекс электромонтажных работ любой сложности. Профессиональный инструмент, соблюдение стандартов безопасности и гарантия качества.",
     hero_btn_wa: "Написать в WhatsApp",
     hero_stat_quality: "Качество",
     hero_stat_own: "Свои",
@@ -947,10 +949,6 @@ Object.assign(window.siteTranslations.ru, {
 
 
 
-
-
-
-
     
 
 
@@ -962,8 +960,6 @@ Object.assign(window.siteTranslations.ru, {
 
 
     
-
-
 
 
 
@@ -1188,7 +1184,7 @@ Object.assign(window.siteTranslations.ru, {
                 </div>
                 <div class="clean-card-body">
                     <h4 data-i18n="hwc_s3_t">Выезд и работа</h4>
-                    <p data-i18n="hwc_s3_d">Мастер приезжает в договоренное время и выполняет работу.</p>
+                    <p data-i18n="hwc_s3_d">Электромонтажник приезжает в договоренное время и выполняет работу.</p>
                 </div>
             </div>
 
@@ -1212,15 +1208,17 @@ Object.assign(window.siteTranslations.ru, {
         document.addEventListener("DOMContentLoaded", function () {
             const sectionClean = document.getElementById("how-we-work-clean");
             
-            const observerClean = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        sectionClean.classList.add("is-clean-active");
-                    }
-                });
-            }, { threshold: 0.1 });
+            if (sectionClean) {
+                const observerClean = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            sectionClean.classList.add("is-clean-active");
+                        }
+                    });
+                }, { threshold: 0.1 });
 
-            if (sectionClean) observerClean.observe(sectionClean);
+                observerClean.observe(sectionClean);
+            }
         });
 
         // Регистрация переводов в единый реестр
@@ -1237,7 +1235,7 @@ Object.assign(window.siteTranslations.ru, {
             hwc_s2_t: "Макулдашуу",
             hwc_s2_d: "Тапшырманы, иштин көлөмүн тактап, бааны бекитебиз.",
             hwc_s3_t: "Баруу жана жумуш",
-            hwc_s3_d: "Уста макулдашылган убакта келип, ишти аткарат.",
+            hwc_s3_d: "Электрик макулдашылган убакта келип, ишти аткарат.",
             hwc_s4_t: "Текшерүү жана төлөө",
             hwc_s4_d: "Сиз даяр натыйжаны текшерип, андан соң эсептешесиз."
         });
@@ -1251,7 +1249,7 @@ Object.assign(window.siteTranslations.ru, {
             hwc_s2_t: "Согласование",
             hwc_s2_d: "Уточняем задачи, объем работы и фиксируем стоимость.",
             hwc_s3_t: "Выезд и работа",
-            hwc_s3_d: "Мастер приезжает в договоренное время и выполняет работу.",
+            hwc_s3_d: "Электромонтажник приезжает в договоренное время и выполняет работу.",
             hwc_s4_t: "Проверка и оплата",
             hwc_s4_d: "Вы проверяете готовый результат и производите расчет."
         });
@@ -1268,10 +1266,7 @@ Object.assign(window.siteTranslations.ru, {
 
 
 
-
-
     
-
 
 
 
@@ -1316,7 +1311,7 @@ Object.assign(window.siteTranslations.ru, {
             align-items: center;
         }
 
-        /* Заголовок без описания */
+        /* Заголовок */
         .sa-header {
             text-align: center;
             margin-bottom: 40px;
@@ -1679,10 +1674,7 @@ Object.assign(window.siteTranslations.ru, {
 
 
 
-
-
     
-
 
 
 
@@ -1899,7 +1891,7 @@ Object.assign(window.siteTranslations.ru, {
         </div>
 
         <form id="telegram-v7-form" class="form-v7-grid">
-            
+
             <div class="field-v7">
                 <label><span data-i18n="v7_lbl_name">Имя</span> <span class="req">*</span></label>
                 <input type="text" id="v7-name" class="input-v7" data-i18n="v7_ph_name" placeholder="Введите ваше имя" required>
@@ -2056,9 +2048,6 @@ Object.assign(window.siteTranslations.ru, {
 
 
 
-
-
-
     
 
 
@@ -2080,8 +2069,6 @@ Object.assign(window.siteTranslations.ru, {
 
 
 
-
-    
 <!-- ================================================================= -->
 <!-- БЛОК "О НАС" — PRO INDUSTRIAL CARD FOCUS (ТАЛАС / БИШКЕК)          -->
 <!-- ================================================================= -->
@@ -2238,7 +2225,7 @@ Object.assign(window.siteTranslations.ru, {
         <div class="card-header">
             <h2 class="card-title" data-i18n="cd_title">Сервис <span>Talas_profi</span></h2>
             <p class="card-intro" data-i18n="cd_desc">
-                Единая сервисная служба в Таласе . Мы подбираем квалифицированных мастеров под ваши задачи, согласовываем фиксированную смету и гарантируем качество на каждом этапе.
+                Единая сервисная служба в Таласе. Мы подбираем квалифицированных мастеров под ваши задачи, согласовываем фиксированную смету и гарантируем качество на каждом этапе.
             </p>
         </div>
 
@@ -2342,9 +2329,6 @@ Object.assign(window.siteTranslations.ru, {
 
 
 
-
-
-
     
     
 
@@ -2356,8 +2340,6 @@ Object.assign(window.siteTranslations.ru, {
 
 
     
-
-
 
 
 
@@ -2399,7 +2381,7 @@ Object.assign(window.siteTranslations.ru, {
             border-top: 2px solid #1E1E24 !important;
             overflow: hidden !important;
             box-sizing: border-box !important;
-            margin-top: 60px !important; /* Безопасный отступ от верхнего блока */
+            margin-top: 60px !important;
             margin-bottom: 0 !important;
             transform: none !important;
         }
@@ -2588,12 +2570,12 @@ Object.assign(window.siteTranslations.ru, {
         window.siteTranslations.ru = window.siteTranslations.ru || {};
 
         Object.assign(window.siteTranslations.ky, {
-            ft_desc: "Талас шаарындагы, оңдоп туздоо кызматтарынын толук топтому.",
+            ft_desc: "Талас шаарындагы оңдоп-түзөө жана турмуш-тиричилик кызматтарынын толук топтому.",
             ft_services_t: "Кызматтар",
-            ft_s1: "Электр кураштыруу жана сантехника",
+            ft_s1: "Электр куроо жана сантехника",
             ft_s2: "Кондиционерлерди орнотуу",
             ft_s3: "Видеокөзөмөл жана оңдоо иштери",
-            ft_s4: "Бардык түрдөгү кызматтар",
+            ft_s4: "Бардык түрдөгү тармактык жумуштар",
             ft_region_t: "Аймак",
             ft_r1: "Талас шаары гана",
             ft_r2: "Шаар ичинде ыкчам баруу",
@@ -2601,7 +2583,7 @@ Object.assign(window.siteTranslations.ru, {
             ft_contacts_t: "Байланыш",
             ft_work_time: "24/7 иштейбиз (Үзгүлтүксүз)",
             ft_btn: "WhatsApp'ка жазуу",
-            ft_copy: "&copy; 2026 Talas_profi. Бардык укуктар корголгон.",
+            ft_copy: "© 2026 Talas_profi. Бардык укуктар корголгон.",
             ft_tag: "Сапат. Ишенимдүүлүк. 24/7."
         });
 
@@ -2619,7 +2601,7 @@ Object.assign(window.siteTranslations.ru, {
             ft_contacts_t: "Контакты",
             ft_work_time: "Работаем 24/7 (Круглосуточно)",
             ft_btn: "Написать в WhatsApp",
-            ft_copy: "&copy; 2026 Talas_profi. Все права защищены.",
+            ft_copy: "© 2026 Talas_profi. Все права защищены.",
             ft_tag: "Качество. Надежность. Круглосуточно."
         });
 
@@ -2643,9 +2625,19 @@ Object.assign(window.siteTranslations.ru, {
 
 
 
-
-
     
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2664,14 +2656,14 @@ Object.assign(window.siteTranslations.ru, {
 <!-- ========================================== -->
 <div id="pwa-install-banner" class="pwa-banner">
     <div class="pwa-banner-content">
-        <div class="pwa-icon" style="overflow: hidden; padding: 0;">
-    <img src="https://lh3.googleusercontent.com/d/1DYsvYA2s2zEdXydltaXTAlGXsYBWSsiQ" alt="Talas_profi" style="width: 100%; height: 100%; object-fit: cover;">
-</div>
-        <div class="pwa-text">
-            <strong>Установить Talas_profi</strong>
-            <span>Быстрый доступ к услугам с рабочего стола</span>
+        <div class="pwa-icon">
+            <img src="https://lh3.googleusercontent.com/d/1DYsvYA2s2zEdXydltaXTAlGXsYBWSsiQ" alt="Talas_profi">
         </div>
-        <button id="pwa-install-btn" class="pwa-btn">Скачать</button>
+        <div class="pwa-text">
+            <strong data-i18n="pwa_title">Установить Talas_profi</strong>
+            <span data-i18n="pwa_desc">Быстрый доступ к услугам с рабочего стола</span>
+        </div>
+        <button id="pwa-install-btn" class="pwa-btn" data-i18n="pwa_btn">Установить</button>
         <button id="pwa-close-btn" class="pwa-close" onclick="closePwaBanner()">&times;</button>
     </div>
 </div>
@@ -2679,7 +2671,7 @@ Object.assign(window.siteTranslations.ru, {
 <style>
     .pwa-banner {
         position: fixed;
-        bottom: 75px; /* Отодвинуто выше нижней мобильной панели */
+        bottom: 75px;
         left: 50%;
         transform: translateX(-50%) translateY(150px);
         width: calc(100% - 32px);
@@ -2692,10 +2684,11 @@ Object.assign(window.siteTranslations.ru, {
         z-index: 2000;
         transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
         opacity: 0;
+        box-sizing: border-box;
     }
     @media (min-width: 993px) {
         .pwa-banner {
-            bottom: 25px; /* На ПК отображается снизу экрана */
+            bottom: 25px;
         }
     }
     .pwa-banner.show {
@@ -2708,7 +2701,6 @@ Object.assign(window.siteTranslations.ru, {
         gap: 12px;
     }
     .pwa-icon {
-        font-size: 22px;
         width: 40px;
         height: 40px;
         background: rgba(251, 191, 36, 0.15);
@@ -2718,6 +2710,13 @@ Object.assign(window.siteTranslations.ru, {
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
+        overflow: hidden;
+        padding: 0;
+    }
+    .pwa-icon img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
     .pwa-text {
         display: flex;
@@ -2728,10 +2727,12 @@ Object.assign(window.siteTranslations.ru, {
         color: #FFFFFF;
         font-size: 14px;
         font-weight: 800;
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     }
     .pwa-text span {
         color: #A1A1AA;
         font-size: 11px;
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     }
     .pwa-btn {
         background: #FBBF24;
@@ -2744,6 +2745,7 @@ Object.assign(window.siteTranslations.ru, {
         text-transform: uppercase;
         cursor: pointer;
         transition: all 0.2s ease;
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     }
     .pwa-btn:hover {
         background: #FFFFFF;
@@ -2755,6 +2757,7 @@ Object.assign(window.siteTranslations.ru, {
         font-size: 20px;
         cursor: pointer;
         padding: 0 4px;
+        line-height: 1;
     }
     .pwa-close:hover {
         color: #FFFFFF;
@@ -2762,7 +2765,7 @@ Object.assign(window.siteTranslations.ru, {
 </style>
 
 <script>
-    let deferredPrompt;
+    let deferredPrompt = null;
     const pwaBanner = document.getElementById('pwa-install-banner');
     const installBtn = document.getElementById('pwa-install-btn');
 
@@ -2775,41 +2778,39 @@ Object.assign(window.siteTranslations.ru, {
         });
     }
 
-    // Проверяем, запущен ли сайт уже как отдельное установленное приложение (PWA)
-    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-
-    // Если сайт открыт в обычном браузере (не как приложение), показываем баннер при КАЖДОМ заходе
-    if (!isStandalone) {
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                if (pwaBanner) {
-                    pwaBanner.classList.add('show');
-                }
-            }, 1000); // Появляется через 1 секунду после загрузки страницы
-        });
+    // Проверка: запущено ли уже как установленное приложение
+    function isStandalone() {
+        return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
     }
 
-    // Перехватываем системное событие установки (если браузер его поддерживает)
+    // Перехватываем системное событие установки от браузера
     window.addEventListener('beforeinstallprompt', (e) => {
+        // Отменяем автоматический показ стандартного мини-инфобара браузера
         e.preventDefault();
+        // Сохраняем событие для вызова по клику на нашу кнопку
         deferredPrompt = e;
+        
+        // Показываем наш стильный баннер
+        if (pwaBanner && !isStandalone()) {
+            pwaBanner.classList.add('show');
+        }
     });
 
-    // Нажатие на кнопку «Скачать»
+    // Обработка клика по кнопке "Установить"
     if (installBtn) {
         installBtn.addEventListener('click', async () => {
             if (deferredPrompt) {
-                // Если браузер поддерживает системную установку в один клик
+                // Показываем родное системное диалоговое окно браузера ("Установить приложение?")
                 deferredPrompt.prompt();
+                
+                // Ждем решения пользователя
                 const { outcome } = await deferredPrompt.userChoice;
                 if (outcome === 'accepted') {
-                    console.log('Пользователь установил приложение');
+                    // Пользователь согласился — скрываем баннер
                     closePwaBanner();
                 }
+                // Очищаем сохраненное событие
                 deferredPrompt = null;
-            } else {
-                // Подсказка для iOS (Safari) и браузеров, где системный промпт не вызван
-                alert('Чтобы установить приложение:\n1. Нажмите кнопку "Поделиться" или меню браузера (⋮).\n2. Выберите "На экран «Домой»" или "Установить приложение".');
             }
         });
     }
@@ -2818,12 +2819,45 @@ Object.assign(window.siteTranslations.ru, {
         if (pwaBanner) pwaBanner.classList.remove('show');
     }
 
-    // Скрываем баннер при успешной установке
+    // Автоматически скрываем баннер при успешной установке приложения
     window.addEventListener('appinstalled', () => {
         closePwaBanner();
+        deferredPrompt = null;
     });
-</script>
 
+    // Интеграция переводов для мультиязычности (RU/KY)
+    window.siteTranslations = window.siteTranslations || {};
+    window.siteTranslations.ky = window.siteTranslations.ky || {};
+    window.siteTranslations.ru = window.siteTranslations.ru || {};
+
+    Object.assign(window.siteTranslations.ky, {
+        pwa_title: "Talas_profi орнотуу",
+        pwa_desc: "Иш столунан кызматтарга тез кирүү",
+        pwa_btn: "Орнотуу"
+    });
+
+    Object.assign(window.siteTranslations.ru, {
+        pwa_title: "Установить Talas_profi",
+        pwa_desc: "Быстрый доступ к услугам с рабочего стола",
+        pwa_btn: "Установить"
+    });
+
+    const pwaSetLanguage = window.setLanguage;
+    window.setLanguage = function(lang) {
+        if (typeof pwaSetLanguage === "function") {
+            pwaSetLanguage(lang);
+        }
+        if (!window.siteTranslations[lang]) return;
+
+        document.querySelectorAll("#pwa-install-banner [data-i18n]").forEach(function(el) {
+            const key = el.getAttribute("data-i18n");
+            const translation = window.siteTranslations[lang][key];
+            if (translation !== undefined) {
+                el.textContent = translation;
+            }
+        });
+    };
+</script>
 
 
 
