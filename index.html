@@ -300,8 +300,6 @@
 
 
 
-
-
 <!-- ========================================== -->
 <!-- 1. ВЕРХНЯЯ ШАПКА ДЛЯ ПК (СКРЫТА НА ТЕЛЕФОНАХ) -->
 <!-- ========================================== -->
@@ -309,30 +307,6 @@
     <div class="pc-header-container">
         <a href="#hero" class="pc-logo">Talas<span>_profi</span></a>
         
-        <nav class="pc-nav-links" id="pcNavLinks">
-            <a href="pages.html#about" onclick="setActiveNav(this)">
-                <span>🏛️</span> <span data-i18n="sidebar_about">О компании</span>
-            </a>
-            <a href="pages.html#services" onclick="setActiveNav(this)">
-                <span>⚡</span> <span data-i18n="nav_services">Услуги</span>
-            </a>
-            <a href="pages.html#prices" onclick="setActiveNav(this)">
-                <span>💎</span> <span data-i18n="sidebar_prices">Прайс-лист</span>
-            </a>
-            <a href="pages.html#portfolio" onclick="setActiveNav(this)">
-                <span>🛠️</span> <span data-i18n="sidebar_portfolio">Наши работы</span>
-            </a>
-            <a href="pages.html#reviews" onclick="setActiveNav(this)">
-                <span>⭐</span> <span data-i18n="sidebar_reviews">Отзывы</span>
-            </a>
-            <a href="pages.html#faq" onclick="setActiveNav(this)">
-                <span>❓</span> <span data-i18n="sidebar_faq">FAQ</span>
-            </a>
-            <a href="pages.html#contacts" class="nav-cta-btn" onclick="setActiveNav(this)">
-                <span>📞</span> <span data-i18n="sidebar_contacts">Контакты</span>
-            </a>
-        </nav>
-
         <div class="pc-actions">
             <!-- Переключатель языка для ПК -->
             <button type="button" class="lang-btn-toggle" onclick="toggleLanguage()" aria-label="Переключить язык">
@@ -374,24 +348,6 @@
         letter-spacing: 1px;
     }
     .pc-logo span { color: #FBBF24; }
-    .pc-nav-links {
-        display: flex;
-        gap: 20px;
-    }
-    .pc-nav-links a {
-        color: #FFFFFF;
-        text-decoration: none;
-        font-size: 14px;
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        transition: color 0.2s ease, transform 0.1s ease;
-    }
-    .pc-nav-links a:hover,
-    .pc-nav-links a.active { 
-        color: #FBBF24; 
-    }
     .pc-actions {
         display: flex;
         align-items: center;
@@ -435,7 +391,7 @@
         <span data-i18n="nav_services">Кызматтар</span>
     </a>
 
-    <!-- ЦЕНТРАЛЬНЫЙ ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА (1 КЛИК) -->
+    <!-- ЦЕНТРАЛЬНЫЙ ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА -->
     <button type="button" class="lang-btn-toggle" onclick="toggleLanguage()" aria-label="Переключить язык">
         <span class="lang-badge" id="mobile-lang-badge">KY</span>
     </button>
@@ -451,37 +407,22 @@
         <span data-i18n="nav_application">Арыз</span>
     </a>
 
-    <!-- Кнопка 5: Бургер-меню -->
-    <button type="button" class="nav-item" id="burger-menu-btn" onclick="openMenu()">
-        <svg viewBox="0 0 24 24">
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line>
+    <!-- Кнопка 5: WhatsApp -->
+    <a href="https://wa.me/996755000228" target="_blank" class="nav-item" onclick="setActiveNav(this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
         </svg>
-        <span data-i18n="nav_menu">Меню</span>
-    </button>
+        <span>WhatsApp</span>
+    </a>
 </nav>
 
 <!-- ========================================== -->
-<!-- 3. ВСПЛЫВАЮЩЕЕ БОКОВОЕ БУРГЕР-МЕНЮ          -->
-<!-- ========================================== -->
-<div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
-
-<div class="sidebar-menu" id="sidebarMenu">
-    <div class="sidebar-header">
-        <span class="sidebar-title" data-i18n="sidebar_navigation">Навигация</span>
-        <button type="button" class="close-btn" onclick="closeMenu()" aria-label="Закрыть">&times;</button>
-    </div>
-</div>
-
-<!-- ========================================== -->
-<!-- 4. ЕДИНЫЙ СКРИПТ УПРАВЛЕНИЯ НАВИГАЦИЕЙ И ЯЗЫКОМ -->
+<!-- 3. ЕДИНЫЙ СКРИПТ УПРАВЛЕНИЯ НАВИГАЦИЕЙ И ЯЗЫКОМ -->
 <!-- ========================================== -->
 <script>
 window.siteTranslations = window.siteTranslations || {};
 window.siteTranslations.ky = window.siteTranslations.ky || {};
 window.siteTranslations.ru = window.siteTranslations.ru || {};
-
 
 /* Переключение языков одной кнопкой */
 function toggleLanguage() {
@@ -522,28 +463,9 @@ function setLanguage(language) {
 /* Активная кнопка навигации */
 function setActiveNav(element) {
     if (navigator.vibrate) navigator.vibrate(15);
-    document.querySelectorAll('.bottom-nav .nav-item, .pc-nav-links a').forEach(item => item.classList.remove('active'));
+    document.querySelectorAll('.bottom-nav .nav-item').forEach(item => item.classList.remove('active'));
     if (element) element.classList.add('active');
 }
-
-/* Открытие и закрытие мобильного меню */
-function openMenu() {
-    if (navigator.vibrate) navigator.vibrate(25);
-    document.getElementById("sidebarMenu").classList.add("active");
-    document.getElementById("menuOverlay").classList.add("active");
-    document.body.style.overflow = "hidden";
-}
-
-function closeMenu() {
-    document.getElementById("sidebarMenu").classList.remove("active");
-    document.getElementById("menuOverlay").classList.remove("active");
-    document.body.style.overflow = "";
-}
-
-/* Обработчики событий */
-document.addEventListener("keydown", function(e) {
-    if (e.key === "Escape") closeMenu();
-});
 
 document.addEventListener("DOMContentLoaded", function() {
     let savedLanguage = "ky";
@@ -555,7 +477,6 @@ document.addEventListener("DOMContentLoaded", function() {
     setLanguage(savedLanguage);
 });
 </script>
-
 
 
 
