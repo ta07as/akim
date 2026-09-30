@@ -472,33 +472,6 @@
         <span class="sidebar-title" data-i18n="sidebar_navigation">Навигация</span>
         <button type="button" class="close-btn" onclick="closeMenu()" aria-label="Закрыть">&times;</button>
     </div>
-
-    <nav class="sidebar-nav">
-        <a href="pages.html#about" class="sidebar-link" onclick="closeMenu()">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-            <span data-i18n="sidebar_about">Компания жөнүндө</span>
-        </a>
-        <a href="pages.html#prices" class="sidebar-link" onclick="closeMenu()">
-            <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
-            <span data-i18n="sidebar_prices">Баалар</span>
-        </a>
-        <a href="pages.html#portfolio" class="sidebar-link" onclick="closeMenu()">
-            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-            <span data-i18n="sidebar_portfolio">Биздин иштер</span>
-        </a>
-        <a href="pages.html#reviews" class="sidebar-link" onclick="closeMenu()">
-            <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-            <span data-i18n="sidebar_reviews">Пикирлер</span>
-        </a>
-        <a href="pages.html#faq" class="sidebar-link" onclick="closeMenu()">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-            <span data-i18n="sidebar_faq">Көп берилүүчү суроолор</span>
-        </a>
-        <a href="pages.html#contacts" class="sidebar-link" onclick="closeMenu()">
-            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-            <span data-i18n="sidebar_contacts">Байланыштар</span>
-        </a>
-    </nav>
 </div>
 
 <!-- ========================================== -->
@@ -509,34 +482,6 @@ window.siteTranslations = window.siteTranslations || {};
 window.siteTranslations.ky = window.siteTranslations.ky || {};
 window.siteTranslations.ru = window.siteTranslations.ru || {};
 
-/* База переводов */
-Object.assign(window.siteTranslations.ky, {
-    nav_home: "Башкы бет",
-    nav_services: "Кызматтар",
-    nav_application: "Арыз",
-    nav_menu: "Меню",
-    sidebar_navigation: "Навигация",
-    sidebar_about: "Компания жөнүндө",
-    sidebar_prices: "Баалар",
-    sidebar_portfolio: "Биздин иштер",
-    sidebar_reviews: "Пикирлер",
-    sidebar_faq: "Көп берилүүчү суроолор",
-    sidebar_contacts: "Байланыштар"
-});
-
-Object.assign(window.siteTranslations.ru, {
-    nav_home: "Главная",
-    nav_services: "Услуги",
-    nav_application: "Заявка",
-    nav_menu: "Меню",
-    sidebar_navigation: "Навигация",
-    sidebar_about: "О компании",
-    sidebar_prices: "Прайс-лист",
-    sidebar_portfolio: "Наши работы",
-    sidebar_reviews: "Отзывы",
-    sidebar_faq: "Частые вопросы",
-    sidebar_contacts: "Контакты"
-});
 
 /* Переключение языков одной кнопкой */
 function toggleLanguage() {
