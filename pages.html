@@ -920,580 +920,403 @@
         
         
         
-        
- <!-- СЕКЦИЯ: КАТАЛОГ УСЛУГ (Профессиональный Индустриальный) -->
-<style>
-    /* Переменные темы */
-    :root {
-        --tp-bg-dark: #000000;
-        --tp-card-bg: #111113;
-        --tp-card-hover: #18181B;
-        --tp-gold: #FBBF24;
-        --tp-gold-glow: rgba(251, 191, 36, 0.15);
-        --tp-border: #27272A;
-        --tp-text-main: #FFFFFF;
-        --tp-text-muted: #A1A1AA;
-        --tp-danger: #EF4444;
-        --tp-danger-bg: rgba(239, 68, 68, 0.1);
-        --tp-success: #10B981;
-    }
+<!-- ================================================================= -->
+<!-- БЛОК "ВСЕ УСЛУГИ" — КОМПАКТНАЯ СЕТКА 12 КАРТОЧЕК (TALAS_PROFI) -->
+<!-- ================================================================= -->
+<section id="services" class="services-air-section">
 
-    #services {
-        background-color: var(--tp-bg-dark);
-        color: var(--tp-text-main);
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        padding: 40px 15px;
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-
-    /* Заголовок секции */
-    .tp-services-title {
-        color: var(--tp-text-main);
-        font-size: 28px;
-        font-weight: 900;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        margin-bottom: 8px;
-        position: relative;
-        display: inline-block;
-    }
-
-    .tp-services-title::after {
-        content: '';
-        position: absolute;
-        bottom: -6px;
-        left: 0;
-        width: 60px;
-        height: 4px;
-        background: var(--tp-gold);
-        border-radius: 2px;
-    }
-
-    .tp-services-subtitle {
-        color: var(--tp-text-muted);
-        font-size: 14px;
-        line-height: 1.6;
-        margin-top: 14px;
-        margin-bottom: 25px;
-    }
-
-    /* Фильтры и категории */
-    .tp-services-nav {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin-bottom: 25px;
-    }
-
-    .tp-service-filter-btn {
-        background: var(--tp-card-bg);
-        border: 1px solid var(--tp-border);
-        color: var(--tp-text-muted);
-        padding: 10px 18px;
-        border-radius: 25px;
-        font-size: 13px;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.25s ease;
-        user-select: none;
-    }
-
-    .tp-service-filter-btn:hover {
-        border-color: var(--tp-gold);
-        color: var(--tp-text-main);
-    }
-
-    .tp-service-filter-btn.active {
-        background: var(--tp-gold);
-        color: #000000;
-        border-color: var(--tp-gold);
-        box-shadow: 0 0 12px var(--tp-gold-glow);
-    }
-
-    /* Аварийный блок */
-    .tp-emergency-banner {
-        background: linear-gradient(135deg, rgba(39, 0, 0, 0.9) 0%, var(--tp-card-bg) 100%);
-        border: 2px solid var(--tp-danger);
-        border-radius: 14px;
-        padding: 22px 26px;
-        margin-bottom: 30px;
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: space-between;
-        gap: 15px;
-        box-shadow: 0 4px 20px rgba(239, 68, 68, 0.15);
-    }
-
-    .tp-emergency-info h4 {
-        color: var(--tp-danger);
-        font-size: 18px;
-        font-weight: 900;
-        margin: 0 0 6px 0;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    .tp-emergency-info p {
-        color: var(--tp-text-main);
-        font-size: 13px;
-        margin: 0;
-        line-height: 1.4;
-    }
-
-    .tp-btn-emergency {
-        background: var(--tp-danger);
-        color: #FFFFFF;
-        font-weight: 800;
-        padding: 12px 22px;
-        border-radius: 8px;
-        text-decoration: none;
-        font-size: 13px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        transition: all 0.2s ease;
-        white-space: nowrap;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .tp-btn-emergency:hover {
-        background: #DC2626;
-        box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
-        transform: translateY(-1px);
-    }
-
-    /* Сетка карточек */
-    .tp-services-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 20px;
-        margin-bottom: 40px;
-    }
-
-    .tp-service-card {
-        background: var(--tp-card-bg);
-        border: 1px solid var(--tp-border);
-        border-radius: 14px;
-        padding: 24px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        position: relative;
-        overflow: hidden;
-        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .tp-service-card.hidden {
-        display: none;
-    }
-
-    .tp-service-card:hover {
-        border-color: var(--tp-gold);
-        transform: translateY(-4px);
-        background: var(--tp-card-hover);
-        box-shadow: 0 10px 30px var(--tp-gold-glow);
-    }
-
-    .tp-card-top {
-        margin-bottom: 20px;
-    }
-
-    .tp-card-header-flex {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 14px;
-    }
-
-    .tp-card-icon-box {
-        width: 48px;
-        height: 48px;
-        background: #18181B;
-        border: 1px solid var(--tp-border);
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 24px;
-    }
-
-    .tp-card-badge {
-        background: var(--tp-gold-glow);
-        color: var(--tp-gold);
-        border: 1px solid var(--tp-gold);
-        font-size: 10px;
-        font-weight: 800;
-        padding: 4px 10px;
-        border-radius: 20px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    .tp-service-card h3 {
-        color: var(--tp-text-main);
-        font-size: 18px;
-        font-weight: 800;
-        margin: 0 0 8px 0;
-    }
-
-    .tp-service-card p {
-        color: var(--tp-text-muted);
-        font-size: 13px;
-        line-height: 1.5;
-        margin: 0 0 16px 0;
-    }
-
-    /* Подробный список возможностей */
-    .tp-service-sublist {
-        list-style: none;
-        padding: 14px 0 0 0;
-        margin: 0;
-        border-top: 1px dashed var(--tp-border);
-    }
-
-    .tp-service-sublist li {
-        color: #D4D4D8;
-        font-size: 12px;
-        padding: 5px 0;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .tp-sublist-check {
-        color: var(--tp-gold);
-        font-weight: bold;
-    }
-
-    /* Футер карточки */
-    .tp-card-footer {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        border-top: 1px solid var(--tp-border);
-        padding-top: 16px;
-        gap: 10px;
-    }
-
-    .tp-price-hint {
-        color: var(--tp-gold);
-        font-size: 15px;
-        font-weight: 900;
-    }
-
-    .tp-price-btn {
-        background: var(--tp-gold);
-        color: #000000;
-        font-weight: 800;
-        font-size: 12px;
-        padding: 9px 16px;
-        border-radius: 8px;
-        text-decoration: none;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        transition: opacity 0.2s ease;
-        display: inline-block;
-        text-align: center;
-    }
-
-    .tp-price-btn:hover {
-        opacity: 0.9;
-    }
-
-    /* Мега-Баннер «Нестандартные задачи» */
-    .tp-universal-banner {
-        background: linear-gradient(145deg, #18181B 0%, #000000 100%);
-        border: 2px solid var(--tp-gold);
-        border-radius: 16px;
-        padding: 30px;
-        text-align: center;
-        margin-bottom: 30px;
-        box-shadow: 0 10px 30px var(--tp-gold-glow);
-    }
-
-    .tp-universal-banner h4 {
-        color: var(--tp-gold);
-        font-size: 20px;
-        font-weight: 900;
-        margin: 0 0 10px 0;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    .tp-universal-banner p {
-        color: var(--tp-text-main);
-        font-size: 14px;
-        max-width: 720px;
-        margin: 0 auto 22px auto;
-        line-height: 1.6;
-    }
-
-    .tp-btn-custom-order {
-        background: var(--tp-gold);
-        color: #000000;
-        font-weight: 900;
-        font-size: 13px;
-        padding: 13px 28px;
-        border-radius: 8px;
-        text-decoration: none;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        transition: transform 0.2s ease, opacity 0.2s ease;
-    }
-
-    .tp-btn-custom-order:hover {
-        transform: scale(1.02);
-        opacity: 0.95;
-    }
-
-    .tp-back-btn {
-        display: inline-block;
-        color: var(--tp-text-muted);
-        text-decoration: none;
-        font-size: 14px;
-        font-weight: 600;
-        transition: color 0.2s ease;
-    }
-
-    .tp-back-btn:hover {
-        color: var(--tp-gold);
-    }
-
-    @media (max-width: 650px) {
-        .tp-services-grid {
-            grid-template-columns: 1fr;
+    <style>
+        .services-air-section * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
-        .tp-emergency-banner {
-            flex-direction: column;
-            text-align: center;
-        }
-        .tp-btn-emergency {
+
+        .services-air-section {
+            background-color: #000000;
+            color: #FFFFFF;
+            padding: 40px 16px;
             width: 100%;
+            display: flex;
             justify-content: center;
+            border-top: 1px solid #18181B;
+            border-bottom: 1px solid #18181B;
         }
-        .tp-card-footer {
+
+        .sa-container {
+            max-width: 1100px;
+            width: 100%;
+            display: flex;
             flex-direction: column;
-            align-items: stretch;
-            gap: 12px;
+            align-items: center;
         }
-        .tp-price-hint {
+
+        /* Заголовок */
+        .sa-header {
             text-align: center;
+            margin-bottom: 24px;
         }
-    }
-</style>
 
-<!-- ОБНОВЛЕННАЯ СЕКЦИЯ "УСЛУГИ" -->
-<section id="services">
-    <h2 class="tp-services-title" data-i18n="nav_services">Полный каталог услуг</h2>
-    <p class="tp-services-subtitle">Решаем любые строительно-бытовые задачи в Таласе. От оперативного мелкого ремонта до выполнения объёмных подрядов под ключ.</p>
+        .sa-title {
+            font-size: clamp(22px, 5vw, 38px);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #FFFFFF;
+            line-height: 1.25;
+        }
 
-    <!-- Выбор быстрых категорий (Фильтр) -->
-    <div class="tp-services-nav">
-        <span class="tp-service-filter-btn active" data-category="all">Все направления</span>
-        <span class="tp-service-filter-btn" data-category="electric">⚡ Электрика</span>
-        <span class="tp-service-filter-btn" data-category="climate">❄️ Климат</span>
-        <span class="tp-service-filter-btn" data-category="plumbing">🔧 Сантехника</span>
-        <span class="tp-service-filter-btn" data-category="security">📹 Безопасность</span>
-        <span class="tp-service-filter-btn" data-category="repair">🧱 Ремонт и отделка</span>
-        <span class="tp-service-filter-btn" data-category="cleaning">🧹 Клининг</span>
+        .sa-title span {
+            color: #FBBF24;
+        }
+
+        /* Адаптивная сетка карточек */
+        .sa-grid {
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 2 колонки по умолчанию для мобильных */
+            gap: 10px;
+        }
+
+        /* Карточка услуги */
+        .sa-card {
+            background: #09090B;
+            border: 1px solid #27272A;
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            min-height: 64px;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            text-decoration: none;
+            color: #FFFFFF;
+        }
+
+        .sa-card:active {
+            transform: scale(0.98);
+            background: #121215;
+            border-color: #FBBF24;
+        }
+
+        .sa-card-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0; /* Ограничение для правильного переноса текста */
+        }
+
+        .sa-icon {
+            font-size: 18px;
+            width: 36px;
+            height: 36px;
+            background: #18181B;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+
+        .sa-name {
+            font-size: 13px;
+            font-weight: 700;
+            line-height: 1.25;
+            word-break: break-word;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .sa-arrow {
+            font-size: 14px;
+            color: #71717A;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        /* БЛОК ДИСПЕТЧЕРА */
+        .sa-action-box {
+            text-align: center;
+            width: 100%;
+            background: rgba(251, 191, 36, 0.04);
+            border: 1px dashed rgba(251, 191, 36, 0.35);
+            border-radius: 14px;
+            padding: 24px 16px;
+            margin-top: 24px;
+        }
+
+        .sa-action-text {
+            font-size: 14px;
+            color: #E4E4E7;
+            margin-bottom: 18px;
+            font-weight: 500;
+            line-height: 1.5;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .sa-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: #FBBF24;
+            color: #000000;
+            font-weight: 900;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 16px 24px;
+            border-radius: 10px;
+            text-decoration: none;
+            width: 100%;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 16px rgba(251, 191, 36, 0.2);
+        }
+
+        .sa-btn:active {
+            transform: scale(0.98);
+            background: #FFFFFF;
+        }
+
+        /* МЕДИА-ЗАПРОСЫ ДЛЯ БОЛЬШИХ ЭКРАНОВ */
+        @media (min-width: 640px) {
+            .sa-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 12px;
+            }
+            .sa-btn {
+                width: auto;
+                padding: 16px 36px;
+            }
+            .sa-action-text {
+                font-size: 16px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .services-air-section {
+                padding: 80px 20px;
+            }
+            .sa-header {
+                margin-bottom: 40px;
+            }
+            .sa-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 16px;
+            }
+            .sa-card {
+                padding: 16px 18px;
+                border-radius: 14px;
+                min-height: 72px;
+            }
+            .sa-card:hover {
+                border-color: #FBBF24;
+                background: #121215;
+                transform: translateY(-3px);
+                box-shadow: 0 8px 24px rgba(251, 191, 36, 0.15);
+            }
+            .sa-card:hover .sa-icon {
+                background: #FBBF24;
+                color: #000000;
+            }
+            .sa-card:hover .sa-arrow {
+                color: #FBBF24;
+                transform: translateX(4px);
+            }
+            .sa-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+                border-radius: 10px;
+            }
+            .sa-name {
+                font-size: 15px;
+            }
+            .sa-action-box {
+                padding: 40px 20px;
+                margin-top: 40px;
+            }
+            .sa-btn:hover {
+                background: #FFFFFF;
+                color: #000000;
+                transform: translateY(-2px);
+                box-shadow: 0 8px 24px rgba(255, 255, 255, 0.25);
+            }
+        }
+    </style>
+
+    <div class="sa-container">
+
+        <!-- ЗАГОЛОВОК -->
+        <div class="sa-header">
+            <h2 class="sa-title">
+                <span data-i18n="sa_title_1">Все услуги в</span> <span><span data-i18n="sa_title_2">Talas_profi</span></span>
+            </h2>
+        </div>
+
+        <!-- КОМПАКТНАЯ СЕТКА ИЗ 12 КАРТОЧЕК -->
+        <div class="sa-grid">
+
+            <a href="https://wa.me/996755000228?text=Заказ%20электрика" target="_blank" class="sa-card">
+                <div class="sa-card-left">
+                    <div class="sa-icon">⚡</div>
+                    <span class="sa-name" data-i18n="sa_1">Электромонтажные работы</span>
+                </div>
+                <span class="sa-arrow">➔</span>
+            </a>
+
+            <a href="https://wa.me/996755000228?text=Заказ%20сантехника" target="_blank" class="sa-card">
+                <div class="sa-card-left">
+                    <div class="sa-icon">🔧</div>
+                    <span class="sa-name" data-i18n="sa_2">Сантехнические услуги</span>
+                </div>
+                <span class="sa-arrow">➔</span>
+            </a>
+
+            <a href="https://wa.me/996755000228?text=Заказ%20клининга" target="_blank" class="sa-card">
+                <div class="sa-card-left">
+                    <div class="sa-icon">🧹</div>
+                    <span class="sa-name" data-i18n="sa_3">Профессиональный Клининг</span>
+                </div>
+                <span class="sa-arrow">➔</span>
+            </a>
+
+            <a href="https://wa.me/996755000228?text=Заказ%20кирпичной%20кладки" target="_blank" class="sa-card">
+                <div class="sa-card-left">
+                    <div class="sa-icon">🧱</div>
+                    <span class="sa-name" data-i18n="sa_4">Укладка кирпича и Кладка</span>
+                </div>
+                <span class="sa-arrow">➔</span>
+            </a>
+
+            <a href="https://wa.me/996755000228?text=Заказ%20поклейки%20обоев" target="_blank" class="sa-card">
+                <div class="sa-card-left">
+                    <div class="sa-icon">🎨</div>
+                    <span class="sa-name" data-i18n="sa_5">Поклейка обоев и Отделка</span>
+                </div>
+                <span class="sa-arrow">➔</span>
+            </a>
+
+            <a href="https://wa.me/996755000228?text=Заказ%20кондиционера" target="_blank" class="sa-card">
+                <div class="sa-card-left">
+                    <div class="sa-icon">❄️</div>
+                    <span class="sa-name" data-i18n="sa_6">Кондиционирование и Климат</span>
+                </div>
+                <span class="sa-arrow">➔</span>
+            </a>
+
+            <a href="https://wa.me/996755000228?text=Заказ%20видеонаблюдения" target="_blank" class="sa-card">
+                <div class="sa-card-left">
+                    <div class="sa-icon">📹</div>
+                    <span class="sa-name" data-i18n="sa_7">Видеонаблюдение и Домофоны</span>
+                </div>
+                <span class="sa-arrow">➔</span>
+            </a>
+
+            <a href="https://wa.me/996755000228?text=Заказ%20маляра%20штукатура" target="_blank" class="sa-card">
+                <div class="sa-card-left">
+                    <div class="sa-icon">🖌️</div>
+                    <span class="sa-name" data-i18n="sa_8">Штукатурка и Малярные работы</span>
+                </div>
+                <span class="sa-arrow">➔</span>
+            </a>
+
+            <a href="https://wa.me/996755000228?text=Заказ%20укладки%20плитки" target="_blank" class="sa-card">
+                <div class="sa-card-left">
+                    <div class="sa-icon">📐</div>
+                    <span class="sa-name" data-i18n="sa_9">Укладка плитки и Кафель</span>
+                </div>
+                <span class="sa-arrow">➔</span>
+            </a>
+
+            <a href="https://wa.me/996755000228?text=Заказ%20гипсокартона" target="_blank" class="sa-card">
+                <div class="sa-card-left">
+                    <div class="sa-icon">🏗️</div>
+                    <span class="sa-name" data-i18n="sa_10">Монтаж гипсокартона</span>
+                </div>
+                <span class="sa-arrow">➔</span>
+            </a>
+
+            <a href="https://wa.me/996755000228?text=Заказ%20мебельщика" target="_blank" class="sa-card">
+                <div class="sa-card-left">
+                    <div class="sa-icon">🪑</div>
+                    <span class="sa-name" data-i18n="sa_11">Сборка и Ремонт мебели</span>
+                </div>
+                <span class="sa-arrow">➔</span>
+            </a>
+
+            <a href="https://wa.me/996755000228?text=Заказ%20комплексного%20ремонта" target="_blank" class="sa-card">
+                <div class="sa-card-left">
+                    <div class="sa-icon">🛠️</div>
+                    <span class="sa-name" data-i18n="sa_12">Другие строительные работы</span>
+                </div>
+                <span class="sa-arrow">➔</span>
+            </a>
+
+        </div>
+
+        <!-- БЛОК ДИСПЕТЧЕРА -->
+        <div class="sa-action-box">
+            <p class="sa-action-text" data-i18n="sa_action">Не нашли нужную услугу в списке? Напишите нам — мы обязательно подберем проверенного мастера под вашу индивидуальную задачу!</p>
+            <a href="https://wa.me/996755000228?text=Здравствуйте,%20нужна%20помощь%20с%20подбором%20мастера" target="_blank" class="sa-btn" data-i18n="sa_btn">Написать диспетчеру</a>
+        </div>
+
     </div>
 
-    <!-- Аварийная плашка -->
-    <div class="tp-emergency-banner">
-        <div class="tp-emergency-info">
-            <h4>🚨 Нужен срочный аварийный выезд?</h4>
-            <p>Замыкание проводки, прорыв трубы или заклинивший замок? Оперативный выезд мастера за 20–30 минут!</p>
-        </div>
-        <a href="https://wa.me/996755000228?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%9D%D1%83%D0%B6%D0%B5%D0%BD%20%D1%81%D1%80%D0%BE%D1%87%D0%BD%D1%8B%D0%B9%20%D0%B0%D0%B2%D0%B0%D1%80%D0%B8%D0%B9%D0%BD%D1%8B%D0%B9%20%D0%B2%D1%8B%D0%B7%D0%BE%D0%B2%20%D0%BC%D0%B0%D1%81%D1%82%D0%B5%D1%80%D0%B0!" class="tp-btn-emergency" target="_blank">🚨 Срочный вызов</a>
-    </div>
+    <!-- МУЛЬТИЯЗЫЧНОСТЬ -->
+    <script>
+        window.siteTranslations = window.siteTranslations || {};
+        window.siteTranslations.ky = window.siteTranslations.ky || {};
+        window.siteTranslations.ru = window.siteTranslations.ru || {};
 
-    <!-- Карточки услуг -->
-    <div class="tp-services-grid" id="tp-services-container">
-        
-        <!-- Карточка 1: Электромонтаж -->
-        <div class="tp-service-card" data-cat="electric">
-            <div class="tp-card-top">
-                <div class="tp-card-header-flex">
-                    <div class="tp-card-icon-box">⚡</div>
-                    <span class="tp-card-badge">Топ услуга</span>
-                </div>
-                <h3>Электромонтажные работы</h3>
-                <p>Профессиональный монтаж и ремонт электрики любой сложности от мастеров с допуском безопасности.</p>
-                
-                <ul class="tp-service-sublist">
-                    <li><span class="tp-sublist-check">✓</span> Монтаж розеток, выключателей, светильников и люстр</li>
-                    <li><span class="tp-sublist-check">✓</span> Полная замена проводки в квартирах, домах и офисах</li>
-                    <li><span class="tp-sublist-check">✓</span> Сборка и модернизация электрощитов, автоматов, УЗО</li>
-                    <li><span class="tp-sublist-check">✓</span> Штробление стен без пыли и поиск обрывов</li>
-                </ul>
-            </div>
-            <div class="tp-card-footer">
-                <span class="tp-price-hint">от 300 сом</span>
-                <a href="https://wa.me/996755000228?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%9D%D1%83%D0%B6%D0%B5%D0%BD%20%D1%8D%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%B8%D0%BA." class="tp-price-btn" target="_blank">Вызвать электрика</a>
-            </div>
-        </div>
-
-        <!-- Карточка 2: Кондиционеры -->
-        <div class="tp-service-card" data-cat="climate">
-            <div class="tp-card-top">
-                <div class="tp-card-header-flex">
-                    <div class="tp-card-icon-box">❄️</div>
-                    <span class="tp-card-badge">Климат</span>
-                </div>
-                <h3>Кондиционеры и климатизация</h3>
-                <p>Установка, заправка и сервисное обслуживание сплит-систем всех известных брендов.</p>
-                
-                <ul class="tp-service-sublist">
-                    <li><span class="tp-sublist-check">✓</span> Монтаж кондиционеров любого типа и мощности</li>
-                    <li><span class="tp-sublist-check">✓</span> Глубокая чистка и антибактериальная обработка</li>
-                    <li><span class="tp-sublist-check">✓</span> Заправка фреоном R22 / R410 / R32</li>
-                    <li><span class="tp-sublist-check">✓</span> Закладка фреоновых трасс на этапе ремонта</li>
-                </ul>
-            </div>
-            <div class="tp-card-footer">
-                <span class="tp-price-hint">от 1500 сом</span>
-                <a href="https://wa.me/996755000228?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%9D%D1%83%D0%B6%D0%B5%D0%BD%20%D0%BC%D0%BE%D0%BD%D1%82%D0%B0%D0%B6%2F%D0%BE%D0%B1%D1%81%D0%BB%D1%83%D0%B6%D0%B8%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5%20%D0%BA%D0%BE%D0%BD%D0%B4%D0%B8%D1%86%D0%B8%D0%BE%D0%BD%D0%B5%D1%80%D0%B0." class="tp-price-btn" target="_blank">Заказать монтаж</a>
-            </div>
-        </div>
-
-        <!-- Карточка 3: Видеонаблюдение -->
-        <div class="tp-service-card" data-cat="security">
-            <div class="tp-card-top">
-                <div class="tp-card-header-flex">
-                    <div class="tp-card-icon-box">📹</div>
-                    <span class="tp-card-badge">Охрана</span>
-                </div>
-                <h3>Видеонаблюдение и СКУД</h3>
-                <p>Установка систем безопасности для частных домов, магазинов, коммерческих объектов и складов.</p>
-                
-                <ul class="tp-service-sublist">
-                    <li><span class="tp-sublist-check">✓</span> Монтаж IP и HD-CVI видеокамер</li>
-                    <li><span class="tp-sublist-check">✓</span> Настройка удаленного просмотра на смартфоне</li>
-                    <li><span class="tp-sublist-check">✓</span> Установка видеодомофонов и контроллеров доступа</li>
-                    <li><span class="tp-sublist-check">✓</span> Настройка регистраторов (NVR/XVR) и сетевого оборудования</li>
-                </ul>
-            </div>
-            <div class="tp-card-footer">
-                <span class="tp-price-hint">договорная</span>
-                <a href="https://wa.me/996755000228?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%9D%D1%83%D0%B6%D0%BD%D0%BE%20%D1%80%D0%B0%D1%81%D1%81%D1%87%D0%B8%D1%82%D0%B0%D1%82%D1%8C%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D1%83%20%D0%B2%D0%B8%D0%B4%D0%B5%D0%BE%D0%BD%D0%B0%D0%B1%D0%BB%D1%8E%D0%B4%D0%B5%D0%BD%D0%B8%D1%8F." class="tp-price-btn" target="_blank">Рассчитать проект</a>
-            </div>
-        </div>
-
-        <!-- Карточка 4: Сантехника -->
-        <div class="tp-service-card" data-cat="plumbing">
-            <div class="tp-card-top">
-                <div class="tp-card-header-flex">
-                    <div class="tp-card-icon-box">🔧</div>
-                    <span class="tp-card-badge">Срочно</span>
-                </div>
-                <h3>Сантехнические работы</h3>
-                <p>Качественный монтаж и оперативный ремонт водоснабжения, канализации и отопительных систем.</p>
-                
-                <ul class="tp-service-sublist">
-                    <li><span class="tp-sublist-check">✓</span> Быстрое устранение сложных засоров и протечек</li>
-                    <li><span class="tp-sublist-check">✓</span> Замена и установка смесителей, сифонов, унитазов</li>
-                    <li><span class="tp-sublist-check">✓</span> Разводка труб водопровода, канализации и отопления</li>
-                    <li><span class="tp-sublist-check">✓</span> Монтаж водонагревателей, стиральных и посудомоечных машин</li>
-                </ul>
-            </div>
-            <div class="tp-card-footer">
-                <span class="tp-price-hint">от 300 сом</span>
-                <a href="https://wa.me/996755000228?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%9D%D1%83%D0%B6%D0%B5%D0%BD%20%D1%81%D0%B0%D0%BD%D1%82%D0%B5%D1%85%D0%BD%D0%B8%D0%BA." class="tp-price-btn" target="_blank">Вызвать сантехника</a>
-            </div>
-        </div>
-
-        <!-- Карточка 5: Ремонт и Отделка (Включая поклейку обоев и укладку кирпича) -->
-        <div class="tp-service-card" data-cat="repair">
-            <div class="tp-card-top">
-                <div class="tp-card-header-flex">
-                    <div class="tp-card-icon-box">🧱</div>
-                    <span class="tp-card-badge">Качество</span>
-                </div>
-                <h3>Отделка, обои и кирпич</h3>
-                <p>Профессиональные кладочные и отделочные работы с гарантией аккуратности и ровных линий.</p>
-                
-                <ul class="tp-service-sublist">
-                    <li><span class="tp-sublist-check">✓</span> Бесшовная поклейка всех типов обоев (винил, флизелин и др.)</li>
-                    <li><span class="tp-sublist-check">✓</span> Черновая и чистовая укладка кирпича, перегородки</li>
-                    <li><span class="tp-sublist-check">✓</span> Подготовка стен, штукатурка, шпаклевка, покраска</li>
-                    <li><span class="tp-sublist-check">✓</span> Мелкий бытовой ремонт и монтажные работы</li>
-                </ul>
-            </div>
-            <div class="tp-card-footer">
-                <span class="tp-price-hint">договорная</span>
-                <a href="https://wa.me/996755000228?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%98%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D1%83%D1%8E%D1%82%20%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%8B%20%D0%BF%D0%BE%20%D0%BE%D1%82%D0%B4%D0%B5%D0%BB%D0%BA%D0%B5%2F%D0%BE%D0%B1%D0%BE%D1%8F%D0%BC%2F%D0%BA%D0%BB%D0%B0%D0%B4%D0%BA%D0%B5." class="tp-price-btn" target="_blank">Заказать отделку</a>
-            </div>
-        </div>
-
-        <!-- Карточка 6: Клининг -->
-        <div class="tp-service-card" data-cat="cleaning">
-            <div class="tp-card-top">
-                <div class="tp-card-header-flex">
-                    <div class="tp-card-icon-box">🧹</div>
-                    <span class="tp-card-badge">Чистота</span>
-                </div>
-                <h3>Профессиональный клининг</h3>
-                <p>Комплексная уборка жилых и коммерческих помещений с применением эффективных средств.</p>
-                
-                <ul class="tp-service-sublist">
-                    <li><span class="tp-sublist-check">✓</span> Генеральная уборка квартир, коттеджей и особняков</li>
-                    <li><span class="tp-sublist-check">✓</span> Тщательная уборка помещений после ремонта и стройки</li>
-                    <li><span class="tp-sublist-check">✓</span> Профессиональная мойка окон, витрин и остекления</li>
-                    <li><span class="tp-sublist-check">✓</span> Уборка офисов, коммерческих объектов и магазинов</li>
-                </ul>
-            </div>
-            <div class="tp-card-footer">
-                <span class="tp-price-hint">от 1000 сом</span>
-                <a href="https://wa.me/996755000228?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%B7%D0%B0%D0%BA%D0%B0%D0%B7%D0%B0%D1%82%D1%8C%20%D0%BA%D0%BB%D0%B8%D0%BD%D0%B8%D0%BD%D0%B3." class="tp-price-btn" target="_blank">Заказать клининг</a>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- Мега-баннер «Нестандартные задачи» -->
-    <div class="tp-universal-banner">
-        <h4>Нужно сделать что-то нестандартное?</h4>
-        <p>Не нашли нужную услугу в списке? В базе <strong>Talas_profi</strong> зарегистрированы специалисты узких профилей по всему Таласу. Опишите вашу задачу — мы моментально подберем подходящего профи!</p>
-        <a href="https://wa.me/996755000228?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%A3%20%D0%BC%D0%B5%D0%BD%D1%8F%20%D0%BD%D0%B5%D1%81%D1%82%D0%B0%D0%BD%D0%B4%D0%B0%D1%80%D1%82%D0%BD%D0%B0%D1%8F%20%D0%B7%D0%B0%D0%B4%D0%B0%D1%87%D0%B0:" class="tp-btn-custom-order" target="_blank">💬 Описать свою задачу в WhatsApp</a>
-    </div>
-
-    <!-- Кнопка возврата на главную -->
-    <a href="index.html" class="tp-back-btn" data-i18n="btn_home">← На главную</a>
-</section>
-
-<!-- Скрипт переключения категорий -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const filterBtns = document.querySelectorAll('.tp-service-filter-btn');
-        const cards = document.querySelectorAll('.tp-service-card');
-
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                filterBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-
-                const category = btn.getAttribute('data-category');
-
-                cards.forEach(card => {
-                    if (category === 'all' || card.getAttribute('data-cat') === category) {
-                        card.classList.remove('hidden');
-                    } else {
-                        card.classList.add('hidden');
-                    }
-                });
-            });
+        Object.assign(window.siteTranslations.ky, {
+            sa_title_1: "Бардык кызматтар",
+            sa_title_2: "Talas_profi де",
+            sa_1: "Электромонтаж иштери",
+            sa_2: "Сантехникалык кызматтар",
+            sa_3: "Профессионалдуу Клининг",
+            sa_4: "Кирпич тизүү иштери",
+            sa_5: "Обои чаптоо жана Жасалгалоо",
+            sa_6: "Кондиционерлер жана Климат",
+            sa_7: "Видеокөзөмөл жана Домофондор",
+            sa_8: "Штукатурка жана Малярдык жумуштар",
+            sa_9: "Кафель жана Плитка тизүү",
+            sa_10: "Гипсокартон монтаждоо",
+            sa_11: "Эмерек чогултуу жана Оңдоо",
+            sa_12: "Башка курулуш жумуштары",
+            sa_action: "Тизмеден керектүү кызматты таппадыңызбы? Бизге жазыңыз — жеке тапшырмаңызга ылайык тажрыйбалуу адис таап беребиз!",
+            sa_btn: "Диспетчерге жазуу"
         });
-    });
-</script>
+
+        Object.assign(window.siteTranslations.ru, {
+            sa_title_1: "Все услуги в",
+            sa_title_2: "Talas_profi",
+            sa_1: "Электромонтажные работы",
+            sa_2: "Сантехнические услуги",
+            sa_3: "Профессиональный Клининг",
+            sa_4: "Укладка кирпича и Кладка",
+            sa_5: "Поклейка обоев и Отделка",
+            sa_6: "Кондиционирование и Климат",
+            sa_7: "Видеонаблюдение и Домофоны",
+            sa_8: "Штукатурка и Малярные работы",
+            sa_9: "Укладка плитки и Кафель",
+            sa_10: "Монтаж гипсокартона",
+            sa_11: "Сборка и Ремонт мебели",
+            sa_12: "Другие строительные работы",
+            sa_action: "Не нашли нужную услугу в списке? Напишите нам — мы обязательно подберем проверенного мастера под вашу индивидуальную задачу!",
+            sa_btn: "Написать диспетчеру"
+        });
+    </script>
+</section>
         
         
         
