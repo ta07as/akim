@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Статистика — Talas_profi</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { background-color: #000; color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  </style>
+</head>
+<body class="p-4 min-h-screen">
+
+  <div class="max-w-md mx-auto space-y-4">
+    
+    <!-- Шапка -->
+    <div class="flex items-center justify-between bg-zinc-900 border border-zinc-800 p-4 rounded-2xl">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-amber-400 rounded-xl flex items-center justify-center font-black text-black text-lg">TP</div>
+        <div>
+          <h1 class="font-black text-white text-base uppercase">Talas_profi</h1>
+          <p class="text-xs text-zinc-400 font-bold">Живая статистика сайта</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/30 px-3 py-1.5 rounded-full">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+        <span class="text-emerald-400 font-black text-xs">LIVE</span>
+      </div>
+    </div>
+
+    <!-- Главный счетчик ОНЛАЙН -->
+    <div class="bg-gradient-to-br from-zinc-900 via-zinc-900 to-amber-500/10 border-2 border-amber-400/40 p-6 rounded-2xl text-center shadow-2xl">
+      <p class="text-xs font-black uppercase text-amber-400 tracking-wider mb-1">СЕЙЧАС НА САЙТЕ</p>
+      <div class="text-6xl font-black text-white my-2 tracking-tight" id="live-online">0</div>
+      <p class="text-xs text-zinc-400 font-medium">Активных пользователей онлайн</p>
+    </div>
+
+    <!-- Метрики посещений и действий -->
+    <div class="grid grid-cols-3 gap-2">
+      <div class="bg-zinc-900 border border-zinc-800 p-3.5 rounded-2xl text-center">
+        <i class="fa-solid fa-eye text-amber-400 text-lg mb-1 block"></i>
+        <div class="text-xl font-black text-white" id="stat-views">0</div>
+        <div class="text-[10px] font-bold text-zinc-400 uppercase mt-0.5">Просмотры</div>
+      </div>
+
+      <div class="bg-zinc-900 border border-zinc-800 p-3.5 rounded-2xl text-center">
+        <i class="fa-brands fa-whatsapp text-emerald-400 text-lg mb-1 block"></i>
+        <div class="text-xl font-black text-white" id="stat-whatsapp">0</div>
+        <div class="text-[10px] font-bold text-zinc-400 uppercase mt-0.5">WhatsApp</div>
+      </div>
+
+      <div class="bg-zinc-900 border border-zinc-800 p-3.5 rounded-2xl text-center">
+        <i class="fa-solid fa-phone text-amber-400 text-lg mb-1 block"></i>
+        <div class="text-xl font-black text-white" id="stat-calls">0</div>
+        <div class="text-[10px] font-bold text-zinc-400 uppercase mt-0.5">Звонки</div>
+      </div>
+    </div>
+
+    <!-- Кнопка возврата на сайт -->
+    <a href="index.html" class="block w-full bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-center font-bold text-sm py-3 rounded-xl transition-all text-amber-400">
+      <i class="fa-solid fa-arrow-left mr-2"></i> Вернуться на сайт
+    </a>
+
+  </div>
+
+  <!-- Подключение Firebase к Панели -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    const firebaseConfig = {
+      databaseURL: "https://talasprof-default-rtdb.firebaseio.com"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    onValue(ref(db, 'stats/online'), (snapshot) => {
+      const data = snapshot.val();
+      const count = data ? Object.keys(data).length : 0;
+      document.getElementById('live-online').innerText = count;
+    });
+
+    onValue(ref(db, 'stats/views'), (snapshot) => {
+      document.getElementById('stat-views').innerText = snapshot.val() || 0;
+    });
+
+    onValue(ref(db, 'stats/whatsapp'), (snapshot) => {
+      document.getElementById('stat-whatsapp').innerText = snapshot.val() || 0;
+    });
+
+    onValue(ref(db, 'stats/calls'), (snapshot) => {
+      document.getElementById('stat-calls').innerText = snapshot.val() || 0;
+    });
+  </script>
+
+</body>
+</html>
